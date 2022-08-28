@@ -21,10 +21,12 @@ if(DEBUGGING)
 else()
     set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 endif()
-add_executable(labyrinth commands.cpp
+add_executable(labyrinth backpack.cpp
+                         commands.cpp
                          door.cpp
-                         labyrinth.h
-                         main.cpp)
+                         main.cpp
+                         room.cpp
+                         wall.cpp)
 
 target_include_directories(labyrinth PUBLIC
                           "${PROJECT_BINARY_DIR}"

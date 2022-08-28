@@ -15,15 +15,23 @@ public:
         ObjectDoor,
         ObjectFlashlight,
         ObjectKey,
-        ObjectSheet
+        ObjectRoom,
+        ObjectSheet,
+        ObjectWall
+    };
+    enum WallType {
+        WallTop,
+        WallDown,
+        WallLeft,
+        WallRight
     };
 };
-//abstract class, parent of all other object classes
+//parent of all other object classes
 class LabyrinthObject {
     Labyrinth::ObjectType objectType;
 public:
     LabyrinthObject(Labyrinth::ObjectType type) : objectType(type) {}
-    virtual void setProperties() = 0;
+    virtual void setProperties() {}
     virtual ~LabyrinthObject() {}
 };
 
