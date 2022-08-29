@@ -6,7 +6,7 @@
 #include "room.h"
 
 class Player {
-    ObjectRoom *curRoom;
+    int roomNumber;
     unique_ptr<ObjectBackPack> backpack;
 public:
     Player() {}

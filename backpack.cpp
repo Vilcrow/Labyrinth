@@ -16,6 +16,9 @@ void Backpack::addObject(LabyrinthObject obj)
         inventory.push_back(obj);
         --capacity;
     }
+    else {
+        //say to player that the backpack is full
+    }
 }
 
 void Backpack::removeObject(LabyrinthObject obj)
