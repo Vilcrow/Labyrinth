@@ -4,16 +4,23 @@
 #include <vector>
 #include "labyrinth.h"
 
-class Backpack {
+//singleton pattern
+class BackpackObject {
+    enum { maxCapacity = 6 };
     int capacity;
     std::vector<LabyrinthObject> inventory;
-    enum { maxCapacity = 6 };
 public:
-    Backpack();
-    ~Backpack();
+    static BackpackObject* instance();
     void addObject(LabyrinthObject obj);
     void removeObject(LabyrinthObject obj);
     int getCapacity() const { return capacity; }
+private:
+    BackpackObject();
+    ~BackpackObject() = delete;
+    BackpackObject(BackpackObject& other) = delete;
+    BackpackObject& operator=(BackpackObject& other) = delete;
+protected:
+    static BackpackObject *uniqueInstance;
 };
 
 #endif

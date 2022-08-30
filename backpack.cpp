@@ -1,16 +1,20 @@
 #include "backpack.h"
 
-Backpack::Backpack() : capacity(maxCapacity)
+BackpackObject* BackpackObject::uniqueInstance = nullptr;
+
+BackpackObject::BackpackObject() : capacity(maxCapacity)
 {
 
 }
 
-Backpack::~Backpack()
+BackpackObject* BackpackObject::instance()
 {
-
+    if(!uniqueInstance)
+        uniqueInstance = new BackpackObject();
+    return uniqueInstance;
 }
 
-void Backpack::addObject(LabyrinthObject obj)
+void BackpackObject::addObject(LabyrinthObject obj)
 {
     if(capacity > 0) {
         inventory.push_back(obj);
@@ -21,7 +25,7 @@ void Backpack::addObject(LabyrinthObject obj)
     }
 }
 
-void Backpack::removeObject(LabyrinthObject obj)
+void BackpackObject::removeObject(LabyrinthObject obj)
 {
     //check the presence of an object in the backpack
     //and remove it

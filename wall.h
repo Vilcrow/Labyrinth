@@ -5,7 +5,7 @@
 #include "labyrinth.h"
 
 class WallObject : public LabyrinthObject {
-   // Labyrinth::WallType type;
+    //Labyrinth::WallType type;
     std::vector<LabyrinthObject> objects;
 public:
     WallObject(/*Labyrinth::WallType tp*/);
