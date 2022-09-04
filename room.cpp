@@ -8,25 +8,25 @@ RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
     left = nullptr;
     right = nullptr;
 }
-/*
+
 void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject obj)
 {
     switch(wall) {
     case Labyrinth::WallTop:
-        top.push_back(obj);
+        top->addObject(obj);
         break;
     case Labyrinth::WallDown:
-        top.push_back(obj);
+        down->addObject(obj);
         break;
     case Labyrinth::WallLeft:
-        top.push_back(obj);
+        left->addObject(obj);
         break;
     case Labyrinth::WallRight:
-        top.push_back(obj);
+        right->addObject(obj);
         break;
     }
 }
-*/
+
 
 void RoomObject::addWall(Labyrinth::WallType type,
                          std::shared_ptr<WallObject> wall)

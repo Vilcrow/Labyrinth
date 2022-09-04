@@ -15,8 +15,9 @@ public:
     RoomObject(int num);
     virtual ~RoomObject() {}
     void setProperties() override {}
-    //void addObject(Labyrinth::WallType wall, LabyrinthObject obj);
     void addWall(Labyrinth::WallType type, std::shared_ptr<WallObject> wall);
+    void addObject(Labyrinth::WallType wall, LabyrinthObject obj);
+    int getNumber() const { return number; }
 };
 
 #endif

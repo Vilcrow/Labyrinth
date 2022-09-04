@@ -14,4 +14,12 @@ public:
     bool isOpen() const { return opened; }
 };
 
+class KeyObject : public LabyrinthObject {
+    int number;
+public:
+    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
+    ~KeyObject() = default;
+    int getNumber() { return number; }
+};
+
 #endif

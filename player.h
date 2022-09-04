@@ -13,6 +13,8 @@ class Player {
     WallObject* curWall;
 public:
     static Player* instance();
+    void setRoomNumber(int num) { roomNumber = num; }
+    void setCurrentWall(WallObject *wall) { curWall = wall; }
 private:
     Player();
     ~Player() = delete;
