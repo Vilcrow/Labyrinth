@@ -1,13 +1,12 @@
+#include <algorithm>
 #include "wall.h"
 
-WallObject::WallObject(/*Labyrinth::WallType tp*/)
-                       : LabyrinthObject(Labyrinth::ObjectWall)
-                       /*, type(tp)*/
+WallObject::WallObject() : LabyrinthObject(Labyrinth::ObjectWall)
 {
 
 }
 
-void WallObject::addObject(LabyrinthObject obj)
+void WallObject::add(LabyrinthObject obj)
 {
     objects.push_back(obj);
 }

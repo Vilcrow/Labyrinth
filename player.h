@@ -8,13 +8,14 @@
 
 //singleton pattern
 class Player {
-    int roomNumber;
+    int roomNum;
     BackpackObject* backpack;
-    WallObject* curWall;
+    std::shared_ptr<WallObject> curWall;
 public:
     static Player* instance();
-    void setRoomNumber(int num) { roomNumber = num; }
-    void setCurrentWall(WallObject *wall) { curWall = wall; }
+    int roomNumber() { return roomNum; }
+    void roomNumber(int num) { roomNum = num; }
+    void currentWall(std::shared_ptr<WallObject> wall) { curWall = wall; }
 private:
     Player();
     ~Player() = delete;

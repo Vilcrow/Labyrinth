@@ -2,7 +2,7 @@
 
 BackpackObject* BackpackObject::uniqueInstance = nullptr;
 
-BackpackObject::BackpackObject() : capacity(maxCapacity)
+BackpackObject::BackpackObject() : cpt(maxCapacity)
 {
 
 }
@@ -14,18 +14,18 @@ BackpackObject* BackpackObject::instance()
     return uniqueInstance;
 }
 
-void BackpackObject::addObject(LabyrinthObject obj)
+void BackpackObject::add(LabyrinthObject obj)
 {
-    if(capacity > 0) {
+    if(cpt > 0) {
         inventory.push_back(obj);
-        --capacity;
+        --cpt;
     }
     else {
         //say to player that the backpack is full
     }
 }
 
-void BackpackObject::removeObject(LabyrinthObject obj)
+void BackpackObject::remove(LabyrinthObject obj)
 {
     //check the presence of an object in the backpack
     //and remove it

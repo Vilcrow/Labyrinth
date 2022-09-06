@@ -4,7 +4,7 @@ Player* Player::uniqueInstance = nullptr;
 
 Player::Player()
 {
-    roomNumber = 1; //start of the game
+    roomNum = 0; //start of the game
     backpack = BackpackObject::instance();
     curWall = nullptr;
 }

@@ -3,23 +3,27 @@
 
 #include "labyrinth.h"
 
+class KeyObject;
+
 class DoorObject : public LabyrinthObject {
-    int number;
+    int nmbr;
     bool opened;
 public:
     DoorObject(int num, bool opnd = false);
     virtual ~DoorObject() {}
-    void setProperties(bool opnd) { opened = opnd; }
-    int getNumber() const { return number; }
+    int number() const { return nmbr; }
     bool isOpen() const { return opened; }
+    bool open(const KeyObject& key);
+    const std::string action(Labyrinth::ActionType type);
 };
 
 class KeyObject : public LabyrinthObject {
-    int number;
+    int nmbr;
 public:
-    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
+    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), nmbr(num) {}
     ~KeyObject() = default;
-    int getNumber() { return number; }
+    int number() const { return nmbr; }
+    const std::string& action(Labyrinth::ActionType type);
 };
 
 #endif

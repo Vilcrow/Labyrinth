@@ -6,7 +6,7 @@
 #include "wall.h"
 
 class RoomObject : public LabyrinthObject {
-    int number;
+    int nmbr;
     std::shared_ptr<WallObject> top;
     std::shared_ptr<WallObject> down;
     std::shared_ptr<WallObject> left;
@@ -14,10 +14,10 @@ class RoomObject : public LabyrinthObject {
 public:
     RoomObject(int num);
     virtual ~RoomObject() {}
-    void setProperties() override {}
-    void addWall(Labyrinth::WallType type, std::shared_ptr<WallObject> wall);
-    void addObject(Labyrinth::WallType wall, LabyrinthObject obj);
-    int getNumber() const { return number; }
+    void wall(Labyrinth::WallType type, std::shared_ptr<WallObject> wall);
+    void add(Labyrinth::WallType wall, LabyrinthObject obj);
+    int number() const { return nmbr; }
+    std::shared_ptr<WallObject> wall(Labyrinth::WallType type);
 };
 
 #endif

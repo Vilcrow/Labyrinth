@@ -5,13 +5,11 @@
 #include "labyrinth.h"
 
 class WallObject : public LabyrinthObject {
-    //Labyrinth::WallType type;
     std::vector<LabyrinthObject> objects;
 public:
-    WallObject(/*Labyrinth::WallType tp*/);
+    WallObject();
     virtual ~WallObject() {}
-    void setProperties() {}
-    void addObject(LabyrinthObject obj);
+    void add(LabyrinthObject obj);
 };
 
 #endif

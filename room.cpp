@@ -1,34 +1,34 @@
 #include "room.h"
 
 RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
-                                , number(num)
+                                , nmbr(num)
 {
     top = nullptr;
     down = nullptr;
     left = nullptr;
     right = nullptr;
 }
-
-void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject obj)
+//add object to corresponding wall
+void RoomObject::add(Labyrinth::WallType wall, LabyrinthObject obj)
 {
     switch(wall) {
     case Labyrinth::WallTop:
-        top->addObject(obj);
+        top->add(obj);
         break;
     case Labyrinth::WallDown:
-        down->addObject(obj);
+        down->add(obj);
         break;
     case Labyrinth::WallLeft:
-        left->addObject(obj);
+        left->add(obj);
         break;
     case Labyrinth::WallRight:
-        right->addObject(obj);
+        right->add(obj);
         break;
     }
 }
 
 
-void RoomObject::addWall(Labyrinth::WallType type,
+void RoomObject::wall(Labyrinth::WallType type,
                          std::shared_ptr<WallObject> wall)
 {
     switch(type) {
@@ -60,4 +60,19 @@ void RoomObject::addWall(Labyrinth::WallType type,
             //need error handling
         }
     }
+}
+
+std::shared_ptr<WallObject> RoomObject::wall(Labyrinth::WallType type)
+{
+    switch(type) {
+    case Labyrinth::WallTop:
+        return top;
+    case Labyrinth::WallDown:
+        return down;
+    case Labyrinth::WallLeft:
+        return left;
+    case Labyrinth::WallRight:
+        return right;
+    }
+    return nullptr; //gived invalid type of wall
 }

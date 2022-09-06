@@ -5,25 +5,25 @@
 class Labyrinth {
 public:
     enum ActionType {
-        ActionNone,
-        ActionCloseDoor,
-        ActionOpenDoor,
-        ActionViewDoor
+                     ActionNone,
+                     ActionCloseDoor,
+                     ActionOpenDoor,
+                     ActionViewDoor
     };
     enum ObjectType {
-        ObjectBattery,
-        ObjectDoor,
-        ObjectFlashlight,
-        ObjectKey,
-        ObjectRoom,
-        ObjectSheet,
-        ObjectWall
+                     ObjectBattery,
+                     ObjectDoor,
+                     ObjectFlashlight,
+                     ObjectKey,
+                     ObjectRoom,
+                     ObjectSheet,
+                     ObjectWall
     };
-    enum WallType {
-        WallTop,
-        WallDown,
-        WallLeft,
-        WallRight
+    enum WallType   {
+                     WallTop,
+                     WallDown,
+                     WallLeft,
+                     WallRight
     };
 };
 //parent of all other object classes
@@ -31,8 +31,8 @@ class LabyrinthObject {
     Labyrinth::ObjectType objectType;
 public:
     LabyrinthObject(Labyrinth::ObjectType type) : objectType(type) {}
-    virtual void setProperties() {}
     virtual ~LabyrinthObject() {}
+    Labyrinth::ObjectType type() const { return objectType; }
 };
 
 #endif
