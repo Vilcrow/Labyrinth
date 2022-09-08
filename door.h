@@ -12,7 +12,7 @@ public:
     DoorObject(int num, bool opnd = false);
     virtual ~DoorObject() {}
     int number() const { return nmbr; }
-    bool isOpen() const { return opened; }
+    bool isOpened() const { return opened; }
     bool open(const KeyObject& key);
     const std::string action(Labyrinth::ActionType type);
 };

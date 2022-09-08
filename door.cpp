@@ -23,21 +23,21 @@ const std::string DoorObject::action(Labyrinth::ActionType type)
     switch(type) {
     case Labyrinth::ActionNone:
         return std::string("Impossible");
-    case Labyrinth::ActionCloseDoor:
+    case Labyrinth::ActionClose:
         if(opened) {
             opened = false;
             return std::string("Door closed.");
         }
         else
             return std::string("Door already closed.");
-    case Labyrinth::ActionOpenDoor:
+    case Labyrinth::ActionOpen:
         if(!opened) {
             opened = true;
             return std::string("Door opened.");
         }
         else
             return std::string("Door already opened.");
-    case Labyrinth::ActionViewDoor:
+    case Labyrinth::ActionInspect:
         return std::string("Door with number " + std::to_string(nmbr) + ".");
     }
     return std::string("Impossible");

@@ -4,11 +4,13 @@
 #include "labyrinth.h"
 #include "room.h"
 #include "player.h"
+#include "commands.h"
 
 int main(int argc, char **argv)
 {
     //tests
     Player *player = Player::instance();
+    Commands *commands = Commands::instance();
     RoomObject *room = new RoomObject(1);
     room->wall(Labyrinth::WallTop, std::make_shared<WallObject>());
     room->wall(Labyrinth::WallDown, std::make_shared<WallObject>());
@@ -22,6 +24,6 @@ int main(int argc, char **argv)
     room->add(Labyrinth::WallTop, door);
     room->add(Labyrinth::WallTop, door);
     room->add(Labyrinth::WallTop, door);
-    std::cout << door.action(Labyrinth::ActionViewDoor) << std::endl;
+    std::cout << door.action(Labyrinth::ActionInspect) << std::endl;
     return 0;
 }

@@ -2,19 +2,31 @@
 #define COMMANDS_H_SENTRY
 
 #include <string>
+#include <map>
+#include <memory>
 #include "labyrinth.h"
+
+struct CommandItem {
+    CommandItem(Labyrinth::ActionType act, Labyrinth::ObjectType obj)
+               : actType(act), objType(obj) {}
+    Labyrinth::ActionType actType;
+    Labyrinth::ObjectType objType;
+};
 
 //Class which holds all commands for the command line
 //singleton pattern
 class Commands {
-    Labyrinth::ActionType cmdToAction(const std::string &cmd);
 public:
     static Commands *instance();
+    std::shared_ptr<CommandItem> cmdToAction(const std::string &cmd);
 private:
     Commands();
     ~Commands() = delete;
     Commands(Commands&) = delete;
     Commands& operator=(Commands&) = delete;
+    
+    std::map<std::string, Labyrinth::ActionType> actionCommands;
+    std::map<std::string, Labyrinth::ObjectType> objectCommands;
 protected:
     static Commands *uniqueInstance;
 };

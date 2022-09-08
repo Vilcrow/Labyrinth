@@ -6,11 +6,14 @@ class Labyrinth {
 public:
     enum ActionType {
                      ActionNone,
-                     ActionCloseDoor,
-                     ActionOpenDoor,
-                     ActionViewDoor
+                     ActionClose,
+                     ActionOpen,
+                     ActionInspect,
+                     ActionTake,
+                     ActionUse
     };
     enum ObjectType {
+                     ObjectNone,
                      ObjectBattery,
                      ObjectDoor,
                      ObjectFlashlight,
