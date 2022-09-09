@@ -23,6 +23,7 @@ else()
 endif()
 add_executable(labyrinth backpack.cpp
                          commands.cpp
+                         game.cpp
                          door.cpp
                          main.cpp
                          player.cpp

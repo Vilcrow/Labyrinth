@@ -6,24 +6,24 @@
 class KeyObject;
 
 class DoorObject : public LabyrinthObject {
-    int nmbr;
+    int number;
     bool opened;
 public:
     DoorObject(int num, bool opnd = false);
     virtual ~DoorObject() {}
-    int number() const { return nmbr; }
+    int getNumber() const { return number; }
     bool isOpened() const { return opened; }
     bool open(const KeyObject& key);
-    const std::string action(Labyrinth::ActionType type);
+    std::string handleAction(const Action& act) override;
 };
 
 class KeyObject : public LabyrinthObject {
-    int nmbr;
+    int number;
 public:
-    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), nmbr(num) {}
+    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
     ~KeyObject() = default;
-    int number() const { return nmbr; }
-    const std::string& action(Labyrinth::ActionType type);
+    int getNumber() const { return number; }
+    std::string handleAction(const Action& act) override;
 };
 
 #endif

@@ -5,11 +5,12 @@
 #include "labyrinth.h"
 
 class WallObject : public LabyrinthObject {
-    std::vector<LabyrinthObject> objects;
+    std::vector<LabyrinthObject*> objects;
 public:
     WallObject();
     virtual ~WallObject() {}
-    void add(LabyrinthObject obj);
+    void addObject(LabyrinthObject *obj);
+    std::string handleAction(const Action& act) override;
 };
 
 #endif

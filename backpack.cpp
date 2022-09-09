@@ -14,7 +14,7 @@ BackpackObject* BackpackObject::instance()
     return uniqueInstance;
 }
 
-void BackpackObject::add(LabyrinthObject obj)
+void BackpackObject::add(LabyrinthObject *obj)
 {
     if(cpt > 0) {
         inventory.push_back(obj);
@@ -25,7 +25,7 @@ void BackpackObject::add(LabyrinthObject obj)
     }
 }
 
-void BackpackObject::remove(LabyrinthObject obj)
+void BackpackObject::remove(LabyrinthObject *obj)
 {
     //check the presence of an object in the backpack
     //and remove it

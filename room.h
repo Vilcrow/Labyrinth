@@ -6,18 +6,18 @@
 #include "wall.h"
 
 class RoomObject : public LabyrinthObject {
-    int nmbr;
-    std::shared_ptr<WallObject> top;
-    std::shared_ptr<WallObject> down;
-    std::shared_ptr<WallObject> left;
-    std::shared_ptr<WallObject> right;
+    int number;
+    WallObject* top;
+    WallObject* down;
+    WallObject* left;
+    WallObject* right;
 public:
     RoomObject(int num);
     virtual ~RoomObject() {}
-    void wall(Labyrinth::WallType type, std::shared_ptr<WallObject> wall);
-    void add(Labyrinth::WallType wall, LabyrinthObject obj);
-    int number() const { return nmbr; }
-    std::shared_ptr<WallObject> wall(Labyrinth::WallType type);
+    void addObject(Labyrinth::WallType wall, LabyrinthObject *obj);
+    int getNumber() const { return number; }
+    WallObject* getWall(Labyrinth::WallType type);
+    std::string handleAction(const Action& act) override;
 };
 
 #endif

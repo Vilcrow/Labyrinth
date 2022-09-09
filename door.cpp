@@ -3,14 +3,14 @@
 
 DoorObject::DoorObject(int num, bool opnd)
                       : LabyrinthObject(Labyrinth::ObjectDoor)
-                      , nmbr(num), opened(opnd)
+                      , number(num), opened(opnd)
 {
 
 }
 
 bool DoorObject::open(const KeyObject& key)
 {
-    if(nmbr == key.number()) {
+    if(number == key.getNumber()) {
         opened = true;
         return true;
     }
@@ -18,27 +18,12 @@ bool DoorObject::open(const KeyObject& key)
         return false;
 }
 
-const std::string DoorObject::action(Labyrinth::ActionType type)
+std::string DoorObject::handleAction(const Action& act)
 {
-    switch(type) {
-    case Labyrinth::ActionNone:
-        return std::string("Impossible");
-    case Labyrinth::ActionClose:
-        if(opened) {
-            opened = false;
-            return std::string("Door closed.");
-        }
-        else
-            return std::string("Door already closed.");
-    case Labyrinth::ActionOpen:
-        if(!opened) {
-            opened = true;
-            return std::string("Door opened.");
-        }
-        else
-            return std::string("Door already opened.");
-    case Labyrinth::ActionInspect:
-        return std::string("Door with number " + std::to_string(nmbr) + ".");
-    }
-    return std::string("Impossible");
+    return "OK";
+}
+
+std::string KeyObject::handleAction(const Action& act)
+{
+    return "OK";
 }

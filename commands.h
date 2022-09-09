@@ -6,19 +6,12 @@
 #include <memory>
 #include "labyrinth.h"
 
-struct CommandItem {
-    CommandItem(Labyrinth::ActionType act, Labyrinth::ObjectType obj)
-               : actType(act), objType(obj) {}
-    Labyrinth::ActionType actType;
-    Labyrinth::ObjectType objType;
-};
-
 //Class which holds all commands for the command line
 //singleton pattern
 class Commands {
 public:
-    static Commands *instance();
-    std::shared_ptr<CommandItem> cmdToAction(const std::string &cmd);
+    static Commands* instance();
+    std::shared_ptr<Action> cmdToAction(const std::string &cmd);
 private:
     Commands();
     ~Commands() = delete;

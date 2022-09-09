@@ -5,7 +5,6 @@ Commands* Commands::uniqueInstance = nullptr;
 
 Commands::Commands()
 {
-    //std::initializer_list<>
     actionCommands = { { "close"   , Labyrinth::ActionClose   }
                      , { "inspect" , Labyrinth::ActionInspect }
                      , { "take"    , Labyrinth::ActionTake    }
@@ -29,8 +28,8 @@ Commands* Commands::instance()
     return uniqueInstance;
 }
 
-std::shared_ptr<CommandItem> Commands::cmdToAction(const std::string &cmd)
+std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd)
 {
-    return std::make_shared<CommandItem>(Labyrinth::ActionNone,
+    return std::make_shared<Action>(Labyrinth::ActionNone,
             Labyrinth::ObjectNone);
 }
