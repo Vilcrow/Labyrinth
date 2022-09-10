@@ -15,6 +15,7 @@ public:
     bool isOpened() const { return opened; }
     bool open(const KeyObject& key);
     std::string handleAction(const Action& act) override;
+    std::string getName() const override { return "door"; }
 };
 
 class KeyObject : public LabyrinthObject {
@@ -24,6 +25,7 @@ public:
     ~KeyObject() = default;
     int getNumber() const { return number; }
     std::string handleAction(const Action& act) override;
+    std::string getName() const override { return "key"; }
 };
 
 #endif

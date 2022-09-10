@@ -11,6 +11,8 @@ public:
     virtual ~WallObject() {}
     void addObject(LabyrinthObject *obj);
     std::string handleAction(const Action& act) override;
+    std::string getName() const override { return "wall"; }
+    LabyrinthObject* findObject(Labyrinth::ObjectType type);
 };
 
 #endif

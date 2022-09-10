@@ -6,6 +6,8 @@
 #include <memory>
 #include "labyrinth.h"
 
+#define COMMANDS Commands::instance()
+
 //Class which holds all commands for the command line
 //singleton pattern
 class Commands {

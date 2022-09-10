@@ -18,12 +18,46 @@ bool DoorObject::open(const KeyObject& key)
         return false;
 }
 
-std::string DoorObject::handleAction(const Action& act)
+std::string DoorObject::handleAction(const Action& act) //need elaboration
 {
-    return "OK";
+    std::string result;
+    switch(act.aType) {
+    case Labyrinth::ActionClose:
+        if(!opened)
+            result = "Door already closed.";
+        else {
+            opened = false;  //good idea?
+            result = "You close the door.";
+        }
+        break;
+    case Labyrinth::ActionOpen:
+        if(opened)
+            result = "Door already opened.";
+        else {
+            opened = true;
+            result = "You open the door.";
+        }
+        break;
+    case Labyrinth::ActionInspect:
+        result = "You see door with number ";
+        result += std::to_string(number) + ".";
+        break;
+    default:
+        result = "Impossible.";
+    }
+    return result;
 }
 
 std::string KeyObject::handleAction(const Action& act)
 {
-    return "OK";
+    std::string result;
+    switch(act.aType) {
+    case Labyrinth::ActionInspect:
+        result = "You see key with number ";
+        result += std::to_string(number) + ".";
+        break;
+    default:
+        result = "Impossible.";
+    }
+    return result;
 }

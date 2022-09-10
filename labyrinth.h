@@ -44,6 +44,7 @@ public:
     virtual ~LabyrinthObject() {}
     Labyrinth::ObjectType getType() const { return type; }
     virtual std::string handleAction(const Action& act) = 0;
+    virtual std::string getName() const = 0;
 };
 
 struct Action {
