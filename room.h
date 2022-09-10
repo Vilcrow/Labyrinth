@@ -6,17 +6,19 @@
 #include "wall.h"
 
 class RoomObject : public LabyrinthObject {
-    int number;
-    WallObject* top;
-    WallObject* down;
-    WallObject* left;
-    WallObject* right;
+    WallObject *top;
+    WallObject *down;
+    WallObject *left;
+    WallObject *right;
+    WallObject *currentWall;
+    Labyrinth::WallType wallType;
 public:
-    RoomObject(int num);
-    virtual ~RoomObject() {}
+    RoomObject();
+    virtual ~RoomObject();
     void addObject(Labyrinth::WallType wall, LabyrinthObject *obj);
-    int getNumber() const { return number; }
-    WallObject* getWall(Labyrinth::WallType type);
+    void setCurrentWall(Labyrinth::WallType type);
+    WallObject* getCurrentWall() { return currentWall; }
+    Labyrinth::WallType getCurrentWallType() { return wallType; }
     std::string handleAction(const Action& act) override;
 };
 

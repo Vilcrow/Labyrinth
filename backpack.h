@@ -7,13 +7,13 @@
 //singleton pattern
 class BackpackObject {
     enum { maxCapacity = 6 };
-    int cpt;
+    int capacity;
     std::vector<LabyrinthObject*> inventory;
 public:
     static BackpackObject* instance();
-    void add(LabyrinthObject *obj);
-    void remove(LabyrinthObject *obj);
-    int capacity() const { return cpt; }
+    bool addObject(LabyrinthObject *obj);
+    bool removeObject(LabyrinthObject *obj);
+    int getCapacity() const { return capacity; }
 private:
     BackpackObject();
     ~BackpackObject() = delete;

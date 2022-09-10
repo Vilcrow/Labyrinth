@@ -2,7 +2,7 @@
 
 int main(int argc, char **argv)
 {
-    //test
     Game *game = Game::instance();
+    game->run();
     return 0;
 }

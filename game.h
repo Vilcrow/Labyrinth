@@ -1,17 +1,17 @@
 #ifndef GAME_H_SENTRY
 #define GAME_H_SENTRY
 
-#include "player.h"
+#include "backpack.h"
 #include "commands.h"
 #include "door.h"
 #include "room.h"
 
 //singleton pattern
 class Game {
-    Player *player;
+    int roomNumber;
+    BackpackObject *backpack;
     Commands *commands;
-    //all rooms
-    std::map<int, RoomObject*> gameMap;
+    std::map<int, RoomObject*> gameMap; //all rooms
 public:
     static Game* instance();
     void run();
@@ -21,7 +21,7 @@ private:
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
     void generateMap();
-
+    std::string handleAction(const Action& act);
 protected:
     static Game *uniqueInstance;
 };

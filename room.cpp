@@ -1,12 +1,13 @@
 #include "room.h"
 
-RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
-                                , number(num)
+RoomObject::RoomObject() : LabyrinthObject(Labyrinth::ObjectRoom)
 {
     top = new WallObject();
     down = new WallObject();
     left = new WallObject();
     right = new WallObject();
+    currentWall = top;
+    wallType = Labyrinth::WallTop;
 }
 //add object to corresponding wall
 void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject *obj)
@@ -27,22 +28,30 @@ void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject *obj)
     }
 }
 
-WallObject* RoomObject::getWall(Labyrinth::WallType type)
+void RoomObject::setCurrentWall(Labyrinth::WallType type)
 {
     switch(type) {
     case Labyrinth::WallTop:
-        return top;
+        currentWall = top;
     case Labyrinth::WallDown:
-        return down;
+        currentWall = down;
     case Labyrinth::WallLeft:
-        return left;
+        currentWall = left;
     case Labyrinth::WallRight:
-        return right;
+        currentWall = right;
     }
-    return nullptr; //gived invalid type of wall
+    wallType = type;
 }
 
 std::string RoomObject::handleAction(const Action& act)
 {
     return "OK";
+}
+
+RoomObject::~RoomObject()
+{
+    delete top;
+    delete down;
+    delete left;
+    delete right;
 }
