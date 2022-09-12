@@ -27,6 +27,7 @@
 #include "wall.h"
 
 class RoomObject : public LabyrinthObject {
+    int number;
     WallObject *top;
     WallObject *down;
     WallObject *left;
@@ -34,10 +35,11 @@ class RoomObject : public LabyrinthObject {
     WallObject *currentWall;
     Labyrinth::WallType wallType;
 public:
-    RoomObject();
+    RoomObject(int num);
     virtual ~RoomObject();
     void addObject(Labyrinth::WallType wall, LabyrinthObject *obj);
     void setCurrentWall(Labyrinth::WallType type);
+    int getNumber() const { return number; }
     WallObject* getCurrentWall() { return currentWall; }
     Labyrinth::WallType getCurrentWallType() { return wallType; }
     std::string handleAction(const Action& act) override;

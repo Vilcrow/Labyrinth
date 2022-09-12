@@ -77,6 +77,8 @@ std::string KeyObject::handleAction(const Action& act)
         result = "You see key with number ";
         result += std::to_string(number) + ".";
         break;
+    case Labyrinth::ActionTake:
+        break;
     default:
         result = "Impossible.";
     }

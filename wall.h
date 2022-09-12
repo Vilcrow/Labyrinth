@@ -34,6 +34,7 @@ public:
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "wall"; }
     LabyrinthObject* findObject(Labyrinth::ObjectType type);
+    static Labyrinth::WallType getWallType(const Labyrinth::ObjectType type);
 };
 
 #endif

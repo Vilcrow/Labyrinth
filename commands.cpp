@@ -33,6 +33,7 @@ Commands::Commands()
                      , { "use"     , Labyrinth::ActionTake    }
                      , { "push"    , Labyrinth::ActionPush    }
                      , { "pull"    , Labyrinth::ActionPull    }
+                     , { "put"     , Labyrinth::ActionPut     }
                      , { "throw"   , Labyrinth::ActionThrow   }
                      , { "open"    , Labyrinth::ActionOpen    }
                      };
@@ -44,6 +45,10 @@ Commands::Commands()
                      , { "room"       , Labyrinth::ObjectRoom       }
                      , { "sheet"      , Labyrinth::ObjectSheet      }
                      , { "wall"       , Labyrinth::ObjectWall       }
+                     , { "top"        , Labyrinth::ObjectWallTop    }
+                     , { "down"       , Labyrinth::ObjectWallDown   }
+                     , { "left"       , Labyrinth::ObjectWallLeft   }
+                     , { "right"      , Labyrinth::ObjectWallRight  }
                      };
 }
 
@@ -54,11 +59,9 @@ Commands* Commands::instance()
     return uniqueInstance;
 }
 
-std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd)
+std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd) //need fix
 {
-    std::shared_ptr<Action> action =
-        std::make_shared<Action>(Labyrinth::ActionNone,
-                                 Labyrinth::ObjectNone);
+    std::shared_ptr<Action> action = std::make_shared<Action>();
     if(cmd.empty())
         return action;
     std::string lowcmd = cmd;
@@ -76,7 +79,7 @@ std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd)
         start = end + 1;
         end = lowcmd.find_first_of(" \t\n", start);
     }
-    if(start != lowcmd.size()) {
+    if(start != lowcmd.size()) {  //extract last word
         std::string token = lowcmd.substr(start);
         words.insert(token);
     }

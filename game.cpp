@@ -27,6 +27,7 @@
 Game::Game()
 {
     commands = COMMANDS;
+    backpack = new BackpackObject();
     generateMap();
     roomNumber = 1;
 }
@@ -48,23 +49,55 @@ void Game::run()
 void Game::generateMap()
 {
     //draft
-    RoomObject *room = new RoomObject();
+    RoomObject *room = new RoomObject(1);
     KeyObject *key = new KeyObject(2);
     DoorObject *door = new DoorObject(2);
     room->addObject(Labyrinth::WallTop, key);
     room->addObject(Labyrinth::WallTop, door);
-    gameMap[1] = room;
+    gameMap[room->getNumber()] = room;
 }
 
 std::string Game::handleAction(const Action& act)
 {
     std::string result;
     LabyrinthObject *object;
+    Labyrinth::WallType wType;
     switch(act.oType) {
+    case Labyrinth::ObjectRoom:
+        result = gameMap[roomNumber]->handleAction(act);
+        break;
     case Labyrinth::ObjectBackpack:
         result = backpack->handleAction(act);
         break;
     case Labyrinth::ObjectWall:
+        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        break;
+    case Labyrinth::ObjectWallTop:
+        wType = WallObject::getWallType(act.oType);
+        if(wType == Labyrinth::WallNone)
+            break;
+        gameMap[roomNumber]->setCurrentWall(wType);
+        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        break;
+    case Labyrinth::ObjectWallDown:
+        wType = WallObject::getWallType(act.oType);
+        if(wType == Labyrinth::WallNone)
+            break;
+        gameMap[roomNumber]->setCurrentWall(wType);
+        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        break;
+    case Labyrinth::ObjectWallLeft:
+        wType = WallObject::getWallType(act.oType);
+        if(wType == Labyrinth::WallNone)
+            break;
+        gameMap[roomNumber]->setCurrentWall(wType);
+        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        break;
+    case Labyrinth::ObjectWallRight:
+        wType = WallObject::getWallType(act.oType);
+        if(wType == Labyrinth::WallNone)
+            break;
+        gameMap[roomNumber]->setCurrentWall(wType);
         result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
         break;
     case Labyrinth::ObjectDoor:

@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "backpack.h"
+#include "commands.h"
 
 BackpackObject::BackpackObject() : LabyrinthObject(Labyrinth::ObjectBackpack)
                                  , capacity(maxCapacity)
@@ -49,6 +50,7 @@ std::string BackpackObject::handleAction(const Action& act)
     std::string result;
     switch(act.aType) {
     case Labyrinth::ActionInspect:
+        result = Commands::objectsList(inventory);
         break;
     default:
         result = "Impossible.";

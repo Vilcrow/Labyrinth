@@ -60,3 +60,20 @@ LabyrinthObject* WallObject::findObject(Labyrinth::ObjectType type)
     }
     return nullptr;
 }
+
+Labyrinth::WallType WallObject::getWallType(const Labyrinth::ObjectType type)
+{
+    switch(type) {
+    case Labyrinth::ObjectWallTop:
+        return Labyrinth::WallTop;
+    case Labyrinth::ObjectWallDown:
+        return Labyrinth::WallDown;
+    case Labyrinth::ObjectWallLeft:
+        return Labyrinth::WallLeft;
+    case Labyrinth::ObjectWallRight:
+        return Labyrinth::WallRight;
+    default:                         //invalid type argument
+        return Labyrinth::WallNone;
+    }
+    return Labyrinth::WallNone;
+}

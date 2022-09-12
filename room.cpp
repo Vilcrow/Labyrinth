@@ -21,7 +21,8 @@
 
 #include "room.h"
 
-RoomObject::RoomObject() : LabyrinthObject(Labyrinth::ObjectRoom)
+RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
+                                , number(num)
 {
     top = new WallObject();
     down = new WallObject();
@@ -34,6 +35,8 @@ RoomObject::RoomObject() : LabyrinthObject(Labyrinth::ObjectRoom)
 void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject *obj)
 {
     switch(wall) {
+    case Labyrinth::WallNone:
+        break;
     case Labyrinth::WallTop:
         top->addObject(obj);
         break;
@@ -52,21 +55,38 @@ void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject *obj)
 void RoomObject::setCurrentWall(Labyrinth::WallType type)
 {
     switch(type) {
+    case Labyrinth::WallNone:
+        break;
     case Labyrinth::WallTop:
         currentWall = top;
+        break;
     case Labyrinth::WallDown:
         currentWall = down;
+        break;
     case Labyrinth::WallLeft:
         currentWall = left;
+        break;
     case Labyrinth::WallRight:
         currentWall = right;
+        break;
     }
     wallType = type;
 }
 
 std::string RoomObject::handleAction(const Action& act)
 {
-    return "OK";
+    std::string result;
+    switch(act.aType) {
+    case Labyrinth::ActionInspect:
+        result = "You see room with four walls: top, down, left and right."
+                 " Room number is ";
+        result += std::to_string(number);
+        result += '.';
+        break;
+    default:
+        result = "Impossible. You can just inspect the room.";
+    }
+    return result;
 }
 
 RoomObject::~RoomObject()

@@ -36,6 +36,7 @@ public:
                      ActionInspect,
                      ActionPush,
                      ActionPull,
+                     ActionPut,
                      ActionTake,
                      ActionThrow,
                      ActionUse
@@ -49,9 +50,14 @@ public:
                      ObjectKey,
                      ObjectRoom,
                      ObjectSheet,
-                     ObjectWall
+                     ObjectWall,
+                     ObjectWallTop,
+                     ObjectWallDown,
+                     ObjectWallLeft,
+                     ObjectWallRight,
     };
     enum WallType   {
+                     WallNone,
                      WallTop,
                      WallDown,
                      WallLeft,
@@ -73,11 +79,12 @@ public:
 };
 
 struct Action {
-    Action(Labyrinth::ActionType act, Labyrinth::ObjectType obj)
-               : aType(act), oType(obj) {}
-    Labyrinth::ActionType aType{Labyrinth::ActionNone};
-    Labyrinth::ObjectType oType{Labyrinth::ObjectNone};
-    LabyrinthObject *secondObject{nullptr};
+    Action(Labyrinth::ActionType act = Labyrinth::ActionNone,
+           Labyrinth::ObjectType obj = Labyrinth::ObjectNone)
+           : aType(act), oType(obj), secondObject(nullptr) {}
+    Labyrinth::ActionType aType;
+    Labyrinth::ObjectType oType;
+    LabyrinthObject *secondObject;
 };
 
 #endif
