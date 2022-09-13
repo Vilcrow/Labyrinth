@@ -19,23 +19,19 @@
 **
 *******************************************************************************/
 
-#ifndef DOOR_H_SENTRY
-#define DOOR_H_SENTRY
+#ifndef KEY_H_SENTRY
+#define KEY_H_SENTRY
 
 #include "labyrinth.h"
-#include "key.h"
 
-class DoorObject : public LabyrinthObject {
+class KeyObject : public LabyrinthObject {
     int number;
-    bool opened;
 public:
-    DoorObject(int num, bool opnd = false);
-    virtual ~DoorObject() = default;
+    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
+    ~KeyObject() = default;
     int getNumber() const { return number; }
-    bool isOpened() const { return opened; }
-    bool open(const KeyObject& key);
     std::string handleAction(const Action& act) override;
-    std::string getName() const override { return "door"; }
+    std::string getName() const override { return "key"; }
 };
 
 #endif

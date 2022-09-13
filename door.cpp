@@ -68,19 +68,3 @@ std::string DoorObject::handleAction(const Action& act) //need elaboration
     }
     return result;
 }
-
-std::string KeyObject::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionInspect:
-        result = "You see key with number ";
-        result += std::to_string(number) + ".";
-        break;
-    case Labyrinth::ActionTake:
-        break;
-    default:
-        result = "Impossible.";
-    }
-    return result;
-}

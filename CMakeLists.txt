@@ -25,6 +25,7 @@ add_executable(labyrinth backpack.cpp
                          commands.cpp
                          game.cpp
                          door.cpp
+                         key.cpp
                          main.cpp
                          room.cpp
                          wall.cpp)
