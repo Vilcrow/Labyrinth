@@ -29,8 +29,8 @@
 
 class Game {
     int roomNumber;
-    BackpackObject *backpack;
-    Commands *commands;
+    BackpackContainer *backpack;
+    LabyrinthContainer *curContainer;
     std::map<int, RoomObject*> gameMap; //all rooms
 public:
     Game();
@@ -40,7 +40,7 @@ private:
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
     void generateMap();
-    std::string handleAction(const Action& act);
+    std::string handleAction(Action& act);
 };
 
 #endif

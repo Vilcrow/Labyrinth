@@ -31,6 +31,22 @@ std::string KeyObject::handleAction(const Action& act)
         result += std::to_string(number) + ".";
         break;
     case Labyrinth::ActionTake:
+        if(act.wall->removeObject(this)) {
+            act.backpack->addObject(this);
+            result = "Done.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    case Labyrinth::ActionThrow:
+        if(act.backpack->removeObject(this)) {
+            act.wall->addObject(this);
+            result = "Done.";
+        }
+        else {
+            result = "No such item.";
+        }
         break;
     default:
         result = "Impossible.";

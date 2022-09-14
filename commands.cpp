@@ -33,7 +33,6 @@ Commands::Commands()
                      , { "use"     , Labyrinth::ActionTake    }
                      , { "push"    , Labyrinth::ActionPush    }
                      , { "pull"    , Labyrinth::ActionPull    }
-                     , { "put"     , Labyrinth::ActionPut     }
                      , { "throw"   , Labyrinth::ActionThrow   }
                      , { "open"    , Labyrinth::ActionOpen    }
                      };
@@ -69,7 +68,7 @@ std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd) //need fix
         c = std::tolower(c);
     }
     std::set<std::string> words;
-    auto end = lowcmd.find_first_of(" \t\n");
+    auto end = lowcmd.find_first_of(" \t");
     decltype(end) start = 0;
     while(end != std::string::npos) { //extract all unique words from input
         if(end > start) {
@@ -77,7 +76,7 @@ std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd) //need fix
             words.insert(token);
         }
         start = end + 1;
-        end = lowcmd.find_first_of(" \t\n", start);
+        end = lowcmd.find_first_of(" \t", start);
     }
     if(start != lowcmd.size()) {  //extract last word
         std::string token = lowcmd.substr(start);

@@ -26,10 +26,10 @@
 
 Game::Game()
 {
-    commands = COMMANDS;
-    backpack = new BackpackObject();
+    backpack = new BackpackContainer();
     generateMap();
     roomNumber = 1;
+    curContainer = gameMap[roomNumber]->getCurrentWall();
 }
 
 void Game::run()
@@ -39,7 +39,9 @@ void Game::run()
     std::cout << "> ";
     while(std::getline(std::cin, input)) {
         if(!input.empty()) {
-            action = commands->cmdToAction(input);
+            action = COMMANDS->cmdToAction(input);
+            action->wall = gameMap[roomNumber]->getCurrentWall();
+            action->backpack = backpack;
             std::cout << handleAction(*action) << std::endl;
         }
         std::cout << "> ";
@@ -57,7 +59,7 @@ void Game::generateMap()
     gameMap[room->getNumber()] = room;
 }
 
-std::string Game::handleAction(const Action& act)
+std::string Game::handleAction(Action& act)
 {
     std::string result;
     LabyrinthObject *object;
@@ -67,44 +69,34 @@ std::string Game::handleAction(const Action& act)
         result = gameMap[roomNumber]->handleAction(act);
         break;
     case Labyrinth::ObjectBackpack:
-        result = backpack->handleAction(act);
+        curContainer = backpack;
+        result = curContainer->handleAction(act);
         break;
     case Labyrinth::ObjectWall:
-        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        curContainer = gameMap[roomNumber]->getCurrentWall();
+        result = curContainer->handleAction(act);
         break;
     case Labyrinth::ObjectWallTop:
-        wType = WallObject::getWallType(act.oType);
-        if(wType == Labyrinth::WallNone)
-            break;
-        gameMap[roomNumber]->setCurrentWall(wType);
-        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
-        break;
     case Labyrinth::ObjectWallDown:
-        wType = WallObject::getWallType(act.oType);
-        if(wType == Labyrinth::WallNone)
-            break;
-        gameMap[roomNumber]->setCurrentWall(wType);
-        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
-        break;
     case Labyrinth::ObjectWallLeft:
-        wType = WallObject::getWallType(act.oType);
-        if(wType == Labyrinth::WallNone)
-            break;
-        gameMap[roomNumber]->setCurrentWall(wType);
-        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
-        break;
     case Labyrinth::ObjectWallRight:
-        wType = WallObject::getWallType(act.oType);
+        wType = WallContainer::getWallType(act.oType);
         if(wType == Labyrinth::WallNone)
             break;
         gameMap[roomNumber]->setCurrentWall(wType);
-        result = gameMap[roomNumber]->getCurrentWall()->handleAction(act);
+        curContainer = gameMap[roomNumber]->getCurrentWall();
+        result = curContainer->handleAction(act);
         break;
     case Labyrinth::ObjectDoor:
     case Labyrinth::ObjectKey:
-        object = gameMap[roomNumber]->getCurrentWall()->findObject(act.oType);
-        if(!object)
-            result = "Object don't exists.";
+        object = curContainer->findObject(act.oType);
+        if(!object) {
+            result = "No such item ";
+            if(curContainer == backpack)
+                result += "in backpack.";
+            else
+                result += "on this side.";
+        }
         else
             result = object->handleAction(act);
         break;

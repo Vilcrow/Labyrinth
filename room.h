@@ -28,11 +28,11 @@
 
 class RoomObject : public LabyrinthObject {
     int number;
-    WallObject *top;
-    WallObject *down;
-    WallObject *left;
-    WallObject *right;
-    WallObject *currentWall;
+    WallContainer *top;
+    WallContainer *down;
+    WallContainer *left;
+    WallContainer *right;
+    WallContainer *currentWall;
     Labyrinth::WallType wallType;
 public:
     RoomObject(int num);
@@ -40,7 +40,7 @@ public:
     void addObject(Labyrinth::WallType wall, LabyrinthObject *obj);
     void setCurrentWall(Labyrinth::WallType type);
     int getNumber() const { return number; }
-    WallObject* getCurrentWall() { return currentWall; }
+    WallContainer* getCurrentWall() { return currentWall; }
     Labyrinth::WallType getCurrentWallType() { return wallType; }
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "room"; }

@@ -24,10 +24,10 @@
 RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
                                 , number(num)
 {
-    top = new WallObject();
-    down = new WallObject();
-    left = new WallObject();
-    right = new WallObject();
+    top = new WallContainer();
+    down = new WallContainer();
+    left = new WallContainer();
+    right = new WallContainer();
     currentWall = top;
     wallType = Labyrinth::WallTop;
 }

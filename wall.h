@@ -25,15 +25,16 @@
 #include <vector>
 #include "labyrinth.h"
 
-class WallObject : public LabyrinthObject {
+class WallContainer : public LabyrinthContainer {
     std::vector<LabyrinthObject*> objects;
 public:
-    WallObject();
-    virtual ~WallObject() {}
-    void addObject(LabyrinthObject *obj);
+    WallContainer();
+    virtual ~WallContainer() {}
+    bool addObject(LabyrinthObject *obj) override;
+    bool removeObject(LabyrinthObject *obj) override;
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "wall"; }
-    LabyrinthObject* findObject(Labyrinth::ObjectType type);
+    LabyrinthObject* findObject(Labyrinth::ObjectType type) override;
     static Labyrinth::WallType getWallType(const Labyrinth::ObjectType type);
 };
 

@@ -36,7 +36,6 @@ public:
                      ActionInspect,
                      ActionPush,
                      ActionPull,
-                     ActionPut,
                      ActionTake,
                      ActionThrow,
                      ActionUse
@@ -77,14 +76,26 @@ public:
     virtual std::string handleAction(const Action& act) = 0;
     virtual std::string getName() const = 0;
 };
+//parent abstract class for BackpackContainer and WallContainer
+class LabyrinthContainer {
+public:
+    LabyrinthContainer() = default;
+    virtual ~LabyrinthContainer() = default;
+    virtual bool addObject(LabyrinthObject *obj) = 0;
+    virtual bool removeObject(LabyrinthObject *obj) = 0;
+    virtual LabyrinthObject* findObject(Labyrinth::ObjectType type) = 0;
+    virtual std::string handleAction(const Action& act) = 0;
+    virtual std::string getName() const = 0; 
+};
 
 struct Action {
     Action(Labyrinth::ActionType act = Labyrinth::ActionNone,
            Labyrinth::ObjectType obj = Labyrinth::ObjectNone)
-           : aType(act), oType(obj), secondObject(nullptr) {}
+           : aType(act), oType(obj), wall(nullptr), backpack(nullptr) {}
     Labyrinth::ActionType aType;
     Labyrinth::ObjectType oType;
-    LabyrinthObject *secondObject;
+    LabyrinthContainer *wall;
+    LabyrinthContainer *backpack;
 };
 
 #endif

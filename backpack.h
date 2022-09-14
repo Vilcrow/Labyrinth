@@ -25,21 +25,22 @@
 #include <vector>
 #include "labyrinth.h"
 
-class BackpackObject : public LabyrinthObject {
+class BackpackContainer : public LabyrinthContainer {
     enum { maxCapacity = 6 };
     int capacity;
     std::vector<LabyrinthObject*> inventory;
 public:
-    BackpackObject();
-    virtual ~BackpackObject() = default;
-    bool addObject(LabyrinthObject *obj);
-    bool removeObject(LabyrinthObject *obj);
+    BackpackContainer();
+    virtual ~BackpackContainer() = default;
+    bool addObject(LabyrinthObject *obj) override;
+    bool removeObject(LabyrinthObject *obj) override;
     int getCapacity() const { return capacity; }
+    LabyrinthObject* findObject(Labyrinth::ObjectType type) override;
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "backpack"; };
 private:
-    BackpackObject(BackpackObject& other) = delete;
-    BackpackObject& operator=(BackpackObject& other) = delete;
+    BackpackContainer(BackpackContainer& other) = delete;
+    BackpackContainer& operator=(BackpackContainer& other) = delete;
 };
 
 #endif

@@ -19,20 +19,22 @@
 **
 *******************************************************************************/
 
+#include <algorithm>
 #include "commands.h"
 #include "wall.h"
 
-WallObject::WallObject() : LabyrinthObject(Labyrinth::ObjectWall)
+WallContainer::WallContainer() : LabyrinthContainer()
 {
 
 }
 
-void WallObject::addObject(LabyrinthObject *obj)
+bool WallContainer::addObject(LabyrinthObject *obj)
 {
     objects.push_back(obj);
+    return true;
 }
 
-std::string WallObject::handleAction(const Action& act)
+std::string WallContainer::handleAction(const Action& act)
 {
     std::string result;
     switch(act.aType) {
@@ -50,7 +52,7 @@ std::string WallObject::handleAction(const Action& act)
     return result;
 }
 
-LabyrinthObject* WallObject::findObject(Labyrinth::ObjectType type)
+LabyrinthObject* WallContainer::findObject(Labyrinth::ObjectType type)
 {
     if(objects.empty())
         return nullptr;
@@ -61,7 +63,7 @@ LabyrinthObject* WallObject::findObject(Labyrinth::ObjectType type)
     return nullptr;
 }
 
-Labyrinth::WallType WallObject::getWallType(const Labyrinth::ObjectType type)
+Labyrinth::WallType WallContainer::getWallType(const Labyrinth::ObjectType type)
 {
     switch(type) {
     case Labyrinth::ObjectWallTop:
@@ -76,4 +78,14 @@ Labyrinth::WallType WallObject::getWallType(const Labyrinth::ObjectType type)
         return Labyrinth::WallNone;
     }
     return Labyrinth::WallNone;
+}
+
+bool WallContainer::removeObject(LabyrinthObject *obj)
+{
+    auto it = find(objects.begin(), objects.end(), obj);
+    if(it != objects.end()) {
+        objects.erase(it);
+        return true;
+    }
+    return false;
 }
