@@ -22,13 +22,13 @@
 #include <string>
 #include "door.h"
 
-DoorObject::DoorObject(int num, bool opnd)
+DoorObject::DoorObject(int num, bool lckd)
                       : LabyrinthObject(Labyrinth::ObjectDoor)
-                      , number(num), opened(opnd)
+                      , number(num), locked(lckd)
 {
 
 }
-
+/* not needed. Moved to handleAction
 bool DoorObject::open(const KeyObject& key)
 {
     if(number == key.getNumber()) {
@@ -38,27 +38,39 @@ bool DoorObject::open(const KeyObject& key)
     else //key don't worked
         return false;
 }
-
+*/
 std::string DoorObject::handleAction(const Action& act) //need elaboration
 {
     std::string result;
     switch(act.aType) {
-    case Labyrinth::ActionClose:
-        if(!opened)
-            result = "Door already closed.";
-        else {
-            opened = false;  //good idea?
-            result = "You close the door.";
-        }
-        break;
     case Labyrinth::ActionOpen:
-        if(opened)
+        if(!locked)
             result = "Door already opened.";
         else {
-            opened = true;
-            result = "You open the door.";
+            LabyrinthObject *key = act.backpack->findObject(Labyrinth::ObjectKey);
+            if(!key)
+                result = "The door is locked. Need a suitable key.";
+            else if(static_cast<KeyObject*>(key)->getNumber() != number)
+                result = "The key doesn't fit.";
+            else {
+                locked = false;
+                act.backpack->removeObject(key); //the key is no longer needed
+                result = "You open the door.";
+            }
         }
         break;
+    case Labyrinth::ActionClose:    //maybe need fix
+        result = "There's no need.";
+        break;
+    case Labyrinth::ActionEnter:
+        if(locked) {
+            result = "The door is locked. We need to open it.";
+            break;
+        }
+        else {
+            result = "Done."; //bad idea. See Game::handleAction
+            break;
+        }
     case Labyrinth::ActionInspect:
         result = "You see door with number ";
         result += std::to_string(number) + ".";

@@ -27,13 +27,14 @@
 
 class DoorObject : public LabyrinthObject {
     int number;
-    bool opened;
+    bool locked;
 public:
-    DoorObject(int num, bool opnd = false);
+    DoorObject(int num, bool lckd = true);
     virtual ~DoorObject() = default;
     int getNumber() const { return number; }
-    bool isOpened() const { return opened; }
-    bool open(const KeyObject& key);
+    void setNumber(int num) { number = num; }
+    bool isLocked() const { return locked; }
+    void setLocked(bool lckd) { locked = lckd; }
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "door"; }
 };

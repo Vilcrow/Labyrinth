@@ -38,7 +38,8 @@ public:
                      ActionPull,
                      ActionTake,
                      ActionThrow,
-                     ActionUse
+                     ActionUse,
+                     ActionEnter
     };
     enum ObjectType {
                      ObjectNone,

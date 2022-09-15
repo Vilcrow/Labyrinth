@@ -35,6 +35,7 @@ Commands::Commands()
                      , { "pull"    , Labyrinth::ActionPull    }
                      , { "throw"   , Labyrinth::ActionThrow   }
                      , { "open"    , Labyrinth::ActionOpen    }
+                     , { "enter"   , Labyrinth::ActionEnter   }
                      };
     objectCommands = { { "battery"    , Labyrinth::ObjectBattery    }
                      , { "backpack"   , Labyrinth::ObjectBackpack   }

@@ -50,12 +50,17 @@ void Game::run()
 
 void Game::generateMap()
 {
-    //draft
+    //room #1
     RoomObject *room = new RoomObject(1);
     KeyObject *key = new KeyObject(2);
     DoorObject *door = new DoorObject(2);
     room->addObject(Labyrinth::WallTop, key);
     room->addObject(Labyrinth::WallTop, door);
+    gameMap[room->getNumber()] = room;
+    //room #2
+    room = new RoomObject(2);
+    door = new DoorObject(1, false);
+    room->addObject(Labyrinth::WallDown, door);
     gameMap[room->getNumber()] = room;
 }
 
@@ -88,6 +93,24 @@ std::string Game::handleAction(Action& act)
         result = curContainer->handleAction(act);
         break;
     case Labyrinth::ObjectDoor:
+        object = curContainer->findObject(act.oType);
+        if(!object)
+            result = "No door on this side.";
+        else {
+            result = object->handleAction(act);
+            if(act.aType != Labyrinth::ActionEnter) //looks like a bad idea
+                break;
+            else {
+                if(result == "Done.") {
+                    roomNumber = static_cast<DoorObject*>(object)->getNumber();
+                    curContainer = gameMap[roomNumber]->getCurrentWall();
+                    result = "You entered room ";
+                    result += std::to_string(roomNumber);
+                    result += ".";
+                }
+            }
+        }
+        break;
     case Labyrinth::ObjectKey:
         object = curContainer->findObject(act.oType);
         if(!object) {
