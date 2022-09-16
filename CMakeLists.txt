@@ -28,6 +28,7 @@ add_executable(labyrinth backpack.cpp
                          key.cpp
                          main.cpp
                          room.cpp
+                         sheet.cpp
                          wall.cpp)
 
 target_include_directories(labyrinth PUBLIC

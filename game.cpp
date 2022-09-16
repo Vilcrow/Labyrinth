@@ -23,6 +23,7 @@
 #include "labyrinth.h"
 #include "game.h"
 #include "commands.h"
+#include "sheet.h"
 
 Game::Game()
 {
@@ -60,7 +61,9 @@ void Game::generateMap()
     //room #2
     room = new RoomObject(2);
     door = new DoorObject(1, false);
+    SheetObject *sheet = new SheetObject("Hello.");
     room->addObject(Labyrinth::WallDown, door);
+    room->addObject(Labyrinth::WallLeft, sheet);
     gameMap[room->getNumber()] = room;
 }
 
@@ -112,6 +115,18 @@ std::string Game::handleAction(Action& act)
         }
         break;
     case Labyrinth::ObjectKey:
+        object = curContainer->findObject(act.oType);
+        if(!object) {
+            result = "No such item ";
+            if(curContainer == backpack)
+                result += "in backpack.";
+            else
+                result += "on this side.";
+        }
+        else
+            result = object->handleAction(act);
+        break;
+    case Labyrinth::ObjectSheet:
         object = curContainer->findObject(act.oType);
         if(!object) {
             result = "No such item ";

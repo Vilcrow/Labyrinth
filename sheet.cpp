@@ -20,16 +20,23 @@
 *******************************************************************************/
 
 #include <string>
-#include "key.h"
+#include "sheet.h"
 #include "backpack.h"
 
-std::string KeyObject::handleAction(const Action& act)
+SheetObject::SheetObject(const std::string& rec)
+                            : LabyrinthObject(Labyrinth::ObjectSheet)
+                            , record(rec)
+{
+
+}
+
+std::string SheetObject::handleAction(const Action& act)
 {
     std::string result;
     switch(act.aType) {
     case Labyrinth::ActionInspect:
-        result = "You see key with number ";
-        result += std::to_string(number) + ".";
+        result = "Record: ";
+        result += record + ".";
         break;
     case Labyrinth::ActionTake:
         if(static_cast<BackpackContainer*>(act.backpack)->getCapacity() == 0)

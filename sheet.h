@@ -19,40 +19,21 @@
 **
 *******************************************************************************/
 
-#include <string>
-#include "key.h"
-#include "backpack.h"
+#ifndef SHEET_H_SENTRY
+#define SHEET_H_SENTRY
 
-std::string KeyObject::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionInspect:
-        result = "You see key with number ";
-        result += std::to_string(number) + ".";
-        break;
-    case Labyrinth::ActionTake:
-        if(static_cast<BackpackContainer*>(act.backpack)->getCapacity() == 0)
-            result = "The backpack is full.";
-        else if(act.wall->removeObject(this)) {
-            act.backpack->addObject(this);
-            result = "Done.";
-        }
-        else {
-            result = "No such item.";
-        }
-        break;
-    case Labyrinth::ActionThrow:
-        if(act.backpack->removeObject(this)) {
-            act.wall->addObject(this);
-            result = "Done.";
-        }
-        else {
-            result = "No such item.";
-        }
-        break;
-    default:
-        result = "Impossible.";
-    }
-    return result;
-}
+#include <string>
+#include "labyrinth.h"
+
+class SheetObject : public LabyrinthObject {
+    std::string record;
+public:
+    SheetObject(const std::string& rec = "");
+    ~SheetObject() = default;
+    const std::string& getRecord() const { return record; }
+    void setRecord(const std::string& rec) { record = rec; }
+    std::string handleAction(const Action& act) override;
+    std::string getName() const override { return "sheet"; }
+};
+
+#endif
