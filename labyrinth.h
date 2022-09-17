@@ -77,7 +77,8 @@ public:
     virtual std::string handleAction(const Action& act) = 0;
     virtual std::string getName() const = 0;
 };
-//parent abstract class for BackpackContainer and WallContainer
+//parent abstract class for container objects
+//like BackpackContainer and WallContainer
 class LabyrinthContainer {
 public:
     LabyrinthContainer() = default;

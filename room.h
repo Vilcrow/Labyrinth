@@ -25,6 +25,7 @@
 #include <memory>
 #include "labyrinth.h"
 #include "wall.h"
+#include "door.h"
 
 class RoomObject : public LabyrinthObject {
     int number;
@@ -44,6 +45,7 @@ public:
     Labyrinth::WallType getCurrentWallType() { return wallType; }
     std::string handleAction(const Action& act) override;
     std::string getName() const override { return "room"; }
+    DoorObject* findDoor(int num) const;
 };
 
 #endif

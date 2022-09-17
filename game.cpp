@@ -54,16 +54,38 @@ void Game::generateMap()
     //room #1
     RoomObject *room = new RoomObject(1);
     KeyObject *key = new KeyObject(2);
-    DoorObject *door = new DoorObject(2);
     room->addObject(Labyrinth::WallTop, key);
+    DoorObject *door = new DoorObject(2);
     room->addObject(Labyrinth::WallTop, door);
+    door = new DoorObject(4);
+    room->addObject(Labyrinth::WallLeft, door);
     gameMap[room->getNumber()] = room;
     //room #2
     room = new RoomObject(2);
-    door = new DoorObject(1, false);
-    SheetObject *sheet = new SheetObject("Hello.");
+    door = new DoorObject(1);
     room->addObject(Labyrinth::WallDown, door);
+    SheetObject *sheet = new SheetObject("Hello.");
     room->addObject(Labyrinth::WallLeft, sheet);
+    door = new DoorObject(3);
+    room->addObject(Labyrinth::WallLeft, door);
+    key = new KeyObject(3);
+    room->addObject(Labyrinth::WallTop, key);
+    gameMap[room->getNumber()] = room;
+    //room #3
+    room = new RoomObject(3);
+    door = new DoorObject(2);
+    room->addObject(Labyrinth::WallRight, door);
+    key = new KeyObject(4);
+    room->addObject(Labyrinth::WallRight, key);
+    gameMap[room->getNumber()] = room;
+    //room #4
+    room = new RoomObject(4);
+    door = new DoorObject(1);
+    room->addObject(Labyrinth::WallRight, door);
+    key = new KeyObject(1);
+    room->addObject(Labyrinth::WallRight, key);
+    door = new DoorObject(3);
+    room->addObject(Labyrinth::WallTop, door);
     gameMap[room->getNumber()] = room;
 }
 
@@ -97,15 +119,25 @@ std::string Game::handleAction(Action& act)
         break;
     case Labyrinth::ObjectDoor:
         object = curContainer->findObject(act.oType);
-        if(!object)
-            result = "No door on this side.";
+        if(!object) {
+            if(curContainer == backpack)
+                result = "The door in backpack? Are you seriously?";
+            else
+                result = "No door on this side.";
+        }
         else {
             result = object->handleAction(act);
             if(act.aType != Labyrinth::ActionEnter) //looks like a bad idea
                 break;
             else {
                 if(result == "Done.") {
+                    int prevRoom = roomNumber;
+                    DoorObject *backDoor;
                     roomNumber = static_cast<DoorObject*>(object)->getNumber();
+                    //open the return door in current room
+                    backDoor = gameMap[roomNumber]->findDoor(prevRoom);
+                    if(backDoor)
+                        backDoor->setLocked(false);
                     curContainer = gameMap[roomNumber]->getCurrentWall();
                     result = "You entered room ";
                     result += std::to_string(roomNumber);

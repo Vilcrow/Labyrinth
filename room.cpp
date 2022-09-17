@@ -19,6 +19,7 @@
 **
 *******************************************************************************/
 
+#include <vector>
 #include "room.h"
 
 RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
@@ -95,4 +96,16 @@ RoomObject::~RoomObject()
     delete down;
     delete left;
     delete right;
+}
+
+DoorObject* RoomObject::findDoor(int num) const
+{
+    DoorObject *result = nullptr;
+    std::vector<WallContainer*> walls = {top, down, left, right};
+    for(auto ptr : walls) {
+        result = static_cast<DoorObject*>(ptr->findObject(Labyrinth::ObjectDoor));
+        if(result && result->getNumber() == num)
+            return result;
+    }
+    return result;
 }
