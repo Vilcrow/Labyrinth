@@ -22,6 +22,7 @@ else()
     set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 endif()
 add_executable(labyrinth backpack.cpp
+                         battery.cpp
                          commands.cpp
                          game.cpp
                          door.cpp
@@ -29,7 +30,8 @@ add_executable(labyrinth backpack.cpp
                          main.cpp
                          room.cpp
                          sheet.cpp
-                         wall.cpp)
+                         wall.cpp
+                         watch.cpp)
 
 target_include_directories(labyrinth PUBLIC
                           "${PROJECT_BINARY_DIR}"

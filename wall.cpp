@@ -40,14 +40,26 @@ LabyrinthObject* WallContainer::findObject(const Action act)
 {
     if(objects.empty())
         return nullptr;
-    for(auto o : objects) {
-        if(o->getType() == act.oType) 
-            return o;
+    LabyrinthObject *by_word = nullptr;
+    if(act.oType != Labyrinth::ObjectNone) {
+        for(auto o : objects) {
+            if(o->getType() == act.oType) {
+                by_word = o;
+                break;
+            }
+        }
     }
+    LabyrinthObject *by_number = nullptr;
     decltype(objects.size()) num = act.number;
     if(act.number != -1 && num < objects.size())
-        return objects[num];
-    return nullptr;
+        by_number = objects[num];
+    if(!by_number)
+        return by_word;
+    else if(!by_word)
+        return by_number;
+    else if(by_word->getType() == by_number->getType())
+        return by_number;
+    return by_word;
 }
 
 Labyrinth::WallType WallContainer::getWallType(const Labyrinth::ObjectType type)

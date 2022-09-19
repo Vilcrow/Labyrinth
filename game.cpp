@@ -43,7 +43,7 @@ void Game::run()
         Action action = COMMANDS->cmdToAction(input);
         if(action.aType == Labyrinth::ActionNone ||
            (action.oType == Labyrinth::ObjectNone && action.number == -1)) {
-            std::cout << "Invalid input.";
+            std::cout << "Invalid input." << std::endl;
             std::cout << "> ";
             continue;
         }
@@ -84,6 +84,7 @@ void Game::run()
                 result = handleAction(action, object);
             }
         }
+        COMMANDS->addCommand(input);
         std::cout << result << std::endl;
         std::cout << "> ";
     }
@@ -108,6 +109,8 @@ void Game::generateMap()
     door = new DoorObject(6, false);
     gameMap[1]->addObject(Labyrinth::WallDown, door);
     key = new KeyObject(13);
+    gameMap[1]->addObject(Labyrinth::WallDown, key);
+    key = new KeyObject(2);
     gameMap[1]->addObject(Labyrinth::WallDown, key);
     //---->right wall
     door = new DoorObject(8, false);
@@ -164,7 +167,7 @@ std::string Game::handleAction(Action act, LabyrinthObject *obj)
     std::string result = "Invalid input.";
     switch(act.oType) {
     case Labyrinth::ObjectBattery:
-      //result = ActionWithBattery(act.aType, static_cast<BatteryObject*>(obj));
+        result = ActionWithBattery(act.aType, static_cast<BatteryObject*>(obj));
         break;
     case Labyrinth::ObjectDoor:
         result = ActionWithDoor(act.aType, static_cast<DoorObject*>(obj));
@@ -179,6 +182,9 @@ std::string Game::handleAction(Action act, LabyrinthObject *obj)
         break;
     case Labyrinth::ObjectSheet:
         result = ActionWithSheet(act.aType, static_cast<SheetObject*>(obj));
+        break;
+    case Labyrinth::ObjectWatch:
+        result = ActionWithWatch(act.aType, static_cast<WatchObject*>(obj));
         break;
 //no processing required
     case Labyrinth::ObjectNone:
@@ -209,13 +215,39 @@ std::string Game::ActionWithBackpack(Labyrinth::ActionType aType)
     return result;
 }
 
-/*
 std::string Game::ActionWithBattery(Labyrinth::ActionType aType,
                                     BatteryObject *battery)
 {
-
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "Charge is " + battery->getCharge();
+    case Labyrinth::ActionTake:
+        if(backpack->getCapacity() == 0)
+            result = "The backpack is full.";
+        else if(gameMap[roomNumber]->getCurrentWall()->removeObject(battery)) {
+            backpack->addObject(battery);
+            result = "The battery taked";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    case Labyrinth::ActionThrow:
+        if(backpack->removeObject(battery)) {
+            gameMap[roomNumber]->getCurrentWall()->addObject(battery);
+            result = "The battery throwed.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    default:
+        result = "Impossible action with the battery.";
+    }
+    return result;
 }
-*/
+
 std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
 {
     std::string result;
@@ -330,7 +362,7 @@ std::string Game::ActionWithSheet(Labyrinth::ActionType aType, SheetObject *shee
             result = "The backpack is full.";
         else if(gameMap[roomNumber]->getCurrentWall()->removeObject(sheet)) {
             backpack->addObject(sheet);
-            result = "Sheet taked";
+            result = "The sheet taked";
         }
         else {
             result = "No such item.";
@@ -339,7 +371,7 @@ std::string Game::ActionWithSheet(Labyrinth::ActionType aType, SheetObject *shee
     case Labyrinth::ActionThrow:
         if(backpack->removeObject(sheet)) {
             gameMap[roomNumber]->getCurrentWall()->addObject(sheet);
-            result = "Sheet throwed.";
+            result = "The sheet throwed.";
         }
         else {
             result = "No such item.";
@@ -362,6 +394,38 @@ std::string Game::ActionWithWall(Labyrinth::ActionType aType,
         break;
     default:
         result = "Impossible. You can just inspect the wall.";
+    }
+    return result;
+}
+std::string Game::ActionWithWatch(Labyrinth::ActionType aType,
+                                  WatchObject *watch)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "Time is " + watch->getTime();
+    case Labyrinth::ActionTake:
+        if(backpack->getCapacity() == 0)
+            result = "The backpack is full.";
+        else if(gameMap[roomNumber]->getCurrentWall()->removeObject(watch)) {
+            backpack->addObject(watch);
+            result = "The watch taked";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    case Labyrinth::ActionThrow:
+        if(backpack->removeObject(watch)) {
+            gameMap[roomNumber]->getCurrentWall()->addObject(watch);
+            result = "Watch throwed.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    default:
+        result = "Impossible action with the watch.";
     }
     return result;
 }

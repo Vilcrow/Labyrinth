@@ -50,6 +50,7 @@ Commands::Commands()
                      , { "down"       , Labyrinth::ObjectWallDown   }
                      , { "left"       , Labyrinth::ObjectWallLeft   }
                      , { "right"      , Labyrinth::ObjectWallRight  }
+                     , { "watch"      , Labyrinth::ObjectWatch      }
                      };
 }
 
@@ -123,4 +124,11 @@ std::string Commands::objectsList(const std::vector<LabyrinthObject*>& vec)
         result[result.size()-1] = '.';
     }
     return result;
+}
+
+void Commands::addCommand(const std::string& cmd)
+{
+    if(cmd.empty())
+        return;
+    history.push_back(cmd);
 }

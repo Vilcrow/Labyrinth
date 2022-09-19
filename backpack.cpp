@@ -58,12 +58,24 @@ LabyrinthObject* BackpackContainer::findObject(const Action act)
 {
     if(inventory.empty())
         return nullptr;
-    for(auto o : inventory) {
-        if(o->getType() == act.oType) 
-            return o;
+    LabyrinthObject *by_word = nullptr;
+    if(act.oType != Labyrinth::ObjectNone) {
+        for(auto o : inventory) {
+            if(o->getType() == act.oType) {
+                by_word = o;
+                break;
+            }
+        }
     }
+    LabyrinthObject *by_number = nullptr;
     decltype(inventory.size()) num = act.number;
     if(act.number != -1 && num < inventory.size())
-        return inventory[num];
-    return nullptr;
+        by_number = inventory[num];
+    if(!by_number)
+        return by_word;
+    else if(!by_word)
+        return by_number;
+    else if(by_word->getType() == by_number->getType())
+        return by_number;
+    return by_word;
 }

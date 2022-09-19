@@ -23,10 +23,12 @@
 #define GAME_H_SENTRY
 
 #include "backpack.h"
+#include "battery.h"
 #include "commands.h"
 #include "door.h"
 #include "room.h"
 #include "sheet.h"
+#include "watch.h"
 
 class Game {
     int roomNumber;
@@ -43,13 +45,14 @@ private:
     void generateMap();
     std::string handleAction(Action act, LabyrinthObject *obj);
     std::string ActionWithBackpack(Labyrinth::ActionType aType);
-//    std::string ActionWithBattery(Labyrinth::ActionType aType,
-//                                  BatteryObject *battery);
+    std::string ActionWithBattery(Labyrinth::ActionType aType,
+                                  BatteryObject *battery);
     std::string ActionWithDoor(const Action& act, DoorObject *door);
     std::string ActionWithKey(Labyrinth::ActionType aType, KeyObject *key);
     std::string ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room);
     std::string ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet);
     std::string ActionWithWall(Labyrinth::ActionType aType, WallContainer *wall);
+    std::string ActionWithWatch(Labyrinth::ActionType aType, WatchObject *watch);
 };
 
 #endif

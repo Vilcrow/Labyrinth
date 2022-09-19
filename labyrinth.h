@@ -54,7 +54,8 @@ public:
                      ObjectWallTop,
                      ObjectWallDown,
                      ObjectWallLeft,
-                     ObjectWallRight
+                     ObjectWallRight,
+                     ObjectWatch
     };
     enum WallType   {
                      WallNone,
