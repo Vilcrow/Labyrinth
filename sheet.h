@@ -32,7 +32,6 @@ public:
     ~SheetObject() = default;
     const std::string& getRecord() const { return record; }
     void setRecord(const std::string& rec) { record = rec; }
-    std::string handleAction(const Action& act) override;
     std::string getName() const override { return "sheet"; }
 };
 

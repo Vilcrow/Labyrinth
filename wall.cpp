@@ -30,36 +30,23 @@ WallContainer::WallContainer() : LabyrinthContainer()
 
 bool WallContainer::addObject(LabyrinthObject *obj)
 {
+    if(!obj) //null pointer
+        return false;
     objects.push_back(obj);
     return true;
 }
 
-std::string WallContainer::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionInspect:
-        result = "You see: ";
-        result += Commands::objectsList(objects);
-        break;
-    case Labyrinth::ActionOpen:
-    case Labyrinth::ActionClose:
-    case Labyrinth::ActionTake:
-    case Labyrinth::ActionUse:
-    default:
-        result = "Impossible. You can just inspect the wall.";
-    }
-    return result;
-}
-
-LabyrinthObject* WallContainer::findObject(Labyrinth::ObjectType type)
+LabyrinthObject* WallContainer::findObject(const Action act)
 {
     if(objects.empty())
         return nullptr;
     for(auto o : objects) {
-        if(o->getType() == type) 
+        if(o->getType() == act.oType) 
             return o;
     }
+    decltype(objects.size()) num = act.number;
+    if(act.number != -1 && num < objects.size())
+        return objects[num];
     return nullptr;
 }
 
@@ -82,6 +69,8 @@ Labyrinth::WallType WallContainer::getWallType(const Labyrinth::ObjectType type)
 
 bool WallContainer::removeObject(LabyrinthObject *obj)
 {
+    if(!obj) //null pointer
+        return false;
     auto it = find(objects.begin(), objects.end(), obj);
     if(it != objects.end()) {
         objects.erase(it);

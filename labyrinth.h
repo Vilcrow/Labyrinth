@@ -32,14 +32,14 @@ public:
     enum ActionType {
                      ActionNone,
                      ActionClose,
-                     ActionOpen,
+                     ActionEnter,
                      ActionInspect,
+                     ActionOpen,
                      ActionPush,
                      ActionPull,
                      ActionTake,
                      ActionThrow,
-                     ActionUse,
-                     ActionEnter
+                     ActionUse
     };
     enum ObjectType {
                      ObjectNone,
@@ -54,14 +54,14 @@ public:
                      ObjectWallTop,
                      ObjectWallDown,
                      ObjectWallLeft,
-                     ObjectWallRight,
+                     ObjectWallRight
     };
     enum WallType   {
                      WallNone,
-                     WallTop,
                      WallDown,
                      WallLeft,
-                     WallRight
+                     WallRight,
+                     WallTop
     };
 
     Labyrinth() = delete;
@@ -74,7 +74,6 @@ public:
     LabyrinthObject(Labyrinth::ObjectType t) : type(t) {}
     virtual ~LabyrinthObject() {}
     Labyrinth::ObjectType getType() const { return type; }
-    virtual std::string handleAction(const Action& act) = 0;
     virtual std::string getName() const = 0;
 };
 //parent abstract class for container objects
@@ -85,19 +84,19 @@ public:
     virtual ~LabyrinthContainer() = default;
     virtual bool addObject(LabyrinthObject *obj) = 0;
     virtual bool removeObject(LabyrinthObject *obj) = 0;
-    virtual LabyrinthObject* findObject(Labyrinth::ObjectType type) = 0;
-    virtual std::string handleAction(const Action& act) = 0;
+    virtual LabyrinthObject* findObject(const Action act) = 0;
     virtual std::string getName() const = 0; 
 };
 
 struct Action {
     Action(Labyrinth::ActionType act = Labyrinth::ActionNone,
-           Labyrinth::ObjectType obj = Labyrinth::ObjectNone)
-           : aType(act), oType(obj), wall(nullptr), backpack(nullptr) {}
+           Labyrinth::ObjectType obj = Labyrinth::ObjectNone, int num = -1)
+           : aType(act), oType(obj), number(num) {}
     Labyrinth::ActionType aType;
     Labyrinth::ObjectType oType;
-    LabyrinthContainer *wall;
-    LabyrinthContainer *backpack;
+    //number of object in container if we have more one
+    //number == -1 - no specified
+    int number;
 };
 
 #endif

@@ -35,9 +35,9 @@ public:
     bool addObject(LabyrinthObject *obj) override;
     bool removeObject(LabyrinthObject *obj) override;
     int getCapacity() const { return capacity; }
-    LabyrinthObject* findObject(Labyrinth::ObjectType type) override;
-    std::string handleAction(const Action& act) override;
+    LabyrinthObject* findObject(const Action act) override;
     std::string getName() const override { return "backpack"; };
+    const std::vector<LabyrinthObject*>& getObjects() const { return inventory; }
 private:
     BackpackContainer(BackpackContainer& other) = delete;
     BackpackContainer& operator=(BackpackContainer& other) = delete;

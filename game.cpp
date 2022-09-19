@@ -22,8 +22,6 @@
 #include <iostream>
 #include "labyrinth.h"
 #include "game.h"
-#include "commands.h"
-#include "sheet.h"
 
 Game::Game()
 {
@@ -35,143 +33,335 @@ Game::Game()
 
 void Game::run()
 {
-    std::string input;
-    std::shared_ptr<Action> action;
+    std::string input, result;
     std::cout << "> ";
     while(std::getline(std::cin, input)) {
-        if(!input.empty()) {
-            action = COMMANDS->cmdToAction(input);
-            action->wall = gameMap[roomNumber]->getCurrentWall();
-            action->backpack = backpack;
-            std::cout << handleAction(*action) << std::endl;
+        if(input.empty()) {
+            std::cout << "> ";
+            continue;
         }
+        Action action = COMMANDS->cmdToAction(input);
+        if(action.aType == Labyrinth::ActionNone ||
+           (action.oType == Labyrinth::ObjectNone && action.number == -1)) {
+            std::cout << "Invalid input.";
+            std::cout << "> ";
+            continue;
+        }
+        if(action.oType == Labyrinth::ObjectBackpack) {
+            curContainer = backpack;
+            result = ActionWithBackpack(action.aType);
+        }
+        else if(action.oType == Labyrinth::ObjectRoom)
+            result = ActionWithRoom(action.aType, gameMap[roomNumber]);
+        else if(action.oType == Labyrinth::ObjectWall) {
+            curContainer = gameMap[roomNumber]->getCurrentWall();
+            result = ActionWithWall(action.aType,
+                                    static_cast<WallContainer*>(curContainer));
+        }
+        else if(action.oType == Labyrinth::ObjectWallTop   ||
+                action.oType == Labyrinth::ObjectWallDown  ||
+                action.oType == Labyrinth::ObjectWallLeft  ||
+                action.oType == Labyrinth::ObjectWallRight) {
+            Labyrinth::WallType wType = WallContainer::getWallType(action.oType);
+            if(wType != Labyrinth::WallNone) {
+                gameMap[roomNumber]->setCurrentWall(wType);
+                curContainer = gameMap[roomNumber]->getCurrentWall();
+                result = ActionWithWall(action.aType,
+                                        static_cast<WallContainer*>(curContainer));
+            }
+        }
+        else {
+            LabyrinthObject *object = curContainer->findObject(action);
+            if(!object) {
+                result = "No such item ";
+                if(curContainer == backpack)
+                    result += "in backpack.";
+                else
+                    result += "on this side.";
+            }
+            else {
+                action.oType = object->getType();
+                result = handleAction(action, object);
+            }
+        }
+        std::cout << result << std::endl;
         std::cout << "> ";
     }
 }
 
 void Game::generateMap()
 {
-    //room #1
-    RoomObject *room = new RoomObject(1);
-    KeyObject *key = new KeyObject(2);
-    room->addObject(Labyrinth::WallTop, key);
-    DoorObject *door = new DoorObject(2);
-    room->addObject(Labyrinth::WallTop, door);
-    door = new DoorObject(4);
-    room->addObject(Labyrinth::WallLeft, door);
-    gameMap[room->getNumber()] = room;
-    //room #2
-    room = new RoomObject(2);
-    door = new DoorObject(1);
-    room->addObject(Labyrinth::WallDown, door);
-    SheetObject *sheet = new SheetObject("Hello.");
-    room->addObject(Labyrinth::WallLeft, sheet);
-    door = new DoorObject(3);
-    room->addObject(Labyrinth::WallLeft, door);
-    key = new KeyObject(3);
-    room->addObject(Labyrinth::WallTop, key);
-    gameMap[room->getNumber()] = room;
-    //room #3
-    room = new RoomObject(3);
-    door = new DoorObject(2);
-    room->addObject(Labyrinth::WallRight, door);
-    key = new KeyObject(4);
-    room->addObject(Labyrinth::WallRight, key);
-    gameMap[room->getNumber()] = room;
-    //room #4
-    room = new RoomObject(4);
-    door = new DoorObject(1);
-    room->addObject(Labyrinth::WallRight, door);
-    key = new KeyObject(1);
-    room->addObject(Labyrinth::WallRight, key);
-    door = new DoorObject(3);
-    room->addObject(Labyrinth::WallTop, door);
-    gameMap[room->getNumber()] = room;
+    int roomsCount = 81;
+    for(int i = 1; i <= roomsCount; i++) {
+        gameMap[i] = new RoomObject(1);
+    }
+    DoorObject *door = nullptr;
+    KeyObject *key = nullptr;
+    //->room #1
+    //---->top wall
+    door = new DoorObject(2, false);
+    gameMap[1]->addObject(Labyrinth::WallTop, door);
+    //---->left wall
+    door = new DoorObject(4, false);
+    gameMap[1]->addObject(Labyrinth::WallLeft, door);
+    //---->down wall
+    door = new DoorObject(6, false);
+    gameMap[1]->addObject(Labyrinth::WallDown, door);
+    key = new KeyObject(13);
+    gameMap[1]->addObject(Labyrinth::WallDown, key);
+    //---->right wall
+    door = new DoorObject(8, false);
+    gameMap[1]->addObject(Labyrinth::WallRight, door);
+    //->room #2
+    //---->top wall
+    //---->left wall
+    //---->down wall
+    door = new DoorObject(1, false);
+    gameMap[2]->addObject(Labyrinth::WallDown, door);
+    //---->right wall
+    //->room #3
+    //---->top wall
+    //---->left wall
+    //---->down wall
+    //---->right wall
+    //->room #4
+    //---->top wall
+    //---->left wall
+    //---->down wall
+    //---->right wall
+    door = new DoorObject(1, false);
+    gameMap[4]->addObject(Labyrinth::WallRight, door);
+    //->room #5
+    //---->top wall
+    //---->left wall
+    //---->down wall
+    //---->right wall
+    //->room #6
+    //---->top wall
+    door = new DoorObject(1, false);
+    gameMap[6]->addObject(Labyrinth::WallTop, door);
+    //---->left wall
+    //---->down wall
+    //---->right wall
+    //->room #7
+    //---->top wall
+    //---->left wall
+    //---->down wall
+    //---->right wall
+    //->room #8
+    //---->top wall
+    //---->left wall
+    door = new DoorObject(1, false);
+    gameMap[8]->addObject(Labyrinth::WallLeft, door);
+    //---->down wall
+    //---->right wall
 }
 
-std::string Game::handleAction(Action& act)
+std::string Game::handleAction(Action act, LabyrinthObject *obj)
 {
-    std::string result;
-    LabyrinthObject *object;
-    Labyrinth::WallType wType;
+    if(!obj)
+        return "Error. Invalid pointer for the object.";
+    std::string result = "Invalid input.";
     switch(act.oType) {
+    case Labyrinth::ObjectBattery:
+      //result = ActionWithBattery(act.aType, static_cast<BatteryObject*>(obj));
+        break;
+    case Labyrinth::ObjectDoor:
+        result = ActionWithDoor(act.aType, static_cast<DoorObject*>(obj));
+        break;
+    case Labyrinth::ObjectFlashlight:
+        break;
+    case Labyrinth::ObjectKey:
+        result = ActionWithKey(act.aType, static_cast<KeyObject*>(obj));
+        break;
     case Labyrinth::ObjectRoom:
-        result = gameMap[roomNumber]->handleAction(act);
+        result = ActionWithRoom(act.aType, gameMap[roomNumber]);
         break;
+    case Labyrinth::ObjectSheet:
+        result = ActionWithSheet(act.aType, static_cast<SheetObject*>(obj));
+        break;
+//no processing required
+    case Labyrinth::ObjectNone:
     case Labyrinth::ObjectBackpack:
-        curContainer = backpack;
-        result = curContainer->handleAction(act);
-        break;
     case Labyrinth::ObjectWall:
-        curContainer = gameMap[roomNumber]->getCurrentWall();
-        result = curContainer->handleAction(act);
-        break;
     case Labyrinth::ObjectWallTop:
     case Labyrinth::ObjectWallDown:
     case Labyrinth::ObjectWallLeft:
     case Labyrinth::ObjectWallRight:
-        wType = WallContainer::getWallType(act.oType);
-        if(wType == Labyrinth::WallNone)
-            break;
-        gameMap[roomNumber]->setCurrentWall(wType);
-        curContainer = gameMap[roomNumber]->getCurrentWall();
-        result = curContainer->handleAction(act);
         break;
-    case Labyrinth::ObjectDoor:
-        object = curContainer->findObject(act.oType);
-        if(!object) {
-            if(curContainer == backpack)
-                result = "The door in backpack? Are you seriously?";
-            else
-                result = "No door on this side.";
+    }
+    return result;
+}
+
+std::string Game::ActionWithBackpack(Labyrinth::ActionType aType)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "In backpack: ";
+        result += Commands::objectsList(backpack->getObjects());
+        result += " Capacity is " + std::to_string(backpack->getCapacity())
+                                  + ".";
+        break;
+    default:
+        result = "Impossible action with the backpack.";
+    }
+    return result;
+}
+
+/*
+std::string Game::ActionWithBattery(Labyrinth::ActionType aType,
+                                    BatteryObject *battery)
+{
+
+}
+*/
+std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
+{
+    std::string result;
+    switch(act.aType) {
+    case Labyrinth::ActionClose:    //maybe need fix
+        result = "There's no need.";
+        break;
+    case Labyrinth::ActionEnter:
+        if(door->isLocked()) {
+            result = "The door is locked. We need to open it.";
         }
         else {
-            result = object->handleAction(act);
-            if(act.aType != Labyrinth::ActionEnter) //looks like a bad idea
-                break;
+            int prevRoom = roomNumber;
+            DoorObject *backDoor;
+            roomNumber = door->getNumber();
+            //open the return door in current room
+            backDoor = gameMap[roomNumber]->findDoor(prevRoom);
+            if(backDoor)
+                backDoor->setLocked(false);
+            curContainer = gameMap[roomNumber]->getCurrentWall();
+            result = "You entered room ";
+            result += std::to_string(roomNumber);
+            result += ".";
+        }
+        break;
+    case Labyrinth::ActionOpen:
+        if(!door->isLocked())
+            result = "Door already opened.";
+        else {
+            LabyrinthObject *key = backpack->findObject(act);
+            if(!key)
+                result = "The door is locked. Need a suitable key.";
+            else if(static_cast<KeyObject*>(key)->getNumber() != door->getNumber())
+                result = "The key doesn't fit.";
             else {
-                if(result == "Done.") {
-                    int prevRoom = roomNumber;
-                    DoorObject *backDoor;
-                    roomNumber = static_cast<DoorObject*>(object)->getNumber();
-                    //open the return door in current room
-                    backDoor = gameMap[roomNumber]->findDoor(prevRoom);
-                    if(backDoor)
-                        backDoor->setLocked(false);
-                    curContainer = gameMap[roomNumber]->getCurrentWall();
-                    result = "You entered room ";
-                    result += std::to_string(roomNumber);
-                    result += ".";
-                }
+                door->setLocked(false);
+                backpack->removeObject(key); //the key is no longer needed
+                result = "You open the door.";
             }
         }
         break;
-    case Labyrinth::ObjectKey:
-        object = curContainer->findObject(act.oType);
-        if(!object) {
-            result = "No such item ";
-            if(curContainer == backpack)
-                result += "in backpack.";
-            else
-                result += "on this side.";
-        }
-        else
-            result = object->handleAction(act);
-        break;
-    case Labyrinth::ObjectSheet:
-        object = curContainer->findObject(act.oType);
-        if(!object) {
-            result = "No such item ";
-            if(curContainer == backpack)
-                result += "in backpack.";
-            else
-                result += "on this side.";
-        }
-        else
-            result = object->handleAction(act);
+    case Labyrinth::ActionInspect:
+        result = "You see door with number ";
+        result += std::to_string(door->getNumber()) + ".";
         break;
     default:
-        result = "Invalid input.";
+        result = "Impossible action with the door";
+    }
+    return result;
+}
+
+std::string Game::ActionWithKey(Labyrinth::ActionType aType, KeyObject *key)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "Key with number ";
+        result += std::to_string(key->getNumber()) + ".";
+        break;
+    case Labyrinth::ActionTake:
+        if(backpack->getCapacity() == 0)
+            result = "The backpack is full.";
+        else if(gameMap[roomNumber]->getCurrentWall()->removeObject(key)) {
+            backpack->addObject(key);
+            result = "Taked.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    case Labyrinth::ActionThrow:
+        if(backpack->removeObject(key)) {
+            gameMap[roomNumber]->getCurrentWall()->addObject(key);
+            result = "Done.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    default:
+        result = "Impossible action with the key";
+    }
+    return result;
+
+}
+
+std::string Game::ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "Room number ";
+        result += std::to_string(room->getNumber());
+        result += '.';
+        break;
+    default:
+        result = "Impossible. You can just inspect the room.";
+    }
+    return result;
+}
+
+std::string Game::ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "Record: ";
+        result += sheet->getRecord();
+        break;
+    case Labyrinth::ActionTake:
+        if(backpack->getCapacity() == 0)
+            result = "The backpack is full.";
+        else if(gameMap[roomNumber]->getCurrentWall()->removeObject(sheet)) {
+            backpack->addObject(sheet);
+            result = "Sheet taked";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    case Labyrinth::ActionThrow:
+        if(backpack->removeObject(sheet)) {
+            gameMap[roomNumber]->getCurrentWall()->addObject(sheet);
+            result = "Sheet throwed.";
+        }
+        else {
+            result = "No such item.";
+        }
+        break;
+    default:
+        result = "Impossible action with the sheet.";
+    }
+    return result;
+}
+
+std::string Game::ActionWithWall(Labyrinth::ActionType aType,
+                                 WallContainer *wall)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionInspect:
+        result = "You see: ";
+        result += Commands::objectsList(wall->getObjects());
+        break;
+    default:
+        result = "Impossible. You can just inspect the wall.";
     }
     return result;
 }

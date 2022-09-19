@@ -32,10 +32,10 @@ public:
     virtual ~WallContainer() {}
     bool addObject(LabyrinthObject *obj) override;
     bool removeObject(LabyrinthObject *obj) override;
-    std::string handleAction(const Action& act) override;
     std::string getName() const override { return "wall"; }
-    LabyrinthObject* findObject(Labyrinth::ObjectType type) override;
+    LabyrinthObject* findObject(const Action act) override;
     static Labyrinth::WallType getWallType(const Labyrinth::ObjectType type);
+    const std::vector<LabyrinthObject*>& getObjects() const { return objects; }
 };
 
 #endif

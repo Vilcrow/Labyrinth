@@ -31,6 +31,8 @@ BackpackContainer::BackpackContainer() : LabyrinthContainer()
 
 bool BackpackContainer::addObject(LabyrinthObject *obj)
 {
+    if(!obj) //null pointer
+        return false;
     if(capacity > 0) {
         inventory.push_back(obj);
         --capacity;
@@ -41,39 +43,27 @@ bool BackpackContainer::addObject(LabyrinthObject *obj)
 
 bool BackpackContainer::removeObject(LabyrinthObject *obj)
 {
+    if(!obj) //null pointer
+        return false;
     auto it = find(inventory.begin(), inventory.end(), obj);
     if(it != inventory.end()) {
         inventory.erase(it);
+        capacity++;
         return true;
     }
     return false;
 }
 
-std::string BackpackContainer::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionOpen:
-    case Labyrinth::ActionInspect:
-        result = "In backpack: ";
-        result += Commands::objectsList(inventory);
-        break;
-    case Labyrinth::ActionClose:
-        result = "Backpack closed.";
-        break;
-    default:
-        result = "Impossible.";
-    }
-    return result;
-}
-
-LabyrinthObject* BackpackContainer::findObject(Labyrinth::ObjectType type)
+LabyrinthObject* BackpackContainer::findObject(const Action act)
 {
     if(inventory.empty())
         return nullptr;
     for(auto o : inventory) {
-        if(o->getType() == type) 
+        if(o->getType() == act.oType) 
             return o;
     }
+    decltype(inventory.size()) num = act.number;
+    if(act.number != -1 && num < inventory.size())
+        return inventory[num];
     return nullptr;
 }

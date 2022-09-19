@@ -19,6 +19,7 @@
 **
 *******************************************************************************/
 
+#include <algorithm>
 #include <iostream>
 #include <set>
 #include "commands.h"
@@ -59,9 +60,9 @@ Commands* Commands::instance()
     return uniqueInstance;
 }
 
-std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd) //need fix
+Action Commands::cmdToAction(const std::string &cmd)
 {
-    std::shared_ptr<Action> action = std::make_shared<Action>();
+    Action action;
     if(cmd.empty())
         return action;
     std::string lowcmd = cmd;
@@ -83,15 +84,22 @@ std::shared_ptr<Action> Commands::cmdToAction(const std::string &cmd) //need fix
         std::string token = lowcmd.substr(start);
         words.insert(token);
     }
-    for(auto& a : words) {
+    for(auto a : words) {
         if(actionCommands.count(a)) {
-            action->aType = actionCommands[a];
+            action.aType = actionCommands[a];
             break;
         }
     }
-    for(auto& o : words) {
+    for(auto o : words) {
         if(objectCommands.count(o)) {
-            action->oType = objectCommands[o];
+            action.oType = objectCommands[o];
+            break;
+        }
+    }
+    for(auto o : words) {
+        if(std::all_of(o.begin(), o.end(), ::isdigit))
+        {
+            action.number = std::stoi(o);
             break;
         }
     }
@@ -102,11 +110,14 @@ std::string Commands::objectsList(const std::vector<LabyrinthObject*>& vec)
 {
     std::string result;
     if(vec.empty())
-        result = "nothing";
+        result = "nothing.";
     else {
+        int number = 0;
         for(auto o : vec) {
             result += o->getName();
+            result += "(" + std::to_string(number) + ")";
             result += ", ";
+            number++;
         }
         result.pop_back();
         result[result.size()-1] = '.';

@@ -30,7 +30,6 @@ public:
     KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
     ~KeyObject() = default;
     int getNumber() const { return number; }
-    std::string handleAction(const Action& act) override;
     std::string getName() const override { return "key"; }
 };
 

@@ -74,22 +74,6 @@ void RoomObject::setCurrentWall(Labyrinth::WallType type)
     wallType = type;
 }
 
-std::string RoomObject::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionInspect:
-        result = "You see room with four walls: top, down, left and right."
-                 " Room number is ";
-        result += std::to_string(number);
-        result += '.';
-        break;
-    default:
-        result = "Impossible. You can just inspect the room.";
-    }
-    return result;
-}
-
 RoomObject::~RoomObject()
 {
     delete top;
@@ -102,8 +86,9 @@ DoorObject* RoomObject::findDoor(int num) const
 {
     DoorObject *result = nullptr;
     std::vector<WallContainer*> walls = {top, down, left, right};
+    Action act(Labyrinth::ActionNone, Labyrinth::ObjectDoor);
     for(auto ptr : walls) {
-        result = static_cast<DoorObject*>(ptr->findObject(Labyrinth::ObjectDoor));
+        result = static_cast<DoorObject*>(ptr->findObject(act));
         if(result && result->getNumber() == num)
             return result;
     }

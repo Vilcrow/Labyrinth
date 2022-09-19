@@ -35,7 +35,6 @@ public:
     void setNumber(int num) { number = num; }
     bool isLocked() const { return locked; }
     void setLocked(bool lckd) { locked = lckd; }
-    std::string handleAction(const Action& act) override;
     std::string getName() const override { return "door"; }
 };
 

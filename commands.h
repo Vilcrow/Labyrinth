@@ -31,11 +31,11 @@
 #define COMMANDS Commands::instance()
 
 //Class which holds all commands for the command line
-//singleton pattern
+//(singleton pattern)
 class Commands {
 public:
     static Commands* instance();
-    std::shared_ptr<Action> cmdToAction(const std::string &cmd);
+    Action cmdToAction(const std::string &cmd);
     static std::string objectsList(const std::vector<LabyrinthObject*>& vec);
 private:
     Commands();

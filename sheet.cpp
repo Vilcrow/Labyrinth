@@ -28,37 +28,3 @@ SheetObject::SheetObject(const std::string& rec)
 {
 
 }
-
-std::string SheetObject::handleAction(const Action& act)
-{
-    std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionInspect:
-        result = "Record: ";
-        result += record + ".";
-        break;
-    case Labyrinth::ActionTake:
-        if(static_cast<BackpackContainer*>(act.backpack)->getCapacity() == 0)
-            result = "The backpack is full.";
-        else if(act.wall->removeObject(this)) {
-            act.backpack->addObject(this);
-            result = "Done.";
-        }
-        else {
-            result = "No such item.";
-        }
-        break;
-    case Labyrinth::ActionThrow:
-        if(act.backpack->removeObject(this)) {
-            act.wall->addObject(this);
-            result = "Done.";
-        }
-        else {
-            result = "No such item.";
-        }
-        break;
-    default:
-        result = "Impossible.";
-    }
-    return result;
-}

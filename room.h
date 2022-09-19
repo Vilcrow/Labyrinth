@@ -43,7 +43,6 @@ public:
     int getNumber() const { return number; }
     WallContainer* getCurrentWall() { return currentWall; }
     Labyrinth::WallType getCurrentWallType() { return wallType; }
-    std::string handleAction(const Action& act) override;
     std::string getName() const override { return "room"; }
     DoorObject* findDoor(int num) const;
 };

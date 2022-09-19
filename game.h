@@ -26,6 +26,7 @@
 #include "commands.h"
 #include "door.h"
 #include "room.h"
+#include "sheet.h"
 
 class Game {
     int roomNumber;
@@ -40,7 +41,15 @@ private:
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
     void generateMap();
-    std::string handleAction(Action& act);
+    std::string handleAction(Action act, LabyrinthObject *obj);
+    std::string ActionWithBackpack(Labyrinth::ActionType aType);
+//    std::string ActionWithBattery(Labyrinth::ActionType aType,
+//                                  BatteryObject *battery);
+    std::string ActionWithDoor(const Action& act, DoorObject *door);
+    std::string ActionWithKey(Labyrinth::ActionType aType, KeyObject *key);
+    std::string ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room);
+    std::string ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet);
+    std::string ActionWithWall(Labyrinth::ActionType aType, WallContainer *wall);
 };
 
 #endif
