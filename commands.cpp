@@ -29,28 +29,32 @@ Commands* Commands::uniqueInstance = nullptr;
 Commands::Commands()
 {
     actionCommands = { { "close"   , Labyrinth::ActionClose   }
-                     , { "inspect" , Labyrinth::ActionInspect }
-                     , { "take"    , Labyrinth::ActionTake    }
-                     , { "use"     , Labyrinth::ActionTake    }
-                     , { "push"    , Labyrinth::ActionPush    }
-                     , { "pull"    , Labyrinth::ActionPull    }
-                     , { "throw"   , Labyrinth::ActionThrow   }
-                     , { "open"    , Labyrinth::ActionOpen    }
                      , { "enter"   , Labyrinth::ActionEnter   }
+                     , { "inspect" , Labyrinth::ActionInspect }
+                     , { "open"    , Labyrinth::ActionOpen    }
+                     , { "pull"    , Labyrinth::ActionPull    }
+                     , { "push"    , Labyrinth::ActionPush    }
+                     , { "quit"    , Labyrinth::ActionQuit    }
+                     , { "read"    , Labyrinth::ActionRead    }
+                     , { "save"    , Labyrinth::ActionSave    }
+                     , { "take"    , Labyrinth::ActionTake    }
+                     , { "throw"   , Labyrinth::ActionThrow   }
+                     , { "use"     , Labyrinth::ActionTake    }
                      };
-    objectCommands = { { "battery"    , Labyrinth::ObjectBattery    }
-                     , { "backpack"   , Labyrinth::ObjectBackpack   }
-                     , { "door"       , Labyrinth::ObjectDoor       }
-                     , { "flashlight" , Labyrinth::ObjectFlashlight }
-                     , { "key"        , Labyrinth::ObjectKey        }
-                     , { "room"       , Labyrinth::ObjectRoom       }
-                     , { "sheet"      , Labyrinth::ObjectSheet      }
-                     , { "wall"       , Labyrinth::ObjectWall       }
-                     , { "top"        , Labyrinth::ObjectWallTop    }
-                     , { "down"       , Labyrinth::ObjectWallDown   }
-                     , { "left"       , Labyrinth::ObjectWallLeft   }
-                     , { "right"      , Labyrinth::ObjectWallRight  }
-                     , { "watch"      , Labyrinth::ObjectWatch      }
+    objectCommands = { { "battery"     , Labyrinth::ObjectBattery     }
+                     , { "backpack"    , Labyrinth::ObjectBackpack    }
+                     , { "door"        , Labyrinth::ObjectDoor        }
+                     , { "down"        , Labyrinth::ObjectWallDown    }
+                     , { "inscription" , Labyrinth::ObjectInscription }
+                     , { "flashlight"  , Labyrinth::ObjectFlashlight  }
+                     , { "key"         , Labyrinth::ObjectKey         }
+                     , { "left"        , Labyrinth::ObjectWallLeft    }
+                     , { "right"       , Labyrinth::ObjectWallRight   }
+                     , { "room"        , Labyrinth::ObjectRoom        }
+                     , { "sheet"       , Labyrinth::ObjectSheet       }
+                     , { "top"         , Labyrinth::ObjectWallTop     }
+                     , { "wall"        , Labyrinth::ObjectWall        }
+                     , { "watch"       , Labyrinth::ObjectWatch       }
                      };
 }
 

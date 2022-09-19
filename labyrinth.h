@@ -37,6 +37,9 @@ public:
                      ActionOpen,
                      ActionPush,
                      ActionPull,
+                     ActionQuit,
+                     ActionRead,
+                     ActionSave,
                      ActionTake,
                      ActionThrow,
                      ActionUse
@@ -47,6 +50,7 @@ public:
                      ObjectBattery,
                      ObjectDoor,
                      ObjectFlashlight,
+                     ObjectInscription,
                      ObjectKey,
                      ObjectRoom,
                      ObjectSheet,

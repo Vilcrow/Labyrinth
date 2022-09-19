@@ -43,9 +43,18 @@ void Game::run()
         Action action = COMMANDS->cmdToAction(input);
         if(action.aType == Labyrinth::ActionNone ||
            (action.oType == Labyrinth::ObjectNone && action.number == -1)) {
-            std::cout << "Invalid input." << std::endl;
-            std::cout << "> ";
-            continue;
+            if(action.aType == Labyrinth::ActionSave) {
+                save();
+                continue;
+            }
+            else if(action.aType == Labyrinth::ActionQuit) {
+                break;
+            }
+            else {
+                std::cout << "Invalid input." << std::endl;
+                std::cout << "> ";
+                continue;
+            }
         }
         if(action.oType == Labyrinth::ObjectBackpack) {
             curContainer = backpack;
@@ -98,10 +107,13 @@ void Game::generateMap()
     }
     DoorObject *door = nullptr;
     KeyObject *key = nullptr;
+    InscriptionObject *inscription = nullptr;
     //->room #1
     //---->top wall
     door = new DoorObject(2, false);
     gameMap[1]->addObject(Labyrinth::WallTop, door);
+    inscription = new InscriptionObject("Qui quaerit, reperit.");
+    gameMap[1]->addObject(Labyrinth::WallTop, inscription);
     //---->left wall
     door = new DoorObject(4, false);
     gameMap[1]->addObject(Labyrinth::WallLeft, door);
@@ -172,6 +184,10 @@ std::string Game::handleAction(Action act, LabyrinthObject *obj)
     case Labyrinth::ObjectDoor:
         result = ActionWithDoor(act.aType, static_cast<DoorObject*>(obj));
         break;
+    case Labyrinth::ObjectInscription:
+        result = ActionWithInscription(act.aType,
+                                       static_cast<InscriptionObject*>(obj));
+        break;
     case Labyrinth::ObjectFlashlight:
         break;
     case Labyrinth::ObjectKey:
@@ -190,10 +206,10 @@ std::string Game::handleAction(Action act, LabyrinthObject *obj)
     case Labyrinth::ObjectNone:
     case Labyrinth::ObjectBackpack:
     case Labyrinth::ObjectWall:
-    case Labyrinth::ObjectWallTop:
     case Labyrinth::ObjectWallDown:
     case Labyrinth::ObjectWallLeft:
     case Labyrinth::ObjectWallRight:
+    case Labyrinth::ObjectWallTop:
         break;
     }
     return result;
@@ -294,9 +310,25 @@ std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
         result += std::to_string(door->getNumber()) + ".";
         break;
     default:
-        result = "Impossible action with the door";
+        result = "Impossible action with the door.";
     }
     return result;
+}
+
+std::string Game::ActionWithInscription(Labyrinth::ActionType aType,
+                                        InscriptionObject *inscription)
+{
+    std::string result;
+    switch(aType) {
+    case Labyrinth::ActionRead:
+    case Labyrinth::ActionInspect:
+        result = "\"" + inscription->getInscription() + "\"";
+        break;
+    default:
+        result = "Impossible action with the inscription.";
+    }
+    return result;
+
 }
 
 std::string Game::ActionWithKey(Labyrinth::ActionType aType, KeyObject *key)
@@ -328,7 +360,7 @@ std::string Game::ActionWithKey(Labyrinth::ActionType aType, KeyObject *key)
         }
         break;
     default:
-        result = "Impossible action with the key";
+        result = "Impossible action with the key.";
     }
     return result;
 
@@ -428,4 +460,9 @@ std::string Game::ActionWithWatch(Labyrinth::ActionType aType,
         result = "Impossible action with the watch.";
     }
     return result;
+}
+
+bool Game::save()
+{
+    return true;
 }

@@ -26,6 +26,7 @@
 #include "battery.h"
 #include "commands.h"
 #include "door.h"
+#include "inscription.h"
 #include "room.h"
 #include "sheet.h"
 #include "watch.h"
@@ -39,6 +40,7 @@ public:
     Game();
     ~Game() = delete;
     void run();
+    bool save();
 private:
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
@@ -48,6 +50,8 @@ private:
     std::string ActionWithBattery(Labyrinth::ActionType aType,
                                   BatteryObject *battery);
     std::string ActionWithDoor(const Action& act, DoorObject *door);
+    std::string ActionWithInscription(Labyrinth::ActionType aType,
+                                      InscriptionObject *key);
     std::string ActionWithKey(Labyrinth::ActionType aType, KeyObject *key);
     std::string ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room);
     std::string ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet);
