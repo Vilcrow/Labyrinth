@@ -19,14 +19,30 @@
 **
 *******************************************************************************/
 
-IMPORT_TEST_GROUP(BackpackGroup);
-IMPORT_TEST_GROUP(BatteryGroup);
-IMPORT_TEST_GROUP(CommandsGroup);
-IMPORT_TEST_GROUP(DoorGroup);
-IMPORT_TEST_GROUP(GameGroup);
-IMPORT_TEST_GROUP(InscriptionGroup);
-IMPORT_TEST_GROUP(KeyGroup);
-IMPORT_TEST_GROUP(RoomGroup);
-IMPORT_TEST_GROUP(SheetGroup);
-IMPORT_TEST_GROUP(WallGroup);
-IMPORT_TEST_GROUP(WatchGroup);
+#include "CppUTest/TestHarness.h"
+#include "watch.h"
+
+TEST_GROUP(WatchGroup)
+{
+    WatchObject *watch;
+    std::string time = "10:15";
+
+    void setup()
+    {
+        watch = new WatchObject(time);
+    }
+    void teardown()
+    {
+        delete watch;
+    }
+};
+
+TEST(WatchGroup, GetTime)
+{
+    CHECK_EQUAL(time, watch->getTime());
+}
+
+TEST(WatchGroup, GetName)
+{
+    CHECK_EQUAL("watch", watch->getName());
+}

@@ -16,7 +16,13 @@ set(TEST_SOURCES
     battery_test.cpp
     commands_test.cpp
     door_test.cpp
+    game_test.cpp
+    inscription_test.cpp
     key_test.cpp
+    room_test.cpp
+    sheet_test.cpp
+    wall_test.cpp
+    watch_test.cpp
 )
 
 include_directories(${CPPUTEST_INCLUDE_DIRS} ../src/)

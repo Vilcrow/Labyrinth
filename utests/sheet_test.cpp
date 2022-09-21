@@ -19,14 +19,36 @@
 **
 *******************************************************************************/
 
-IMPORT_TEST_GROUP(BackpackGroup);
-IMPORT_TEST_GROUP(BatteryGroup);
-IMPORT_TEST_GROUP(CommandsGroup);
-IMPORT_TEST_GROUP(DoorGroup);
-IMPORT_TEST_GROUP(GameGroup);
-IMPORT_TEST_GROUP(InscriptionGroup);
-IMPORT_TEST_GROUP(KeyGroup);
-IMPORT_TEST_GROUP(RoomGroup);
-IMPORT_TEST_GROUP(SheetGroup);
-IMPORT_TEST_GROUP(WallGroup);
-IMPORT_TEST_GROUP(WatchGroup);
+#include "CppUTest/TestHarness.h"
+#include "sheet.h"
+
+TEST_GROUP(SheetGroup)
+{
+    SheetObject *sheet;
+
+    void setup()
+    {
+        sheet = new SheetObject("Unit test");
+    }
+    void teardown()
+    {
+        delete sheet;
+    }
+};
+
+TEST(SheetGroup, GetRecord)
+{
+    CHECK_EQUAL("Unit test", sheet->getRecord());
+}
+
+TEST(SheetGroup, SetRecord)
+{
+    CHECK_EQUAL("Unit test", sheet->getRecord());
+    sheet->setRecord("Still a unit test");
+    CHECK_EQUAL("Still a unit test", sheet->getRecord());
+}
+
+TEST(SheetGroup, GetName)
+{
+    CHECK_EQUAL("sheet", sheet->getName());
+}

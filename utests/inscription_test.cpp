@@ -19,14 +19,29 @@
 **
 *******************************************************************************/
 
-IMPORT_TEST_GROUP(BackpackGroup);
-IMPORT_TEST_GROUP(BatteryGroup);
-IMPORT_TEST_GROUP(CommandsGroup);
-IMPORT_TEST_GROUP(DoorGroup);
-IMPORT_TEST_GROUP(GameGroup);
-IMPORT_TEST_GROUP(InscriptionGroup);
-IMPORT_TEST_GROUP(KeyGroup);
-IMPORT_TEST_GROUP(RoomGroup);
-IMPORT_TEST_GROUP(SheetGroup);
-IMPORT_TEST_GROUP(WallGroup);
-IMPORT_TEST_GROUP(WatchGroup);
+#include "CppUTest/TestHarness.h"
+#include "inscription.h"
+
+TEST_GROUP(InscriptionGroup)
+{
+    InscriptionObject *inscription;
+
+    void setup()
+    {
+        inscription = new InscriptionObject("Unit test");
+    }
+    void teardown()
+    {
+        delete inscription;
+    }
+};
+
+TEST(InscriptionGroup, GetInscription)
+{
+    CHECK_EQUAL("Unit test", inscription->getInscription());
+}
+
+TEST(InscriptionGroup, GetName)
+{
+    CHECK_EQUAL("inscription", inscription->getName());
+}

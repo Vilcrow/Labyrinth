@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "CppUTest/TestHarness.h"
-#include <vector>
 #include "backpack.h"
 #include "key.h"
 #include "sheet.h"

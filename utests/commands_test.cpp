@@ -21,7 +21,6 @@
 
 #include "commands.h"
 #include "CppUTest/TestHarness.h"
-#include <string>
 
 TEST_GROUP(CommandsGroup)
 {
