@@ -19,36 +19,45 @@
 **
 *******************************************************************************/
 
-#ifndef COMMANDS_H_SENTRY
-#define COMMANDS_H_SENTRY
+#include "CppUTest/TestHarness.h"
+#include "door.h"
 
-#include <string>
-#include <map>
-#include <vector>
-#include "labyrinth.h"
+TEST_GROUP(DoorGroup)
+{
+    DoorObject *door;
+    int number = 10;
 
-#define COMMANDS Commands::instance()
-
-//Class which holds all commands for the command line
-//(singleton pattern)
-class Commands {
-    std::vector<std::string> history;
-public:
-    static Commands* instance();
-    Action cmdToAction(const std::string &cmd);
-    static std::string objectsList(const std::vector<LabyrinthObject*>& vec);
-    void addCommand(const std::string& cmd);
-    int getHistorySize() const { return history.size(); }
-private:
-    Commands();
-    ~Commands() = delete;
-    Commands(Commands&) = delete;
-    Commands& operator=(Commands&) = delete;
-    
-    std::map<std::string, Labyrinth::ActionType> actionCommands;
-    std::map<std::string, Labyrinth::ObjectType> objectCommands;
-protected:
-    static Commands *uniqueInstance;
+    void setup()
+    {
+        door = new DoorObject(number);
+    }
+    void teardown()
+    {
+        delete door;
+    }
 };
 
-#endif
+TEST(DoorGroup, GetNumber)
+{
+    CHECK_EQUAL(number, door->getNumber());
+}
+
+TEST(DoorGroup, SetNumber)
+{
+    door->setNumber(5);
+    CHECK_EQUAL(5, door->getNumber());
+}
+
+TEST(DoorGroup, IsLockedAndSetLocked)
+{
+    CHECK(door->isLocked());
+    door->setLocked(false);
+    CHECK_FALSE(door->isLocked());
+    door->setLocked(true);
+    CHECK(door->isLocked());
+}
+
+TEST(DoorGroup, GetName)
+{
+    CHECK_EQUAL("door", door->getName());
+}

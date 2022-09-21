@@ -19,36 +19,7 @@
 **
 *******************************************************************************/
 
-#ifndef COMMANDS_H_SENTRY
-#define COMMANDS_H_SENTRY
-
-#include <string>
-#include <map>
-#include <vector>
-#include "labyrinth.h"
-
-#define COMMANDS Commands::instance()
-
-//Class which holds all commands for the command line
-//(singleton pattern)
-class Commands {
-    std::vector<std::string> history;
-public:
-    static Commands* instance();
-    Action cmdToAction(const std::string &cmd);
-    static std::string objectsList(const std::vector<LabyrinthObject*>& vec);
-    void addCommand(const std::string& cmd);
-    int getHistorySize() const { return history.size(); }
-private:
-    Commands();
-    ~Commands() = delete;
-    Commands(Commands&) = delete;
-    Commands& operator=(Commands&) = delete;
-    
-    std::map<std::string, Labyrinth::ActionType> actionCommands;
-    std::map<std::string, Labyrinth::ObjectType> objectCommands;
-protected:
-    static Commands *uniqueInstance;
-};
-
-#endif
+IMPORT_TEST_GROUP(KeyGroup);
+IMPORT_TEST_GROUP(BackpackGroup);
+IMPORT_TEST_GROUP(BatteryGroup);
+IMPORT_TEST_GROUP(CommandsGroup);
