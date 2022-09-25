@@ -49,13 +49,13 @@ private:
     std::string ActionWithBackpack(Labyrinth::ActionType aType);
     std::string ActionWithBattery(Labyrinth::ActionType aType,
                                   BatteryObject *battery);
-    std::string ActionWithDoor(const Action& act, DoorObject *door);
+    std::string ActionWithDoor(Labyrinth::ActionType aType, DoorObject *door);
     std::string ActionWithInscription(Labyrinth::ActionType aType,
                                       InscriptionObject *key);
     std::string ActionWithKey(Labyrinth::ActionType aType, KeyObject *key);
     std::string ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room);
     std::string ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet);
-    std::string ActionWithWall(Labyrinth::ActionType aType, WallContainer *wall);
+    std::string ActionWithWall(Labyrinth::ActionType aType);
     std::string ActionWithWatch(Labyrinth::ActionType aType, WatchObject *watch);
 };
 

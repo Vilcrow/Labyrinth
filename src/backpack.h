@@ -24,6 +24,7 @@
 
 #include <vector>
 #include "labyrinth.h"
+#include "key.h"
 
 class BackpackContainer : public LabyrinthContainer {
     enum { maxCapacity = 6 };
@@ -36,6 +37,7 @@ public:
     bool removeObject(LabyrinthObject *obj) override;
     int getCapacity() const { return capacity; }
     LabyrinthObject* findObject(const Action act) override;
+    KeyObject* findKey(int num);
     std::string getName() const override { return "backpack"; };
     const std::vector<LabyrinthObject*>& getObjects() const { return inventory; }
 private:

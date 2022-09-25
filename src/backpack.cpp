@@ -79,3 +79,19 @@ LabyrinthObject* BackpackContainer::findObject(const Action act)
         return by_number;
     return by_word;
 }
+
+KeyObject* BackpackContainer::findKey(int num)
+{
+    KeyObject *result = nullptr;
+    if(inventory.empty())
+        return result;
+    for(auto o : inventory) {
+        if(o->getType() == Labyrinth::ObjectKey) {
+            if(static_cast<KeyObject*>(o)->getNumber() == num) {
+                result = static_cast<KeyObject*>(o);
+                break;
+            }
+        }
+    }
+    return result;
+}

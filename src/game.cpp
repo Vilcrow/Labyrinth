@@ -64,8 +64,7 @@ void Game::run()
             result = ActionWithRoom(action.aType, gameMap[roomNumber]);
         else if(action.oType == Labyrinth::ObjectWall) {
             curContainer = gameMap[roomNumber]->getCurrentWall();
-            result = ActionWithWall(action.aType,
-                                    static_cast<WallContainer*>(curContainer));
+            result = ActionWithWall(action.aType);
         }
         else if(action.oType == Labyrinth::ObjectWallTop   ||
                 action.oType == Labyrinth::ObjectWallDown  ||
@@ -75,8 +74,7 @@ void Game::run()
             if(wType != Labyrinth::WallNone) {
                 gameMap[roomNumber]->setCurrentWall(wType);
                 curContainer = gameMap[roomNumber]->getCurrentWall();
-                result = ActionWithWall(action.aType,
-                                        static_cast<WallContainer*>(curContainer));
+                result = ActionWithWall(action.aType);
             }
         }
         else {
@@ -103,73 +101,447 @@ void Game::generateMap()
 {
     int roomsCount = 81;
     for(int i = 1; i <= roomsCount; i++) {
-        gameMap[i] = new RoomObject(1);
+        gameMap[i] = new RoomObject(i);
     }
     DoorObject *door = nullptr;
     KeyObject *key = nullptr;
     InscriptionObject *inscription = nullptr;
-    //->room #1
-    //---->top wall
+    //ROOM 1
+    //wall TOP
     door = new DoorObject(2, false);
     gameMap[1]->addObject(Labyrinth::WallTop, door);
     inscription = new InscriptionObject("Qui quaerit, reperit.");
     gameMap[1]->addObject(Labyrinth::WallTop, inscription);
-    //---->left wall
+    //wall LEFT
     door = new DoorObject(4, false);
     gameMap[1]->addObject(Labyrinth::WallLeft, door);
-    //---->down wall
+    //wall DOWN
     door = new DoorObject(6, false);
     gameMap[1]->addObject(Labyrinth::WallDown, door);
     key = new KeyObject(13);
     gameMap[1]->addObject(Labyrinth::WallDown, key);
     key = new KeyObject(2);
     gameMap[1]->addObject(Labyrinth::WallDown, key);
-    //---->right wall
+    //wall RIGHT
     door = new DoorObject(8, false);
     gameMap[1]->addObject(Labyrinth::WallRight, door);
-    //->room #2
-    //---->top wall
-    //---->left wall
-    //---->down wall
+    //ROOM 2
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
     door = new DoorObject(1, false);
     gameMap[2]->addObject(Labyrinth::WallDown, door);
-    //---->right wall
-    //->room #3
-    //---->top wall
-    //---->left wall
-    //---->down wall
-    //---->right wall
-    //->room #4
-    //---->top wall
-    //---->left wall
-    //---->down wall
-    //---->right wall
+    //wall RIGHT
+    door = new DoorObject(9);
+    gameMap[2]->addObject(Labyrinth::WallRight, door);
+    //ROOM 3
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 4
+    //wall TOP
+    //wall LEFT
+    door = new DoorObject(15, false);
+    gameMap[4]->addObject(Labyrinth::WallLeft, door);
+    //wall DOWN
+    key = new KeyObject(9);
+    gameMap[4]->addObject(Labyrinth::WallDown, key);
+    //wall RIGHT
     door = new DoorObject(1, false);
     gameMap[4]->addObject(Labyrinth::WallRight, door);
-    //->room #5
-    //---->top wall
-    //---->left wall
-    //---->down wall
-    //---->right wall
-    //->room #6
-    //---->top wall
+    //ROOM 5
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 6
+    //wall TOP
     door = new DoorObject(1, false);
     gameMap[6]->addObject(Labyrinth::WallTop, door);
-    //---->left wall
-    //---->down wall
-    //---->right wall
-    //->room #7
-    //---->top wall
-    //---->left wall
-    //---->down wall
-    //---->right wall
-    //->room #8
-    //---->top wall
-    //---->left wall
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 7
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 8
+    //wall TOP
+    //wall LEFT
     door = new DoorObject(1, false);
     gameMap[8]->addObject(Labyrinth::WallLeft, door);
-    //---->down wall
-    //---->right wall
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 9
+    //wall TOP
+    //wall LEFT
+    door = new DoorObject(2, false);
+    gameMap[9]->addObject(Labyrinth::WallLeft, door);
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 10
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 11
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 12
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 14
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 15
+    //wall TOP
+    //wall LEFT
+    door = new DoorObject(34, false);
+    gameMap[15]->addObject(Labyrinth::WallLeft, door);
+    //wall DOWN
+    //wall RIGHT
+    door = new DoorObject(4, false);
+    gameMap[15]->addObject(Labyrinth::WallRight, door);
+    //ROOM 16
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 17
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 18
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 19
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 20
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 21
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 22
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 23
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 24
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 25
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 26
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 27
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 28
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 29
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 30
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 31
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 32
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 33
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 34
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    door = new DoorObject(15, false);
+    gameMap[34]->addObject(Labyrinth::WallRight, door);
+    //ROOM 35
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 36
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 37
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 38
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 39
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 40
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 41
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 42
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 43
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 44
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 45
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 46
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 47
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 48
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 49
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 50
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 51
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 52
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 53
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 54
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 55
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 56
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 57
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 58
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 59
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 60
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 61
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 62
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 63
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 64
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 65
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 66
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 67
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 68
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 69
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 70
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 71
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 72
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 73
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 74
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 75
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 76
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 77
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 78
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 79
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 80
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 81
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
 }
 
 std::string Game::handleAction(Action act, LabyrinthObject *obj)
@@ -264,11 +636,11 @@ std::string Game::ActionWithBattery(Labyrinth::ActionType aType,
     return result;
 }
 
-std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
+std::string Game::ActionWithDoor(Labyrinth::ActionType aType, DoorObject *door)
 {
     std::string result;
-    switch(act.aType) {
-    case Labyrinth::ActionClose:    //maybe need fix
+    switch(aType) {
+    case Labyrinth::ActionClose:
         result = "There's no need.";
         break;
     case Labyrinth::ActionEnter:
@@ -276,13 +648,13 @@ std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
             result = "The door is locked. We need to open it.";
         }
         else {
-            int prevRoom = roomNumber;
-            DoorObject *backDoor;
+            int prev_room = roomNumber;
+            DoorObject *back_door;
             roomNumber = door->getNumber();
             //open the return door in current room
-            backDoor = gameMap[roomNumber]->findDoor(prevRoom);
-            if(backDoor)
-                backDoor->setLocked(false);
+            back_door = gameMap[roomNumber]->findDoor(prev_room);
+            if(back_door)
+                back_door->setLocked(false);
             curContainer = gameMap[roomNumber]->getCurrentWall();
             result = "You entered room ";
             result += std::to_string(roomNumber);
@@ -293,7 +665,7 @@ std::string Game::ActionWithDoor(const Action& act, DoorObject *door)
         if(!door->isLocked())
             result = "Door already opened.";
         else {
-            LabyrinthObject *key = backpack->findObject(act);
+            LabyrinthObject *key = backpack->findKey(door->getNumber());
             if(!key)
                 result = "The door is locked. Need a suitable key.";
             else if(static_cast<KeyObject*>(key)->getNumber() != door->getNumber())
@@ -415,14 +787,14 @@ std::string Game::ActionWithSheet(Labyrinth::ActionType aType, SheetObject *shee
     return result;
 }
 
-std::string Game::ActionWithWall(Labyrinth::ActionType aType,
-                                 WallContainer *wall)
+std::string Game::ActionWithWall(Labyrinth::ActionType aType)
 {
     std::string result;
     switch(aType) {
     case Labyrinth::ActionInspect:
         result = "You see: ";
-        result += Commands::objectsList(wall->getObjects());
+        result += Commands::objectsList(
+                  static_cast<WallContainer*>(curContainer)->getObjects());
         break;
     default:
         result = "Impossible. You can just inspect the wall.";

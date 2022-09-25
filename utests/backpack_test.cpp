@@ -32,12 +32,14 @@ TEST_GROUP(BackpackGroup)
     SheetObject *sheet;
     Action *act;
     int max_capacity = 6; //from BackpackContainer
+    int f_key_num = 10;
+    int s_key_num = 4;
 
     void setup()
     {
         backpack = new BackpackContainer();
-        f_key = new KeyObject(10);
-        s_key = new KeyObject(4);
+        f_key = new KeyObject(f_key_num);
+        s_key = new KeyObject(s_key_num);
         sheet = new SheetObject("Sheet");
         act = new Action(Labyrinth::ActionNone, Labyrinth::ObjectNone);
     }
@@ -115,6 +117,21 @@ TEST(BackpackGroup, FindObject)
     //find by number
     act->number = 2;
     CHECK_EQUAL(backpack->findObject(*act), s_key);
+}
+
+TEST(BackpackGroup, FindKey)
+{
+    CHECK(backpack->getObjects().empty());
+    backpack->addObject(f_key);
+    CHECK_EQUAL(max_capacity-1, backpack->getCapacity());
+    backpack->addObject(s_key);
+    CHECK_EQUAL(max_capacity-2, backpack->getCapacity());
+    KeyObject *tmp = backpack->findKey(s_key_num);
+    CHECK_EQUAL(s_key, tmp);
+    tmp = backpack->findKey(f_key_num);
+    CHECK_EQUAL(f_key, tmp);
+    tmp = backpack->findKey(1233); //random number
+    CHECK_EQUAL(nullptr, tmp);
 }
 
 TEST(BackpackGroup, GetName)
