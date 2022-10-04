@@ -24,13 +24,14 @@
 
 #include "labyrinth.h"
 
-class WatchObject : public LabyrinthObject {
-    std::string time;
+class Watch : public LbrObject {
 public:
-    WatchObject(std::string t);
-    ~WatchObject() = default;
+    Watch(std::string t);
+    ~Watch() = default;
     const std::string& getTime () const { return time; }
-    std::string getName() const override { return "watch"; }
+    std::string getNameString() const override { return "watch"; }
+private:
+    std::string time;
 };
 
 #endif

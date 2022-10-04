@@ -6,6 +6,7 @@ set(APP_LIB_SOURCE
     door.cpp
     inscription.cpp
     key.cpp
+    keylock.cpp
     room.cpp
     sheet.cpp
     wall.cpp

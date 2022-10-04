@@ -32,31 +32,32 @@
 #include "watch.h"
 
 class Game {
-    int roomNumber;
-    BackpackContainer *backpack;
-    LabyrinthContainer *curContainer;
-    std::map<int, RoomObject*> gameMap; //all rooms
 public:
     Game();
     ~Game() = delete;
     void run();
     bool save();
 private:
+    int roomNumber;
+    Lbr::WallType curWallType;
+    LbrContainer *curContainer;
+    Backpack *backpack;
+    std::map<int, Room*> gameMap; //all rooms
+
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
     void generateMap();
-    std::string handleAction(Action act, LabyrinthObject *obj);
-    std::string ActionWithBackpack(Labyrinth::ActionType aType);
-    std::string ActionWithBattery(Labyrinth::ActionType aType,
-                                  BatteryObject *battery);
-    std::string ActionWithDoor(Labyrinth::ActionType aType, DoorObject *door);
-    std::string ActionWithInscription(Labyrinth::ActionType aType,
-                                      InscriptionObject *key);
-    std::string ActionWithKey(Labyrinth::ActionType aType, KeyObject *key);
-    std::string ActionWithRoom(Labyrinth::ActionType aType, RoomObject *room);
-    std::string ActionWithSheet(Labyrinth::ActionType aType, SheetObject *sheet);
-    std::string ActionWithWall(Labyrinth::ActionType aType);
-    std::string ActionWithWatch(Labyrinth::ActionType aType, WatchObject *watch);
+    std::string handleActionWithObject(Action act, LbrObject *obj);
+    std::string handleActionWithContainer(Action act);
+    std::string ActionWithBackpack(Lbr::ActType aType);
+    std::string ActionWithBattery(Lbr::ActType aType, Battery *battery);
+    std::string ActionWithDoor(Lbr::ActType aType);
+    std::string ActionWithInscription(Lbr::ActType aType, Inscription *key);
+    std::string ActionWithKey(Lbr::ActType aType, Key *key);
+    std::string ActionWithRoom(Lbr::ActType aType, Room *room);
+    std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);
+    std::string ActionWithWall(Lbr::ActType aType);
+    std::string ActionWithWatch(Lbr::ActType aType, Watch *watch);
 };
 
 #endif

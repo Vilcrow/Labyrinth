@@ -24,24 +24,18 @@
 
 TEST_GROUP(BatteryGroup)
 {
-    BatteryObject *battery;
-
     void setup()
     {
-        battery = new BatteryObject();
     }
     void teardown()
     {
-        delete battery;
     }
 };
 
 TEST(BatteryGroup, GetCharge)
 {
-    CHECK_EQUAL(0, battery->getCharge());
 }
 
 TEST(BatteryGroup, GetName)
 {
-    CHECK_EQUAL("battery", battery->getName());
 }

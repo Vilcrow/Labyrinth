@@ -24,25 +24,18 @@
 
 TEST_GROUP(KeyGroup)
 {
-    KeyObject *key;
-    int number = 10;
-
     void setup()
     {
-        key = new KeyObject(number);
     }
     void teardown()
     {
-        delete key;
     }
 };
 
 TEST(KeyGroup, GetName)
 {
-    CHECK_EQUAL("key", key->getName());
 }
 
 TEST(KeyGroup, GetNumber)
 {
-    CHECK_EQUAL(number, key->getNumber());
 }

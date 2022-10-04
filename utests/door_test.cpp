@@ -24,40 +24,26 @@
 
 TEST_GROUP(DoorGroup)
 {
-    DoorObject *door;
-    int number = 10;
-
     void setup()
     {
-        door = new DoorObject(number);
     }
     void teardown()
     {
-        delete door;
     }
 };
 
 TEST(DoorGroup, GetNumber)
 {
-    CHECK_EQUAL(number, door->getNumber());
 }
 
 TEST(DoorGroup, SetNumber)
 {
-    door->setNumber(5);
-    CHECK_EQUAL(5, door->getNumber());
 }
 
 TEST(DoorGroup, IsLockedAndSetLocked)
 {
-    CHECK(door->isLocked());
-    door->setLocked(false);
-    CHECK_FALSE(door->isLocked());
-    door->setLocked(true);
-    CHECK(door->isLocked());
 }
 
 TEST(DoorGroup, GetName)
 {
-    CHECK_EQUAL("door", door->getName());
 }

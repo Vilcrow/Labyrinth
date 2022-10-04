@@ -19,76 +19,28 @@
 **
 *******************************************************************************/
 
-#include <vector>
 #include "room.h"
 
-RoomObject::RoomObject(int num) : LabyrinthObject(Labyrinth::ObjectRoom)
-                                , number(num)
+Room::Room(int num) : number(num)
 {
-    top = new WallContainer();
-    down = new WallContainer();
-    left = new WallContainer();
-    right = new WallContainer();
-    currentWall = top;
-    wallType = Labyrinth::WallTop;
+    walls[Lbr::WallTop] = new Wall();
+    walls[Lbr::WallDown] = new Wall();
+    walls[Lbr::WallLeft] = new Wall();
+    walls[Lbr::WallRight] = new Wall();
 }
-//add object to corresponding wall
-void RoomObject::addObject(Labyrinth::WallType wall, LabyrinthObject *obj)
+//add container object to corresponding wall
+bool Room::addContainer(Lbr::WallType wType, LbrContainer *container)
 {
-    switch(wall) {
-    case Labyrinth::WallNone:
-        break;
-    case Labyrinth::WallTop:
-        top->addObject(obj);
-        break;
-    case Labyrinth::WallDown:
-        down->addObject(obj);
-        break;
-    case Labyrinth::WallLeft:
-        left->addObject(obj);
-        break;
-    case Labyrinth::WallRight:
-        right->addObject(obj);
-        break;
-    }
+    bool result = walls[wType]->addContainer(container);
+    return result;
 }
 
-void RoomObject::setCurrentWall(Labyrinth::WallType type)
+Door* Room::findDoor(int num) const
 {
-    switch(type) {
-    case Labyrinth::WallNone:
-        break;
-    case Labyrinth::WallTop:
-        currentWall = top;
-        break;
-    case Labyrinth::WallDown:
-        currentWall = down;
-        break;
-    case Labyrinth::WallLeft:
-        currentWall = left;
-        break;
-    case Labyrinth::WallRight:
-        currentWall = right;
-        break;
-    }
-    wallType = type;
-}
-
-RoomObject::~RoomObject()
-{
-    delete top;
-    delete down;
-    delete left;
-    delete right;
-}
-
-DoorObject* RoomObject::findDoor(int num) const
-{
-    DoorObject *result = nullptr;
-    std::vector<WallContainer*> walls = {top, down, left, right};
-    Action act(Labyrinth::ActionNone, Labyrinth::ObjectDoor);
-    for(auto ptr : walls) {
-        result = static_cast<DoorObject*>(ptr->findObject(act));
+    Door *result = nullptr;
+    Action act(Lbr::ActNone, Lbr::ObjDoor);
+    for(const auto& w : walls) {
+        result = static_cast<Door*>(w.second->findContainer(act));
         if(result && result->getNumber() == num)
             return result;
     }

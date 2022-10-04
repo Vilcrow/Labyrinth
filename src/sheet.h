@@ -25,14 +25,15 @@
 #include <string>
 #include "labyrinth.h"
 
-class SheetObject : public LabyrinthObject {
-    std::string record;
+class Sheet : public LbrObject {
 public:
-    SheetObject(const std::string& rec = "");
-    ~SheetObject() = default;
+    Sheet(const std::string& rec);
+    ~Sheet() = default;
     const std::string& getRecord() const { return record; }
     void setRecord(const std::string& rec) { record = rec; }
-    std::string getName() const override { return "sheet"; }
+    std::string getNameString() const override { return "sheet"; }
+private:
+    std::string record;
 };
 
 #endif

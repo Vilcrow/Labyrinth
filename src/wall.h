@@ -25,17 +25,18 @@
 #include <vector>
 #include "labyrinth.h"
 
-class WallContainer : public LabyrinthContainer {
-    std::vector<LabyrinthObject*> objects;
+class Wall {
 public:
-    WallContainer();
-    virtual ~WallContainer() {}
-    bool addObject(LabyrinthObject *obj) override;
-    bool removeObject(LabyrinthObject *obj) override;
-    std::string getName() const override { return "wall"; }
-    LabyrinthObject* findObject(const Action act) override;
-    static Labyrinth::WallType getWallType(const Labyrinth::ObjectType type);
-    const std::vector<LabyrinthObject*>& getObjects() const { return objects; }
+    Wall() = default;
+    virtual ~Wall() = default;
+    bool addContainer(LbrContainer *container);
+    LbrContainer* findContainer(const Action act);
+    const std::vector<LbrContainer*>& getContainers() const { return containers; }
+    static Lbr::WallType getWallType(const Lbr::ObjName name);
+    std::string getNameString() const { return "wall"; }
+private:
+    enum { maxCapacity = 4 };
+    std::vector<LbrContainer*> containers;
 };
 
 #endif

@@ -22,44 +22,52 @@
 #ifndef LABYRINTH_H_SENTRY
 #define LABYRINTH_H_SENTRY
 
+#include <vector>
 #include <string>
 
 struct Action;
 
 //Class namespace for various enums
-class Labyrinth {
+class Lbr {
 public:
-    enum ActionType {
-                     ActionNone,
-                     ActionClose,
-                     ActionEnter,
-                     ActionInspect,
-                     ActionOpen,
-                     ActionPush,
-                     ActionPull,
-                     ActionQuit,
-                     ActionRead,
-                     ActionSave,
-                     ActionTake,
-                     ActionThrow,
-                     ActionUse
+    enum ActType {
+                     ActNone,
+                     ActClose,
+                     ActEnter,
+                     ActInspect,
+                     ActOpen,
+                     ActPush,
+                     ActPull,
+                     ActQuit,
+                     ActRead,
+                     ActSave,
+                     ActTake,
+                     ActThrow,
+                     ActUse
     };
-    enum ObjectType {
-                     ObjectNone,
-                     ObjectBackpack,
-                     ObjectBattery,
-                     ObjectDoor,
-                     ObjectFlashlight,
-                     ObjectInscription,
-                     ObjectKey,
-                     ObjectRoom,
-                     ObjectSheet,
-                     ObjectWall,
-                     ObjectWallTop,
-                     ObjectWallDown,
-                     ObjectWallLeft,
-                     ObjectWallRight,
-                     ObjectWatch
+    enum ObjName {
+                     ObjNone,
+                     ObjBackpack,
+                     ObjBattery,
+                     ObjDigitalLock,
+                     ObjDoor,
+                     ObjFlashlight,
+                     ObjInscription,
+                     ObjKey,
+                     ObjKeyLock,
+                     ObjRoom,
+                     ObjSheet,
+                     ObjWall,
+                     ObjWallTop,
+                     ObjWallDown,
+                     ObjWallLeft,
+                     ObjWallRight,
+                     ObjWatch
+    };
+    enum ObjType {
+                        None,
+                        Object,
+                        Container
     };
     enum WallType   {
                      WallNone,
@@ -69,39 +77,80 @@ public:
                      WallTop
     };
 
-    Labyrinth() = delete;
-    ~Labyrinth() = delete;
+    Lbr() = delete;
+    ~Lbr() = delete;
 };
+
 //parent of all other object classes
-class LabyrinthObject {
-    Labyrinth::ObjectType type;
+class LbrObject {
 public:
-    LabyrinthObject(Labyrinth::ObjectType t) : type(t) {}
-    virtual ~LabyrinthObject() {}
-    Labyrinth::ObjectType getType() const { return type; }
-    virtual std::string getName() const = 0;
+    LbrObject(Lbr::ObjName n) : name(n) {}
+    virtual ~LbrObject() {}
+    Lbr::ObjName getName() const { return name; }
+    virtual std::string getNameString() const = 0;
+private:
+    Lbr::ObjName name;
 };
+
 //parent abstract class for container objects
-//like BackpackContainer and WallContainer
-class LabyrinthContainer {
+class LbrContainer {
 public:
-    LabyrinthContainer() = default;
-    virtual ~LabyrinthContainer() = default;
-    virtual bool addObject(LabyrinthObject *obj) = 0;
-    virtual bool removeObject(LabyrinthObject *obj) = 0;
-    virtual LabyrinthObject* findObject(const Action act) = 0;
-    virtual std::string getName() const = 0; 
+    LbrContainer(Lbr::ObjName n) : name(n) {}
+    virtual ~LbrContainer() {}
+    virtual bool addObject(LbrObject *obj) = 0;
+    virtual bool removeObject(LbrObject *obj) = 0;
+    virtual LbrObject* findObject(const Action act) = 0;
+    virtual std::string getNameString() const = 0; 
+    Lbr::ObjName getName() const { return name; }
+private:
+    Lbr::ObjName name;
+};
+
+//parent abstract class for lock objects
+class LbrLock {
+public:
+    LbrLock(Lbr::ObjName n) : name(n), locked(true) {}
+    virtual ~LbrLock() {}
+    Lbr::ObjName getName() const { return name; }
+    bool isLocked() { return locked; }
+    void setLocked(bool lckd) { locked = lckd; }
+    virtual std::string getNameString() const = 0;
+private:
+    Lbr::ObjName name;
+    bool locked;
 };
 
 struct Action {
-    Action(Labyrinth::ActionType act = Labyrinth::ActionNone,
-           Labyrinth::ObjectType obj = Labyrinth::ObjectNone, int num = -1)
-           : aType(act), oType(obj), number(num) {}
-    Labyrinth::ActionType aType;
-    Labyrinth::ObjectType oType;
+    Action(Lbr::ActType act = Lbr::ActNone,
+           Lbr::ObjName obj = Lbr::ObjNone,
+           Lbr::ObjType type = Lbr::None, int num = -1)
+           : aType(act), oName(obj), oType(type), number(num) {}
+    Lbr::ActType aType;
+    Lbr::ObjName oName;
+    Lbr::ObjType oType;
     //number of object in container if we have more one
     //number == -1 - no specified
     int number;
 };
+
+template<class T>
+std::string LbrObjectsList(const std::vector<T*>& vec)
+{
+    std::string result;
+    if(vec.empty())
+        result = "nothing.";
+    else {
+        int number = 0;
+        for(auto o : vec) {
+            result += o->getNameString();
+            result += "(" + std::to_string(number) + ")";
+            result += ", ";
+            number++;
+        }
+        result.pop_back();
+        result[result.size()-1] = '.';
+    }
+    return result;
+}
 
 #endif

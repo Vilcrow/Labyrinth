@@ -24,31 +24,22 @@
 
 TEST_GROUP(SheetGroup)
 {
-    SheetObject *sheet;
-
     void setup()
     {
-        sheet = new SheetObject("Unit test");
     }
     void teardown()
     {
-        delete sheet;
     }
 };
 
 TEST(SheetGroup, GetRecord)
 {
-    CHECK_EQUAL("Unit test", sheet->getRecord());
 }
 
 TEST(SheetGroup, SetRecord)
 {
-    CHECK_EQUAL("Unit test", sheet->getRecord());
-    sheet->setRecord("Still a unit test");
-    CHECK_EQUAL("Still a unit test", sheet->getRecord());
 }
 
 TEST(SheetGroup, GetName)
 {
-    CHECK_EQUAL("sheet", sheet->getName());
 }

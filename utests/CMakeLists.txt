@@ -19,6 +19,7 @@ set(TEST_SOURCES
     game_test.cpp
     inscription_test.cpp
     key_test.cpp
+    keylock_test.cpp
     room_test.cpp
     sheet_test.cpp
     wall_test.cpp

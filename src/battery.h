@@ -24,13 +24,14 @@
 
 #include "labyrinth.h"
 
-class BatteryObject : public LabyrinthObject {
-    int charge;
+class Battery : public LbrObject {
 public:
-    BatteryObject(int chrg = 0);
-    ~BatteryObject() = default;
+    Battery(int chrg = 0);
+    ~Battery() = default;
     int getCharge() const { return charge; }
-    std::string getName() const override { return "battery"; }
+    std::string getNameString() const override { return "battery"; }
+private:
+    int charge;
 };
 
 #endif

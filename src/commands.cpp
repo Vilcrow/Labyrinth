@@ -28,33 +28,48 @@ Commands* Commands::uniqueInstance = nullptr;
 
 Commands::Commands()
 {
-    actionCommands = { { "close"   , Labyrinth::ActionClose   }
-                     , { "enter"   , Labyrinth::ActionEnter   }
-                     , { "inspect" , Labyrinth::ActionInspect }
-                     , { "open"    , Labyrinth::ActionOpen    }
-                     , { "pull"    , Labyrinth::ActionPull    }
-                     , { "push"    , Labyrinth::ActionPush    }
-                     , { "quit"    , Labyrinth::ActionQuit    }
-                     , { "read"    , Labyrinth::ActionRead    }
-                     , { "save"    , Labyrinth::ActionSave    }
-                     , { "take"    , Labyrinth::ActionTake    }
-                     , { "throw"   , Labyrinth::ActionThrow   }
-                     , { "use"     , Labyrinth::ActionTake    }
+    actionCommands = { { "close"   , Lbr::ActClose   }
+                     , { "enter"   , Lbr::ActEnter   }
+                     , { "inspect" , Lbr::ActInspect }
+                     , { "open"    , Lbr::ActOpen    }
+                     , { "pull"    , Lbr::ActPull    }
+                     , { "push"    , Lbr::ActPush    }
+                     , { "quit"    , Lbr::ActQuit    }
+                     , { "read"    , Lbr::ActRead    }
+                     , { "save"    , Lbr::ActSave    }
+                     , { "take"    , Lbr::ActTake    }
+                     , { "throw"   , Lbr::ActThrow   }
+                     , { "use"     , Lbr::ActTake    }
                      };
-    objectCommands = { { "battery"     , Labyrinth::ObjectBattery     }
-                     , { "backpack"    , Labyrinth::ObjectBackpack    }
-                     , { "door"        , Labyrinth::ObjectDoor        }
-                     , { "down"        , Labyrinth::ObjectWallDown    }
-                     , { "inscription" , Labyrinth::ObjectInscription }
-                     , { "flashlight"  , Labyrinth::ObjectFlashlight  }
-                     , { "key"         , Labyrinth::ObjectKey         }
-                     , { "left"        , Labyrinth::ObjectWallLeft    }
-                     , { "right"       , Labyrinth::ObjectWallRight   }
-                     , { "room"        , Labyrinth::ObjectRoom        }
-                     , { "sheet"       , Labyrinth::ObjectSheet       }
-                     , { "top"         , Labyrinth::ObjectWallTop     }
-                     , { "wall"        , Labyrinth::ObjectWall        }
-                     , { "watch"       , Labyrinth::ObjectWatch       }
+    objectCommands = { { "battery"     , Lbr::ObjBattery,     }
+                     , { "backpack"    , Lbr::ObjBackpack,    }
+                     , { "door"        , Lbr::ObjDoor,        }
+                     , { "down"        , Lbr::ObjWallDown,    }
+                     , { "inscription" , Lbr::ObjInscription, }
+                     , { "flashlight"  , Lbr::ObjFlashlight,  }
+                     , { "key"         , Lbr::ObjKey,         }
+                     , { "left"        , Lbr::ObjWallLeft,    }
+                     , { "right"       , Lbr::ObjWallRight,   }
+                     , { "room"        , Lbr::ObjRoom,        }
+                     , { "sheet"       , Lbr::ObjSheet,       }
+                     , { "top"         , Lbr::ObjWallTop,     }
+                     , { "wall"        , Lbr::ObjWall,        }
+                     , { "watch"       , Lbr::ObjWatch,       }
+                     };
+    objectType     = { { Lbr::ObjBattery,     Lbr::Object    }
+                     , { Lbr::ObjBackpack,    Lbr::Container }
+                     , { Lbr::ObjDoor,        Lbr::Container }
+                     , { Lbr::ObjWallDown,    Lbr::Container }
+                     , { Lbr::ObjInscription, Lbr::Object    }
+                     , { Lbr::ObjFlashlight,  Lbr::Container }
+                     , { Lbr::ObjKey,         Lbr::Object    }
+                     , { Lbr::ObjWallLeft,    Lbr::Container }
+                     , { Lbr::ObjWallRight,   Lbr::Container }
+                     , { Lbr::ObjRoom,        Lbr::Container }
+                     , { Lbr::ObjSheet,       Lbr::Container }
+                     , { Lbr::ObjWallTop,     Lbr::Container }
+                     , { Lbr::ObjWall,        Lbr::Container }
+                     , { Lbr::ObjWatch,       Lbr::Container }
                      };
 }
 
@@ -97,7 +112,8 @@ Action Commands::cmdToAction(const std::string &cmd)
     }
     for(auto o : words) {
         if(objectCommands.count(o)) {
-            action.oType = objectCommands[o];
+            action.oName = objectCommands[o];
+            action.oType = objectType[action.oName];
             break;
         }
     }
@@ -109,25 +125,6 @@ Action Commands::cmdToAction(const std::string &cmd)
         }
     }
     return action;
-}
-
-std::string Commands::objectsList(const std::vector<LabyrinthObject*>& vec)
-{
-    std::string result;
-    if(vec.empty())
-        result = "nothing.";
-    else {
-        int number = 0;
-        for(auto o : vec) {
-            result += o->getName();
-            result += "(" + std::to_string(number) + ")";
-            result += ", ";
-            number++;
-        }
-        result.pop_back();
-        result[result.size()-1] = '.';
-    }
-    return result;
 }
 
 void Commands::addCommand(const std::string& cmd)

@@ -24,13 +24,14 @@
 
 #include "labyrinth.h"
 
-class KeyObject : public LabyrinthObject {
-    int number;
+class Key : public LbrObject {
 public:
-    KeyObject(int num) : LabyrinthObject(Labyrinth::ObjectKey), number(num) {}
-    ~KeyObject() = default;
+    Key(int num) : LbrObject(Lbr::ObjKey), number(num) {}
+    ~Key() = default;
     int getNumber() const { return number; }
-    std::string getName() const override { return "key"; }
+    std::string getNameString() const override { return "key"; }
+private:
+    int number;
 };
 
 #endif

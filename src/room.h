@@ -22,29 +22,23 @@
 #ifndef ROOM_H_SENTRY
 #define ROOM_H_SENTRY
 
-#include <memory>
+#include <map>
+#include "door.h"
 #include "labyrinth.h"
 #include "wall.h"
-#include "door.h"
 
-class RoomObject : public LabyrinthObject {
-    int number;
-    WallContainer *top;
-    WallContainer *down;
-    WallContainer *left;
-    WallContainer *right;
-    WallContainer *currentWall;
-    Labyrinth::WallType wallType;
+class Room {
 public:
-    RoomObject(int num);
-    virtual ~RoomObject();
-    void addObject(Labyrinth::WallType wall, LabyrinthObject *obj);
-    void setCurrentWall(Labyrinth::WallType type);
+    Room(int num);
+    virtual ~Room() = default;
+    bool addContainer(Lbr::WallType wType, LbrContainer *container);
     int getNumber() const { return number; }
-    WallContainer* getCurrentWall() { return currentWall; }
-    Labyrinth::WallType getCurrentWallType() { return wallType; }
-    std::string getName() const override { return "room"; }
-    DoorObject* findDoor(int num) const;
+    std::string getNameString() const { return "room"; }
+    Door* findDoor(int num) const;
+    Wall* getWall(Lbr::WallType wType) { return walls[wType]; }
+private:
+    int number;
+    std::map<Lbr::WallType, Wall*> walls;
 };
 
 #endif

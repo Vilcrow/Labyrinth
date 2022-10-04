@@ -24,24 +24,18 @@
 
 TEST_GROUP(InscriptionGroup)
 {
-    InscriptionObject *inscription;
-
     void setup()
     {
-        inscription = new InscriptionObject("Unit test");
     }
     void teardown()
     {
-        delete inscription;
     }
 };
 
 TEST(InscriptionGroup, GetInscription)
 {
-    CHECK_EQUAL("Unit test", inscription->getInscription());
 }
 
 TEST(InscriptionGroup, GetName)
 {
-    CHECK_EQUAL("inscription", inscription->getName());
 }

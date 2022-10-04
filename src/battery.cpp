@@ -21,8 +21,7 @@
 
 #include "battery.h"
 
-BatteryObject::BatteryObject(int chrg)
-             : LabyrinthObject(Labyrinth::ObjectBattery), charge(chrg)
+Battery::Battery(int chrg) : LbrObject(Lbr::ObjBattery), charge(chrg)
 {
 
 }

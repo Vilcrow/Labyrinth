@@ -19,66 +19,36 @@
 **
 *******************************************************************************/
 
-#include "CppUTest/TestHarness.h"
 #include "room.h"
 #include "key.h"
+#include "CppUTest/TestHarness.h"
 
 TEST_GROUP(RoomGroup)
 {
-    RoomObject *room;
-    KeyObject *key;
-    DoorObject *door;
-
-    int room_num = 10;
-    int kd_num = 5; //number of key and door
-
-    Action act;
-
     void setup()
     {
-        room = new RoomObject(room_num);
-        key = new KeyObject(kd_num);
-        door = new DoorObject(kd_num);
     }
     void teardown()
     {
-        delete room;
-        delete key;
-        delete door;
     }
 };
 
 TEST(RoomGroup, AddObject)
 {
-    room->addObject(Labyrinth::WallTop, door);
-    room->addObject(Labyrinth::WallTop, key);
-    CHECK_EQUAL(door, room->findDoor(kd_num));
-    WallContainer *wall = room->getCurrentWall();
-    CHECK_EQUAL(wall->getObjects()[0], door);
-    CHECK_EQUAL(wall->getObjects()[1], key);
 }
 
 TEST(RoomGroup, SetAndGetCurrentWall)
 {
-    //default type
-    CHECK_EQUAL(Labyrinth::WallTop, room->getCurrentWallType());
-    //change current wall
-    room->setCurrentWall(Labyrinth::WallDown);
-    CHECK_EQUAL(Labyrinth::WallDown, room->getCurrentWallType());
 }
 
 TEST(RoomGroup, GetNumber)
 {
-    CHECK_EQUAL(room_num, room->getNumber());
 }
 
 TEST(RoomGroup, GetName)
 {
-    CHECK_EQUAL("room", room->getName());
 }
 
 TEST(RoomGroup, FindDoor)
 {
-    room->addObject(Labyrinth::WallLeft, door);
-    CHECK_EQUAL(door, room->findDoor(kd_num));
 }

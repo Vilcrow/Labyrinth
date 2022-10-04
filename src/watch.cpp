@@ -21,8 +21,7 @@
 
 #include "watch.h"
 
-WatchObject::WatchObject(std::string t)
-           : LabyrinthObject(Labyrinth::ObjectWatch), time(t)
+Watch::Watch(std::string t) : LbrObject(Lbr::ObjWatch), time(t)
 {
 
 }

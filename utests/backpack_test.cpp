@@ -26,124 +26,46 @@
 
 TEST_GROUP(BackpackGroup)
 {
-    BackpackContainer *backpack;
-    KeyObject *f_key;
-    KeyObject *s_key;
-    SheetObject *sheet;
-    Action *act;
-    int max_capacity = 6; //from BackpackContainer
-    int f_key_num = 10;
-    int s_key_num = 4;
-
     void setup()
     {
-        backpack = new BackpackContainer();
-        f_key = new KeyObject(f_key_num);
-        s_key = new KeyObject(s_key_num);
-        sheet = new SheetObject("Sheet");
-        act = new Action(Labyrinth::ActionNone, Labyrinth::ObjectNone);
     }
     void teardown()
     {
-        delete backpack;
-        delete f_key;
-        delete s_key;
-        delete sheet;
-        delete act;
     }
 };
 
 TEST(BackpackGroup, EmptyAfterCreation)
 {
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, AddObject)
 {
-    //empty backpack
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
-    CHECK(backpack->addObject(f_key));
-    CHECK_EQUAL(max_capacity-1, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, RemoveObject)
 {
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
-    backpack->addObject(f_key);
-    CHECK_EQUAL(max_capacity-1, backpack->getCapacity());
-    CHECK(backpack->removeObject(f_key));
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, CannotAddObjectToFullBackpack)
 {
-    //filling the backpack
-    for(int i = 0; i < max_capacity; i++) {
-        backpack->addObject(f_key);
-    }
-    //full backpack
-    CHECK_EQUAL(0, backpack->getCapacity());
-    CHECK_FALSE(backpack->addObject(f_key));
 }
 
 TEST(BackpackGroup, GetCapacity)
 {
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, FindObject)
 {
-    //the empty backpack
-    CHECK_EQUAL(max_capacity, backpack->getCapacity());
-    act->oType = Labyrinth::ObjectKey;
-    CHECK_FALSE(backpack->findObject(*act));
-    //add the first key
-    backpack->addObject(f_key);
-    act->oType = Labyrinth::ObjectKey;
-    CHECK_EQUAL(backpack->findObject(*act), f_key);
-    //the second key don't exist in the backpack
-    CHECK_FALSE(backpack->findObject(*act) == s_key);
-    //the sheet don't exist in the backpack
-    act->oType = Labyrinth::ObjectSheet;
-    CHECK_FALSE(backpack->findObject(*act));
-    //add the sheet
-    backpack->addObject(sheet);
-    CHECK_EQUAL(backpack->findObject(*act), sheet);
-    //add the second key
-    backpack->addObject(s_key);
-    act->oType = Labyrinth::ObjectKey;
-    //still finding the first key
-    CHECK_EQUAL(backpack->findObject(*act), f_key);
-    //find by number
-    act->number = 2;
-    CHECK_EQUAL(backpack->findObject(*act), s_key);
 }
 
 TEST(BackpackGroup, FindKey)
 {
-    CHECK(backpack->getObjects().empty());
-    backpack->addObject(f_key);
-    CHECK_EQUAL(max_capacity-1, backpack->getCapacity());
-    backpack->addObject(s_key);
-    CHECK_EQUAL(max_capacity-2, backpack->getCapacity());
-    KeyObject *tmp = backpack->findKey(s_key_num);
-    CHECK_EQUAL(s_key, tmp);
-    tmp = backpack->findKey(f_key_num);
-    CHECK_EQUAL(f_key, tmp);
-    tmp = backpack->findKey(1233); //random number
-    CHECK_EQUAL(nullptr, tmp);
 }
 
 TEST(BackpackGroup, GetName)
 {
-    CHECK_EQUAL("backpack", backpack->getName());
 }
 
 TEST(BackpackGroup, GetObjects)
 {
-    CHECK(backpack->getObjects().empty());
-    backpack->addObject(f_key);
-    backpack->addObject(s_key);
-    CHECK_EQUAL(backpack->getObjects()[0], f_key);
-    CHECK_EQUAL(backpack->getObjects()[1], s_key);
 }

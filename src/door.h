@@ -23,19 +23,22 @@
 #define DOOR_H_SENTRY
 
 #include "labyrinth.h"
-#include "key.h"
 
-class DoorObject : public LabyrinthObject {
-    int number;
-    bool locked;
+class Door : public LbrContainer {
 public:
-    DoorObject(int num, bool lckd = true);
-    virtual ~DoorObject() = default;
+    Door(int num);
+    virtual ~Door() = default;
+    bool addLock(LbrLock *lock);
     int getNumber() const { return number; }
-    void setNumber(int num) { number = num; }
-    bool isLocked() const { return locked; }
-    void setLocked(bool lckd) { locked = lckd; }
-    std::string getName() const override { return "door"; }
+    bool isLocked() const;
+    bool addObject(LbrObject *obj) override;
+    bool removeObject(LbrObject *obj) override;
+    LbrObject* findObject(const Action act) override;
+    std::string getNameString() const override { return "door"; }
+private:
+    enum { maxCapacity = 3 };
+    int number;
+    std::vector<LbrLock*> locks;
 };
 
 #endif

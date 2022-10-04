@@ -22,8 +22,8 @@
 #include "sheet.h"
 #include "backpack.h"
 
-SheetObject::SheetObject(const std::string& rec)
-                            : LabyrinthObject(Labyrinth::ObjectSheet)
+Sheet::Sheet(const std::string& rec)
+                            : LbrObject(Lbr::ObjSheet)
                             , record(rec)
 {
 

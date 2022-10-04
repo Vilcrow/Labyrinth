@@ -21,9 +21,37 @@
 
 #include "door.h"
 
-DoorObject::DoorObject(int num, bool lckd)
-                      : LabyrinthObject(Labyrinth::ObjectDoor)
-                      , number(num), locked(lckd)
+Door::Door(int num) : LbrContainer(Lbr::ObjDoor), number(num)
 {
 
 }
+
+bool Door::addLock(LbrLock *lock)
+{
+    bool result = false;
+    if(locks.size() < maxCapacity) {
+        locks.push_back(lock);
+        result = true;
+    }
+    return result;
+}
+
+bool Door::isLocked() const
+{
+    bool result = false;
+    if(locks.empty())
+        result = false;
+    else {
+        for(const auto& l : locks) {
+            if(l->isLocked()) {   //at least one lock is closed
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+bool Door::addObject(LbrObject *obj) {return false;}
+bool Door::removeObject(LbrObject *obj) {return false;}
+LbrObject* Door::findObject(const Action act) {return nullptr;}

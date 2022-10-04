@@ -26,23 +26,23 @@
 #include "labyrinth.h"
 #include "key.h"
 
-class BackpackContainer : public LabyrinthContainer {
-    enum { maxCapacity = 6 };
-    int capacity;
-    std::vector<LabyrinthObject*> inventory;
+class Backpack : public LbrContainer {
 public:
-    BackpackContainer();
-    virtual ~BackpackContainer() = default;
-    bool addObject(LabyrinthObject *obj) override;
-    bool removeObject(LabyrinthObject *obj) override;
-    int getCapacity() const { return capacity; }
-    LabyrinthObject* findObject(const Action act) override;
-    KeyObject* findKey(int num);
-    std::string getName() const override { return "backpack"; };
-    const std::vector<LabyrinthObject*>& getObjects() const { return inventory; }
+    Backpack();
+    virtual ~Backpack() = default;
+    bool addObject(LbrObject *obj) override;
+    bool removeObject(LbrObject *obj) override;
+    LbrObject* findObject(const Action act) override;
+    const std::vector<LbrObject*>& getObjects() const { return objects; }
+    std::string getNameString() const override { return "backpack"; };
+    Key* findKey(int num);
+    int getCapacity() const { return maxCapacity - objects.size(); }
 private:
-    BackpackContainer(BackpackContainer& other) = delete;
-    BackpackContainer& operator=(BackpackContainer& other) = delete;
+    enum { maxCapacity = 6 };
+    std::vector<LbrObject*> objects;
+
+    Backpack(Backpack& other) = delete;
+    Backpack& operator=(Backpack& other) = delete;
 };
 
 #endif

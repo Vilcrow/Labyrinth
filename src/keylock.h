@@ -19,10 +19,21 @@
 **
 *******************************************************************************/
 
-#include "inscription.h"
+#ifndef KEYLOCK_H_SENTRY
+#define KEYLOCK_H_SENTRY
 
-Inscription::Inscription(std::string i) : LbrObject(Lbr::ObjInscription)
-                                        , inscription(i)
-{
+#include "labyrinth.h"
+#include "key.h"
 
-}
+class KeyLock : public LbrLock {
+public:
+    KeyLock(int num) : LbrLock(Lbr::ObjKeyLock), number(num) {}
+    ~KeyLock() = default;
+    int getNumber() const { return number; }
+    std::string getNameString() const override { return "key lock"; }
+    bool openLock(const Key& key);
+private:
+    int number;
+};
+
+#endif

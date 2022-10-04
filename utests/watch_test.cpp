@@ -24,25 +24,18 @@
 
 TEST_GROUP(WatchGroup)
 {
-    WatchObject *watch;
-    std::string time = "10:15";
-
     void setup()
     {
-        watch = new WatchObject(time);
     }
     void teardown()
     {
-        delete watch;
     }
 };
 
 TEST(WatchGroup, GetTime)
 {
-    CHECK_EQUAL(time, watch->getTime());
 }
 
 TEST(WatchGroup, GetName)
 {
-    CHECK_EQUAL("watch", watch->getName());
 }

@@ -19,10 +19,14 @@
 **
 *******************************************************************************/
 
-#include "inscription.h"
+#include "keylock.h"
 
-Inscription::Inscription(std::string i) : LbrObject(Lbr::ObjInscription)
-                                        , inscription(i)
+bool KeyLock::openLock(const Key& key)
 {
-
+    bool result = false;
+    if(key.getNumber() == number) {
+        setLocked(false);
+        result = true;
+    }
+    return result;
 }

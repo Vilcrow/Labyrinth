@@ -19,10 +19,23 @@
 **
 *******************************************************************************/
 
-#include "inscription.h"
+#include "CppUTest/TestHarness.h"
+#include "keylock.h"
 
-Inscription::Inscription(std::string i) : LbrObject(Lbr::ObjInscription)
-                                        , inscription(i)
+TEST_GROUP(KeyLockGroup)
 {
+    void setup()
+    {
+    }
+    void teardown()
+    {
+    }
+};
 
+TEST(KeyLockGroup, GetName)
+{
+}
+
+TEST(KeyLockGroup, GetNumber)
+{
 }

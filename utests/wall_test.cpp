@@ -25,72 +25,34 @@
 
 TEST_GROUP(WallGroup)
 {
-    WallContainer *wall;
-    KeyObject *key;
-    Action act;
-
     void setup()
     {
-        wall = new WallContainer();
-        key = new KeyObject(5);
     }
     void teardown()
     {
-        delete wall;
-        delete key;
     }
 };
 
 TEST(WallGroup, AddObject)
 {
-    CHECK(wall->getObjects().empty());
-    wall->addObject(key);
-    act.oType = Labyrinth::ObjectKey;
-    CHECK_EQUAL(key, wall->findObject(act));
-    CHECK_FALSE(wall->getObjects().empty());
 }
 
 TEST(WallGroup, RemoveObject)
 {
-    CHECK(wall->getObjects().empty());
-    wall->addObject(key);
-    CHECK_FALSE(wall->getObjects().empty());
-    wall->removeObject(key);
-    CHECK(wall->getObjects().empty());
 }
 
 TEST(WallGroup, GetName)
 {
-    CHECK_EQUAL("wall", wall->getName());
 }
 
 TEST(WallGroup, FindObject)
 {
-    CHECK(wall->getObjects().empty());
-    wall->addObject(key);
-    act.oType = Labyrinth::ObjectKey;
-    CHECK_EQUAL(key, wall->findObject(act));
-    CHECK_FALSE(wall->getObjects().empty());
 }
 
 TEST(WallGroup, GetWallType)
 {
-    CHECK_EQUAL(Labyrinth::WallTop,
-                wall->getWallType(Labyrinth::ObjectWallTop));
-    CHECK_EQUAL(Labyrinth::WallDown,
-                wall->getWallType(Labyrinth::ObjectWallDown));
-    CHECK_EQUAL(Labyrinth::WallLeft,
-                wall->getWallType(Labyrinth::ObjectWallLeft));
-    CHECK_EQUAL(Labyrinth::WallRight,
-                wall->getWallType(Labyrinth::ObjectWallRight));
-    //for non-wall object
-    CHECK_EQUAL(Labyrinth::WallNone,
-                wall->getWallType(Labyrinth::ObjectDoor));
 }
 
 TEST(WallGroup, GetObjects)
 {
-    CHECK(wall->getObjects().empty());
-    wall->addObject(key);
-    CHECK_EQUAL(key, wall->getObjects()[0]);
 }

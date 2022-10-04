@@ -41,81 +41,36 @@ TEST(CommandsGroup, NotNullptr)
 
 TEST(CommandsGroup, CommandToActionWithEmptyInput)
 {
-    std::string input = "";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionNone);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectNone);
-    CHECK_EQUAL(act.number, -1);
 }
 
 TEST(CommandsGroup, CommandToActionWithoutActionInInput)
 {
-    std::string input = "key 2";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionNone);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectKey);
-    CHECK_EQUAL(act.number, 2);
 }
 
 TEST(CommandsGroup, CommandToActionWithoutObjectInInput)
 {
-    std::string input = "take 2";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionTake);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectNone);
-    CHECK_EQUAL(act.number, 2);
 }
 
 TEST(CommandsGroup, CommandToActionWithoutNumberInInput)
 {
-    std::string input = "take key";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionTake);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectKey);
-    CHECK_EQUAL(act.number, -1);
 }
 
 TEST(CommandsGroup, CommandToActionWithInvalidActionInInput)
 {
-    std::string input = "takkkke sheet 2";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionNone);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectSheet);
-    CHECK_EQUAL(act.number, 2);
 }
 
 TEST(CommandsGroup, CommandToActionWithInvalidObjectInInput)
 {
-    std::string input = "take keeeey 5";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionTake);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectNone);
-    CHECK_EQUAL(act.number, 5);
 }
 
 TEST(CommandsGroup, CommandToActionWithInvalidNumberInInput)
 {
-    std::string input = "take key 2df";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionTake);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectKey);
-    CHECK_EQUAL(act.number, -1);
 }
 
 TEST(CommandsGroup, CommandToActionWithFullInvalidInput)
 {
-    std::string input = "takkke keeeey 2df";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionNone);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectNone);
-    CHECK_EQUAL(act.number, -1);
 }
 
 TEST(CommandsGroup, CommandToActionWithFullInput)
 {
-    std::string input = "take key 2";
-    Action act = COMMANDS->cmdToAction(input);
-    CHECK_EQUAL(act.aType, Labyrinth::ActionTake);
-    CHECK_EQUAL(act.oType, Labyrinth::ObjectKey);
-    CHECK_EQUAL(act.number, 2);
 }

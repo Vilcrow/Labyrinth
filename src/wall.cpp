@@ -23,70 +23,53 @@
 #include "commands.h"
 #include "wall.h"
 
-WallContainer::WallContainer() : LabyrinthContainer()
+bool Wall::addContainer(LbrContainer *container)
 {
-
-}
-
-bool WallContainer::addObject(LabyrinthObject *obj)
-{
-    if(!obj) //null pointer
+    if(!container || containers.size() == maxCapacity)
         return false;
-    objects.push_back(obj);
+    containers.push_back(container);
     return true;
 }
 
-LabyrinthObject* WallContainer::findObject(const Action act)
+LbrContainer* Wall::findContainer(const Action act)
 {
-    if(objects.empty())
+    if(containers.empty())
         return nullptr;
-    LabyrinthObject *by_word = nullptr;
-    if(act.oType != Labyrinth::ObjectNone) {
-        for(auto o : objects) {
-            if(o->getType() == act.oType) {
+    LbrContainer *by_word = nullptr;
+    if(act.oName != Lbr::ObjNone) {
+        for(auto o : containers) {
+            if(o->getName() == act.oName) {
                 by_word = o;
                 break;
             }
         }
     }
-    LabyrinthObject *by_number = nullptr;
-    decltype(objects.size()) num = act.number;
-    if(act.number != -1 && num < objects.size())
-        by_number = objects[num];
+    LbrContainer *by_number = nullptr;
+    decltype(containers.size()) num = act.number;
+    if(act.number != -1 && num < containers.size())
+        by_number = containers[num];
     if(!by_number)
         return by_word;
     else if(!by_word)
         return by_number;
-    else if(by_word->getType() == by_number->getType())
+    else if(by_word->getName() == by_number->getName())
         return by_number;
     return by_word;
 }
 
-Labyrinth::WallType WallContainer::getWallType(const Labyrinth::ObjectType type)
+Lbr::WallType Wall::getWallType(const Lbr::ObjName name)
 {
-    switch(type) {
-    case Labyrinth::ObjectWallTop:
-        return Labyrinth::WallTop;
-    case Labyrinth::ObjectWallDown:
-        return Labyrinth::WallDown;
-    case Labyrinth::ObjectWallLeft:
-        return Labyrinth::WallLeft;
-    case Labyrinth::ObjectWallRight:
-        return Labyrinth::WallRight;
+    switch(name) {
+    case Lbr::ObjWallTop:
+        return Lbr::WallTop;
+    case Lbr::ObjWallDown:
+        return Lbr::WallDown;
+    case Lbr::ObjWallLeft:
+        return Lbr::WallLeft;
+    case Lbr::ObjWallRight:
+        return Lbr::WallRight;
     default:                         //invalid type argument
-        return Labyrinth::WallNone;
+        return Lbr::WallNone;
     }
-    return Labyrinth::WallNone;
-}
-
-bool WallContainer::removeObject(LabyrinthObject *obj)
-{
-    if(!obj) //null pointer
-        return false;
-    auto it = find(objects.begin(), objects.end(), obj);
-    if(it != objects.end()) {
-        objects.erase(it);
-        return true;
-    }
-    return false;
+    return Lbr::WallNone;
 }

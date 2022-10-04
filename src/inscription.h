@@ -24,13 +24,14 @@
 
 #include "labyrinth.h"
 
-class InscriptionObject : public LabyrinthObject {
-    std::string inscription;
+class Inscription : public LbrObject {
 public:
-    InscriptionObject(std::string t);
-    ~InscriptionObject() = default;
+    Inscription(std::string t);
+    ~Inscription() = default;
     const std::string& getInscription () const { return inscription; }
-    std::string getName() const override { return "inscription"; }
+    std::string getNameString() const override { return "inscription"; }
+private:
+    std::string inscription;
 };
 
 #endif

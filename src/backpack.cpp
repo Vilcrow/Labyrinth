@@ -23,72 +23,69 @@
 #include "backpack.h"
 #include "commands.h"
 
-BackpackContainer::BackpackContainer() : LabyrinthContainer()
-                                       , capacity(maxCapacity)
+Backpack::Backpack() : LbrContainer(Lbr::ObjBackpack)
 {
 
 }
 
-bool BackpackContainer::addObject(LabyrinthObject *obj)
+bool Backpack::addObject(LbrObject *obj)
 {
     if(!obj) //null pointer
         return false;
-    if(capacity > 0) {
-        inventory.push_back(obj);
-        --capacity;
+    if(objects.size() < maxCapacity) {
+        objects.push_back(obj);
         return true;
     }
     return false; //backpack is full;
 }
 
-bool BackpackContainer::removeObject(LabyrinthObject *obj)
+bool Backpack::removeObject(LbrObject *obj)
 {
     if(!obj) //null pointer
         return false;
-    auto it = find(inventory.begin(), inventory.end(), obj);
-    if(it != inventory.end()) {
-        inventory.erase(it);
-        capacity++;
+    auto it = find(objects.begin(), objects.end(), obj);
+    if(it != objects.end()) {
+        objects.erase(it);
         return true;
     }
     return false;
 }
 
-LabyrinthObject* BackpackContainer::findObject(const Action act)
+LbrObject* Backpack::findObject(const Action act)
 {
-    if(inventory.empty())
+    if(objects.empty())
         return nullptr;
-    LabyrinthObject *by_word = nullptr;
-    if(act.oType != Labyrinth::ObjectNone) {
-        for(auto o : inventory) {
-            if(o->getType() == act.oType) {
+    LbrObject *by_word = nullptr;
+    if(act.oName != Lbr::ObjNone) {
+        for(auto o : objects) {
+            if(o->getName() == act.oName) {
                 by_word = o;
                 break;
             }
         }
     }
-    LabyrinthObject *by_number = nullptr;
-    decltype(inventory.size()) num = act.number;
-    if(act.number != -1 && num < inventory.size())
-        by_number = inventory[num];
+    LbrObject *by_number = nullptr;
+    decltype(objects.size()) num = act.number;
+    if(act.number != -1 && num < objects.size())
+        by_number = objects[num];
     if(!by_number)
         return by_word;
     else if(!by_word)
         return by_number;
-    else if(by_word->getType() == by_number->getType())
+    else if(by_word->getName() == by_number->getName())
         return by_number;
     return by_word;
 }
 
-KeyObject* BackpackContainer::findKey(int num)
+Key* Backpack::findKey(int num)
 {
-    KeyObject *result = nullptr;
-    if(inventory.empty())
+    Key *result = nullptr;
+    if(objects.empty())
         return result;
-    for(auto o : inventory) {
-        if(o->getType() == Labyrinth::ObjectKey) {
-            if(static_cast<KeyObject*>(o)->getNumber() == num) {
-                result = static_cast<KeyObject*>(o);
+    for(auto o : objects) {
+        if(o->getName() == Lbr::ObjKey) {
+            if(static_cast<Key*>(o)->getNumber() == num) {
+                result = static_cast<Key*>(o);
                 break;
             }
         }
