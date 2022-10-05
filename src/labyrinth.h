@@ -57,6 +57,7 @@ public:
                      ObjKeyLock,
                      ObjRoom,
                      ObjSheet,
+                     ObjShelf,
                      ObjWall,
                      ObjWallTop,
                      ObjWallDown,
@@ -65,18 +66,17 @@ public:
                      ObjWatch
     };
     enum ObjType {
-                        None,
-                        Object,
-                        Container
+                     None,
+                     Object,
+                     Container
     };
-    enum WallType   {
+    enum WallType {
                      WallNone,
                      WallDown,
                      WallLeft,
                      WallRight,
                      WallTop
     };
-
     Lbr() = delete;
     ~Lbr() = delete;
 };
@@ -95,21 +95,26 @@ private:
 //parent abstract class for container objects
 class LbrContainer {
 public:
-    LbrContainer(Lbr::ObjName n) : name(n) {}
+    LbrContainer(Lbr::ObjName n, unsigned int c = 3) : name(n), maxCap(c) {}
     virtual ~LbrContainer() {}
-    virtual bool addObject(LbrObject *obj) = 0;
-    virtual bool removeObject(LbrObject *obj) = 0;
-    virtual LbrObject* findObject(const Action act) = 0;
+    bool addObject(LbrObject *obj);
+    bool removeObject(LbrObject *obj);
+    LbrObject* findObject(const Action act);
     virtual std::string getNameString() const = 0; 
     Lbr::ObjName getName() const { return name; }
+    const std::vector<LbrObject*>& getObjects() const { return objects; }
+    const unsigned int getCapacity() const { return maxCap; }
+    void setCapacity(unsigned int c) { maxCap = c; }
 private:
     Lbr::ObjName name;
+    std::vector<LbrObject*> objects;
+    unsigned int maxCap;
 };
 
 //parent abstract class for lock objects
 class LbrLock {
 public:
-    LbrLock(Lbr::ObjName n) : name(n), locked(true) {}
+    LbrLock(Lbr::ObjName n, bool lckd = true) : name(n), locked(lckd) {}
     virtual ~LbrLock() {}
     Lbr::ObjName getName() const { return name; }
     bool isLocked() { return locked; }

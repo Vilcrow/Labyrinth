@@ -29,6 +29,7 @@
 #include "inscription.h"
 #include "room.h"
 #include "sheet.h"
+#include "shelf.h"
 #include "watch.h"
 
 class Game {
@@ -56,8 +57,10 @@ private:
     std::string ActionWithKey(Lbr::ActType aType, Key *key);
     std::string ActionWithRoom(Lbr::ActType aType, Room *room);
     std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);
+    std::string ActionWithShelf(Lbr::ActType aType);
     std::string ActionWithWall(Lbr::ActType aType);
     std::string ActionWithWatch(Lbr::ActType aType, Watch *watch);
+    std::string OpenLock(LbrLock *lock);
 };
 
 #endif

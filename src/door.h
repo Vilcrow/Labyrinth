@@ -28,17 +28,15 @@ class Door : public LbrContainer {
 public:
     Door(int num);
     virtual ~Door() = default;
-    bool addLock(LbrLock *lock);
     int getNumber() const { return number; }
     bool isLocked() const;
-    bool addObject(LbrObject *obj) override;
-    bool removeObject(LbrObject *obj) override;
-    LbrObject* findObject(const Action act) override;
     std::string getNameString() const override { return "door"; }
+    bool addLock(LbrLock *lck);
+    LbrLock* getLock() const { return lock; }
+    void unblock();
 private:
-    enum { maxCapacity = 3 };
     int number;
-    std::vector<LbrLock*> locks;
+    LbrLock *lock;
 };
 
 #endif

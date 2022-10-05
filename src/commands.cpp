@@ -19,10 +19,10 @@
 **
 *******************************************************************************/
 
+#include "commands.h"
 #include <algorithm>
 #include <iostream>
 #include <set>
-#include "commands.h"
 
 Commands* Commands::uniqueInstance = nullptr;
 
@@ -52,6 +52,7 @@ Commands::Commands()
                      , { "right"       , Lbr::ObjWallRight,   }
                      , { "room"        , Lbr::ObjRoom,        }
                      , { "sheet"       , Lbr::ObjSheet,       }
+                     , { "shelf"       , Lbr::ObjShelf,       }
                      , { "top"         , Lbr::ObjWallTop,     }
                      , { "wall"        , Lbr::ObjWall,        }
                      , { "watch"       , Lbr::ObjWatch,       }
@@ -59,17 +60,18 @@ Commands::Commands()
     objectType     = { { Lbr::ObjBattery,     Lbr::Object    }
                      , { Lbr::ObjBackpack,    Lbr::Container }
                      , { Lbr::ObjDoor,        Lbr::Container }
-                     , { Lbr::ObjWallDown,    Lbr::Container }
+                     , { Lbr::ObjWallDown,    Lbr::None      }
                      , { Lbr::ObjInscription, Lbr::Object    }
                      , { Lbr::ObjFlashlight,  Lbr::Container }
                      , { Lbr::ObjKey,         Lbr::Object    }
-                     , { Lbr::ObjWallLeft,    Lbr::Container }
-                     , { Lbr::ObjWallRight,   Lbr::Container }
-                     , { Lbr::ObjRoom,        Lbr::Container }
-                     , { Lbr::ObjSheet,       Lbr::Container }
-                     , { Lbr::ObjWallTop,     Lbr::Container }
-                     , { Lbr::ObjWall,        Lbr::Container }
-                     , { Lbr::ObjWatch,       Lbr::Container }
+                     , { Lbr::ObjWallLeft,    Lbr::None      }
+                     , { Lbr::ObjWallRight,   Lbr::None      }
+                     , { Lbr::ObjRoom,        Lbr::None      }
+                     , { Lbr::ObjSheet,       Lbr::Object    }
+                     , { Lbr::ObjShelf,       Lbr::Container }
+                     , { Lbr::ObjWallTop,     Lbr::None      }
+                     , { Lbr::ObjWall,        Lbr::None      }
+                     , { Lbr::ObjWatch,       Lbr::Object    }
                      };
 }
 

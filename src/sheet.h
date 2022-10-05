@@ -22,8 +22,8 @@
 #ifndef SHEET_H_SENTRY
 #define SHEET_H_SENTRY
 
-#include <string>
 #include "labyrinth.h"
+#include <string>
 
 class Sheet : public LbrObject {
 public:

@@ -19,10 +19,10 @@
 **
 *******************************************************************************/
 
-#include <iostream>
 #include "labyrinth.h"
 #include "game.h"
 #include "keylock.h"
+#include <iostream>
 
 Game::Game()
 {
@@ -110,12 +110,18 @@ void Game::generateMap()
     }
     Door *door = nullptr;
     KeyLock *keylock = nullptr;
+    Key *key = nullptr;
+    Shelf *shelf = nullptr;
     //ROOM 1
     //wall TOP
     door = new Door(2);
     keylock = new KeyLock(2);
     door->addLock(keylock);
     gameMap[1]->addContainer(Lbr::WallTop, door);
+    shelf = new Shelf();
+    key = new Key(2);
+    shelf->addObject(key);
+    gameMap[1]->addContainer(Lbr::WallLeft, shelf);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
@@ -123,6 +129,10 @@ void Game::generateMap()
     //wall TOP
     //wall LEFT
     //wall DOWN
+    door = new Door(1);
+    keylock = new KeyLock(1);
+    door->addLock(keylock);
+    gameMap[2]->addContainer(Lbr::WallDown, door);
     //wall RIGHT
 }
 
@@ -170,6 +180,9 @@ std::string Game::handleActionWithContainer(Action act)
     switch(act.oName) {
     case Lbr::ObjDoor:
         result = ActionWithDoor(act.aType);
+        break;
+    case Lbr::ObjShelf:
+        result = ActionWithShelf(act.aType);
         break;
     default:
         result = "Default result.";
@@ -225,10 +238,8 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
             roomNumber = door->getNumber();
             //open the return door in current room
             back_door = gameMap[roomNumber]->findDoor(prev_room);
-/*
             if(back_door)
-                back_door->setLocked(false);
-*/
+                back_door->unblock();
             curContainer = nullptr;
             result = "You entered room ";
             result += std::to_string(roomNumber);
@@ -238,13 +249,15 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
     case Lbr::ActOpen:
         if(!door->isLocked())
             result = "Door already opened.";
-        else {
-//TBD
-        }
+        else
+            result = OpenLock(door->getLock());
         break;
     case Lbr::ActInspect:
         result = "You see door with number ";
-        result += std::to_string(door->getNumber()) + ".";
+        result += std::to_string(door->getNumber());
+        if(door->getLock())
+            result += " and " + door->getLock()->getNameString();
+        result += ".";
         break;
     default:
         result = "Impossible action with the door.";
@@ -287,6 +300,27 @@ std::string Game::ActionWithKey(Lbr::ActType aType, Key *key)
 
 }
 
+std::string Game::OpenLock(LbrLock *lock)
+{
+    std::string result;
+    Action act;
+    if(lock->getName() == Lbr::ObjKeyLock) {
+        act.oName = Lbr::ObjKey;
+        Key *key = backpack->findKey(static_cast<Door*>(curContainer)->getNumber());
+        if(!key)
+            result = "Need a key.";
+        else {
+            if(static_cast<KeyLock*>(lock)->openLock(*key))
+                result = "Opened.";
+            else
+                result = "The key does't fit.";
+        }
+    }
+    else if(lock->getName() == Lbr::ObjKeyLock) {
+    }
+    return result;
+}
+
 std::string Game::ActionWithRoom(Lbr::ActType aType, Room *room)
 {
     std::string result;
@@ -316,6 +350,21 @@ std::string Game::ActionWithSheet(Lbr::ActType aType, Sheet *sheet)
         break;
     default:
         result = "Impossible action with the sheet.";
+    }
+    return result;
+}
+
+std::string Game::ActionWithShelf(Lbr::ActType aType)
+{
+    std::string result;
+    Shelf *shelf = static_cast<Shelf*>(curContainer);
+    switch(aType) {
+    case Lbr::ActInspect:
+        result = "In shelf: ";
+        result += LbrObjectsList<LbrObject>(shelf->getObjects());
+        break;
+    default:
+        result = "Impossible action with the shelf.";
     }
     return result;
 }

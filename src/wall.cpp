@@ -19,9 +19,9 @@
 **
 *******************************************************************************/
 
-#include <algorithm>
 #include "commands.h"
 #include "wall.h"
+#include <algorithm>
 
 bool Wall::addContainer(LbrContainer *container)
 {

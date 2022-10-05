@@ -19,34 +19,52 @@
 **
 *******************************************************************************/
 
-#include "door.h"
+#include "labyrinth.h"
+#include <algorithm>
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor), number(num), lock(nullptr)
-{
-
-}
-
-bool Door::addLock(LbrLock *lck)
+bool LbrContainer::addObject(LbrObject *obj)
 {
     bool result = false;
-    if(!lock) {
-        lock = lck;
+    if(obj && objects.size() < maxCap) {
+        objects.push_back(obj);
         result = true;
     }
     return result;
 }
 
-bool Door::isLocked() const
+bool LbrContainer::removeObject(LbrObject *obj)
 {
     bool result = false;
-    if(lock && lock->isLocked())
+    auto it = find(objects.begin(), objects.end(), obj);
+    if(obj && it != objects.end()) {
+        objects.erase(it);
         result = true;
+    }
     return result;
 }
 
-void Door::unblock()
+LbrObject* LbrContainer::findObject(const Action act)
 {
-    if(!lock)
-        return;
-    lock->setLocked(false); 
+    if(objects.empty())
+        return nullptr;
+    LbrObject *by_word = nullptr;
+    if(act.oName != Lbr::ObjNone) {
+        for(auto o : objects) {
+            if(o->getName() == act.oName) {
+                by_word = o;
+                break;
+            }
+        }
+    }
+    LbrObject *by_number = nullptr;
+    decltype(objects.size()) num = act.number;
+    if(act.number != -1 && num < objects.size())
+        by_number = objects[num];
+    if(!by_number)
+        return by_word;
+    else if(!by_word)
+        return by_number;
+    else if(by_word->getName() == by_number->getName())
+        return by_number;
+    return by_word;
 }

@@ -7,8 +7,10 @@ set(APP_LIB_SOURCE
     inscription.cpp
     key.cpp
     keylock.cpp
+    labyrinth.cpp
     room.cpp
     sheet.cpp
+    shelf.cpp
     wall.cpp
     watch.cpp
 )

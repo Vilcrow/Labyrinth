@@ -22,8 +22,8 @@
 #ifndef WALL_H_SENTRY
 #define WALL_H_SENTRY
 
-#include <vector>
 #include "labyrinth.h"
+#include <vector>
 
 class Wall {
 public:

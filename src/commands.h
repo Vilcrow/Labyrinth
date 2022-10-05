@@ -22,10 +22,10 @@
 #ifndef COMMANDS_H_SENTRY
 #define COMMANDS_H_SENTRY
 
-#include <string>
-#include <map>
-#include <vector>
 #include "labyrinth.h"
+#include <map>
+#include <string>
+#include <vector>
 
 #define COMMANDS Commands::instance()
 

@@ -20,11 +20,8 @@
 *******************************************************************************/
 
 #include "sheet.h"
-#include "backpack.h"
 
-Sheet::Sheet(const std::string& rec)
-                            : LbrObject(Lbr::ObjSheet)
-                            , record(rec)
+Sheet::Sheet(const std::string& rec) : LbrObject(Lbr::ObjSheet), record(rec)
 {
 
 }

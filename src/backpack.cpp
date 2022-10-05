@@ -19,67 +19,18 @@
 **
 *******************************************************************************/
 
-#include <algorithm>
 #include "backpack.h"
 #include "commands.h"
 
-Backpack::Backpack() : LbrContainer(Lbr::ObjBackpack)
+Backpack::Backpack() : LbrContainer(Lbr::ObjBackpack, maxCapacity)
 {
 
-}
-
-bool Backpack::addObject(LbrObject *obj)
-{
-    if(!obj) //null pointer
-        return false;
-    if(objects.size() < maxCapacity) {
-        objects.push_back(obj);
-        return true;
-    }
-    return false; //backpack is full;
-}
-
-bool Backpack::removeObject(LbrObject *obj)
-{
-    if(!obj) //null pointer
-        return false;
-    auto it = find(objects.begin(), objects.end(), obj);
-    if(it != objects.end()) {
-        objects.erase(it);
-        return true;
-    }
-    return false;
-}
-
-LbrObject* Backpack::findObject(const Action act)
-{
-    if(objects.empty())
-        return nullptr;
-    LbrObject *by_word = nullptr;
-    if(act.oName != Lbr::ObjNone) {
-        for(auto o : objects) {
-            if(o->getName() == act.oName) {
-                by_word = o;
-                break;
-            }
-        }
-    }
-    LbrObject *by_number = nullptr;
-    decltype(objects.size()) num = act.number;
-    if(act.number != -1 && num < objects.size())
-        by_number = objects[num];
-    if(!by_number)
-        return by_word;
-    else if(!by_word)
-        return by_number;
-    else if(by_word->getName() == by_number->getName())
-        return by_number;
-    return by_word;
 }
 
 Key* Backpack::findKey(int num)
 {
     Key *result = nullptr;
+    std::vector<LbrObject*> objects = getObjects();
     if(objects.empty())
         return result;
     for(auto o : objects) {

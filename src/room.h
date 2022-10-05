@@ -22,10 +22,10 @@
 #ifndef ROOM_H_SENTRY
 #define ROOM_H_SENTRY
 
-#include <map>
-#include "door.h"
 #include "labyrinth.h"
+#include "door.h"
 #include "wall.h"
+#include <map>
 
 class Room {
 public:

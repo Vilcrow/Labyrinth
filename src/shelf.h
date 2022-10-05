@@ -19,25 +19,19 @@
 **
 *******************************************************************************/
 
-#ifndef BACKPACK_H_SENTRY
-#define BACKPACK_H_SENTRY
+#ifndef SHELF_H_SENTRY
+#define SHELF_H_SENTRY
 
 #include "labyrinth.h"
-#include "key.h"
-#include <vector>
 
-class Backpack : public LbrContainer {
+class Shelf : public LbrContainer {
 public:
-    Backpack();
-    virtual ~Backpack() = default;
-    std::string getNameString() const override { return "backpack"; };
-    Key* findKey(int num);
-    int getCapacity() const { return maxCapacity - getObjects().size(); }
+    Shelf();
+    virtual ~Shelf() = default;
+    std::string getNameString() const override { return "shelf"; }
 private:
-    enum { maxCapacity = 6 };
-
-    Backpack(Backpack& other) = delete;
-    Backpack& operator=(Backpack& other) = delete;
+    enum { maxCapacity = 3 };
+    std::vector<LbrObject*> objects;
 };
 
 #endif
