@@ -24,18 +24,28 @@
 
 TEST_GROUP(InscriptionGroup)
 {
+    Inscription *inscription = nullptr;
     void setup()
     {
+        inscription = new Inscription("Hello.");
     }
     void teardown()
     {
+        delete inscription;
     }
 };
 
 TEST(InscriptionGroup, GetInscription)
 {
+    CHECK_EQUAL("Hello.", inscription->getInscription());
 }
 
 TEST(InscriptionGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjInscription, inscription->getName());
+}
+
+TEST(InscriptionGroup, GetNameString)
+{
+    CHECK_EQUAL("inscription", inscription->getNameString());
 }

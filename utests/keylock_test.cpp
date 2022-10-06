@@ -24,18 +24,37 @@
 
 TEST_GROUP(KeyLockGroup)
 {
+    KeyLock *keylock = nullptr;
+    Key *key = nullptr;
+    int key_num;
     void setup()
     {
+        keylock = new KeyLock(key_num);
+        key = new Key(key_num);
     }
     void teardown()
     {
+        delete keylock;
+        delete key;
     }
 };
 
 TEST(KeyLockGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjKeyLock, keylock->getName());
+}
+
+TEST(KeyLockGroup, GetNameString)
+{
+    CHECK_EQUAL("key lock", keylock->getNameString());
 }
 
 TEST(KeyLockGroup, GetNumber)
 {
+    CHECK_EQUAL(key_num, keylock->getNumber());
+}
+
+TEST(KeyLockGroup, OpenLock)
+{
+    CHECK(keylock->openLock(*key));
 }

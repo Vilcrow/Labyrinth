@@ -21,7 +21,8 @@
 
 #include "battery.h"
 
-Battery::Battery(int chrg) : LbrObject(Lbr::ObjBattery), charge(chrg)
+Battery::Battery(unsigned int chrg) : LbrObject(Lbr::ObjBattery)
+                                    , charge(chrg)
 {
 
 }

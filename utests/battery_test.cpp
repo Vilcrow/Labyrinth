@@ -24,18 +24,29 @@
 
 TEST_GROUP(BatteryGroup)
 {
+    Battery *battery = nullptr;
+    int charge = 100;
     void setup()
     {
+        battery = new Battery(charge);
     }
     void teardown()
     {
+        delete battery;
     }
 };
 
 TEST(BatteryGroup, GetCharge)
 {
+    CHECK_EQUAL(charge, battery->getCharge());
 }
 
 TEST(BatteryGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjBattery, battery->getName());
+}
+
+TEST(BatteryGroup, GetNameString)
+{
+    CHECK_EQUAL("battery", battery->getNameString());
 }

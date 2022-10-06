@@ -37,7 +37,7 @@ public:
     Game();
     ~Game() = delete;
     void run();
-    bool save();
+    std::string save();
 private:
     int roomNumber;
     Lbr::WallType curWallType;

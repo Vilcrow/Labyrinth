@@ -19,19 +19,51 @@
 **
 *******************************************************************************/
 
-#ifndef BATTERY_H_SENTRY
-#define BATTERY_H_SENTRY
-
+#include "CppUTest/TestHarness.h"
 #include "labyrinth.h"
 
-class Battery : public LbrObject {
-public:
-    Battery(unsigned int chrg = 0);
-    ~Battery() = default;
-    int getCharge() const { return charge; }
-    std::string getNameString() const override { return "battery"; }
-private:
-    unsigned int charge;
+TEST_GROUP(LbrContainerGroup)
+{
+    void setup()
+    {
+    }
+    void teardown()
+    {
+    }
 };
 
-#endif
+TEST(LbrContainerGroup, EmptyAfterCreation)
+{
+}
+
+TEST(LbrContainerGroup, AddObject)
+{
+}
+
+TEST(LbrContainerGroup, RemoveObject)
+{
+}
+
+TEST(LbrContainerGroup, CannotAddObjectToFullLbrContainer)
+{
+}
+
+TEST(LbrContainerGroup, GetCapacity)
+{
+}
+
+TEST(LbrContainerGroup, FindObject)
+{
+}
+
+TEST(LbrContainerGroup, FindKey)
+{
+}
+
+TEST(LbrContainerGroup, GetName)
+{
+}
+
+TEST(LbrContainerGroup, GetObjects)
+{
+}

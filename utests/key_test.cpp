@@ -24,18 +24,29 @@
 
 TEST_GROUP(KeyGroup)
 {
+    Key *key = nullptr;
+    int key_num = 5;
     void setup()
     {
+        key = new Key(key_num);
     }
     void teardown()
     {
+        delete key;
     }
 };
 
 TEST(KeyGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjKey, key->getName());
+}
+
+TEST(KeyGroup, GetNameString)
+{
+    CHECK_EQUAL("key", key->getNameString());
 }
 
 TEST(KeyGroup, GetNumber)
 {
+    CHECK_EQUAL(key_num, key->getNumber());
 }

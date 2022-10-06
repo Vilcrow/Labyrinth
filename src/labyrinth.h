@@ -104,7 +104,7 @@ public:
     Lbr::ObjName getName() const { return name; }
     const std::vector<LbrObject*>& getObjects() const { return objects; }
     const unsigned int getCapacity() const { return maxCap; }
-    void setCapacity(unsigned int c) { maxCap = c; }
+    //void setCapacity(unsigned int c) { maxCap = c; }
 private:
     Lbr::ObjName name;
     std::vector<LbrObject*> objects;

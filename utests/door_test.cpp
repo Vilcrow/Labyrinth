@@ -21,29 +21,55 @@
 
 #include "CppUTest/TestHarness.h"
 #include "door.h"
+#include "keylock.h"
 
 TEST_GROUP(DoorGroup)
 {
+    Door *door = nullptr;
+    KeyLock *keylock = nullptr;
+    int door_num = 5;
     void setup()
     {
+        door = new Door(door_num);
+        keylock = new KeyLock(door_num);
     }
     void teardown()
     {
+        delete door;
+        delete keylock;
     }
 };
 
 TEST(DoorGroup, GetNumber)
 {
+    CHECK_EQUAL(door_num, door->getNumber());
 }
 
-TEST(DoorGroup, SetNumber)
+TEST(DoorGroup, ActionsWithLock)
 {
-}
-
-TEST(DoorGroup, IsLockedAndSetLocked)
-{
+    CHECK_FALSE(door->isLocked());
+    CHECK_FALSE(door->getLock());
+    CHECK(door->addLock(keylock));
+    CHECK(door->isLocked());
+    CHECK_EQUAL(keylock, door->getLock());
+    door->unblock();
+    CHECK_FALSE(door->isLocked());
 }
 
 TEST(DoorGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjDoor, door->getName());
+}
+
+TEST(DoorGroup, GetNameString)
+{
+    CHECK_EQUAL("door", door->getNameString());
+}
+
+TEST(DoorGroup, AddObject)
+{
+    Key key(4);
+    CHECK_FALSE(door->addObject(&key));
+    CHECK_FALSE(door->removeObject(&key));
+    CHECK_EQUAL(nullptr, door->findObject(Action(Lbr::ActNone, Lbr::ObjKey)));
 }

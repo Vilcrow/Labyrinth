@@ -26,8 +26,11 @@ bool LbrContainer::addObject(LbrObject *obj)
 {
     bool result = false;
     if(obj && objects.size() < maxCap) {
-        objects.push_back(obj);
-        result = true;
+        auto it = find(objects.begin(), objects.end(), obj);
+        if(it == objects.end()) {   //preventing re-adding
+            objects.push_back(obj);
+            result = true;
+        }
     }
     return result;
 }

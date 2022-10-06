@@ -43,22 +43,19 @@ void Game::run()
             continue;
         }
         Action action = COMMANDS->cmdToAction(input);
-        if(action.aType == Lbr::ActNone ||
-           (action.oName == Lbr::ObjNone && action.number == -1)) {
+        if(action.aType == Lbr::ActNone)
+            result = "Specify the action.";
+        else if(action.oName == Lbr::ObjNone && action.number == -1) {
             if(action.aType == Lbr::ActSave) {
-                save();
-                continue;
+                result = save();
             }
-            else if(action.aType == Lbr::ActQuit) {
+            else if(action.aType == Lbr::ActQuit)  //quit the game
+//TBD
                 break;
-            }
-            else {
-                std::cout << "Invalid input." << std::endl;
-                std::cout << "> ";
-                continue;
-            }
+            else
+                result = "Specify the object.";
         }
-        if(action.oName == Lbr::ObjBackpack) {
+        else if(action.oName == Lbr::ObjBackpack) {
             curContainer = backpack;
             result = ActionWithBackpack(action.aType);
         }
@@ -66,18 +63,31 @@ void Game::run()
             curContainer = nullptr;
             result = ActionWithRoom(action.aType, gameMap[roomNumber]);
         }
-        else if(action.oName == Lbr::ObjWall)
+        else if(action.oName == Lbr::ObjWall) {
+            curContainer = nullptr;
             result = ActionWithWall(action.aType);
+        }
         else if(action.oName == Lbr::ObjWallTop   ||
                 action.oName == Lbr::ObjWallDown  ||
                 action.oName == Lbr::ObjWallLeft  ||
                 action.oName == Lbr::ObjWallRight) {
+            curContainer = nullptr;
             curWallType = Wall::getWallType(action.oName);
             result = ActionWithWall(action.aType);
         }
         else {
+            if(action.oName == Lbr::ObjNone && action.number != -1) {
+                if(!curContainer) {
+                    action.oType = Lbr::Container;
+                }
+                else {
+                    action.oType = Lbr::Object;
+                }
+            }
             if(action.oType == Lbr::Object) {
                 LbrObject *object = curContainer->findObject(action);
+                if(!object && action.aType == Lbr::ActThrow)
+                    object = backpack->findObject(action);
                 if(!object)
                     result = "No such item ";
                 else {
@@ -112,19 +122,34 @@ void Game::generateMap()
     KeyLock *keylock = nullptr;
     Key *key = nullptr;
     Shelf *shelf = nullptr;
+    Sheet *sheet = nullptr;
     //ROOM 1
     //wall TOP
     door = new Door(2);
     keylock = new KeyLock(2);
     door->addLock(keylock);
     gameMap[1]->addContainer(Lbr::WallTop, door);
+    //wall LEFT
+    door = new Door(4);
+    keylock = new KeyLock(4);
+    door->addLock(keylock);
+    gameMap[1]->addContainer(Lbr::WallLeft, door);
     shelf = new Shelf();
     key = new Key(2);
     shelf->addObject(key);
+    sheet = new Sheet("Qui quaerit, reperit.");
+    shelf->addObject(sheet);
     gameMap[1]->addContainer(Lbr::WallLeft, shelf);
-    //wall LEFT
     //wall DOWN
+    door = new Door(6);
+    keylock = new KeyLock(6);
+    door->addLock(keylock);
+    gameMap[1]->addContainer(Lbr::WallDown, door);
     //wall RIGHT
+    door = new Door(8);
+    keylock = new KeyLock(8);
+    door->addLock(keylock);
+    gameMap[1]->addContainer(Lbr::WallRight, door);
     //ROOM 2
     //wall TOP
     //wall LEFT
@@ -133,6 +158,33 @@ void Game::generateMap()
     keylock = new KeyLock(1);
     door->addLock(keylock);
     gameMap[2]->addContainer(Lbr::WallDown, door);
+    //wall RIGHT
+    //ROOM 4
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    door = new Door(1);
+    keylock = new KeyLock(1);
+    door->addLock(keylock);
+    gameMap[4]->addContainer(Lbr::WallRight, door);
+    //ROOM 6
+    //wall TOP
+    door = new Door(1);
+    keylock = new KeyLock(1);
+    door->addLock(keylock);
+    gameMap[6]->addContainer(Lbr::WallTop, door);
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //ROOM 8
+    //wall TOP
+    //wall LEFT
+    door = new Door(1);
+    keylock = new KeyLock(1);
+    door->addLock(keylock);
+    gameMap[8]->addContainer(Lbr::WallLeft, door);
+    //wall DOWN
     //wall RIGHT
 }
 
@@ -145,12 +197,16 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjBattery:
         result = ActionWithBattery(act.aType, static_cast<Battery*>(obj));
         break;
+    case Lbr::ObjDigitalLock: //?????????????????
+        break;
     case Lbr::ObjInscription:
         result = ActionWithInscription(act.aType,
                                        static_cast<Inscription*>(obj));
         break;
     case Lbr::ObjKey:
         result = ActionWithKey(act.aType, static_cast<Key*>(obj));
+        break;
+    case Lbr::ObjKeyLock: //?????????????????
         break;
     case Lbr::ObjRoom:
         result = ActionWithRoom(act.aType, gameMap[roomNumber]);
@@ -164,6 +220,9 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
 //no processing required
     case Lbr::ObjNone:
     case Lbr::ObjBackpack:
+    case Lbr::ObjDoor:
+    case Lbr::ObjFlashlight:
+    case Lbr::ObjShelf:
     case Lbr::ObjWall:
     case Lbr::ObjWallDown:
     case Lbr::ObjWallLeft:
@@ -290,14 +349,30 @@ std::string Game::ActionWithKey(Lbr::ActType aType, Key *key)
         result += std::to_string(key->getNumber()) + ".";
         break;
     case Lbr::ActTake:
+        if(curContainer != backpack && backpack->addObject(key)) {
+            curContainer->removeObject(key);
+            result = "Done.";
+        }
+        else if(curContainer == backpack)
+            result = "Already in backpack.";
+        else
+            result = "Backpack is full.";
         break;
     case Lbr::ActThrow:
+        if(curContainer && curContainer != backpack
+                        && curContainer->addObject(key)) {
+            backpack->removeObject(key);
+            result = "Done.";
+        }
+        else if(!curContainer || curContainer == backpack)
+            result = "Find a place to throw it away.";
+        else
+            result = curContainer->getNameString() + " is full.";
         break;
     default:
         result = "Impossible action with the key.";
     }
     return result;
-
 }
 
 std::string Game::OpenLock(LbrLock *lock)
@@ -401,7 +476,7 @@ std::string Game::ActionWithWatch(Lbr::ActType aType, Watch *watch)
     return result;
 }
 
-bool Game::save()
+std::string Game::save()
 {
-    return true;
+    return "Saved.";
 }

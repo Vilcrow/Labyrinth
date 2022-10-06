@@ -21,7 +21,7 @@
 
 #include "door.h"
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor), number(num), lock(nullptr)
+Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0), number(num), lock(nullptr)
 {
 
 }
