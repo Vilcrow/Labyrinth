@@ -25,10 +25,15 @@
 
 bool Wall::addContainer(LbrContainer *container)
 {
-    if(!container || containers.size() == maxCapacity)
-        return false;
-    containers.push_back(container);
-    return true;
+    bool result = false;
+    if(container && containers.size() < maxCapacity) {
+        auto it = find(containers.begin(), containers.end(), container);
+        if(it == containers.end()) {   //preventing re-adding
+            containers.push_back(container);
+            result = true;
+        }
+    }
+    return result;
 }
 
 LbrContainer* Wall::findContainer(const Action act)

@@ -25,30 +25,49 @@
 
 TEST_GROUP(RoomGroup)
 {
+    Room *room = nullptr;
+    Door *door = nullptr;
+    int room_num = 31;
+    int door_num = 32;
     void setup()
     {
+        room = new Room(room_num);
+        door = new Door(door_num);
     }
     void teardown()
     {
+        delete room;
+        delete door;
     }
 };
 
-TEST(RoomGroup, AddObject)
+TEST(RoomGroup, AddContainer)
 {
+    CHECK(room->addContainer(Lbr::WallLeft, door));
 }
 
-TEST(RoomGroup, SetAndGetCurrentWall)
+TEST(RoomGroup, GetWall)
 {
+    CHECK_FALSE(nullptr == room->getWall(Lbr::WallTop));
 }
 
 TEST(RoomGroup, GetNumber)
 {
+    CHECK_EQUAL(room_num, room->getNumber());
 }
 
 TEST(RoomGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjRoom, room->getName());
+}
+
+TEST(RoomGroup, GetNameString)
+{
+    CHECK_EQUAL("room", room->getNameString());
 }
 
 TEST(RoomGroup, FindDoor)
 {
+    CHECK(room->addContainer(Lbr::WallLeft, door));
+    CHECK_EQUAL(door, room->findDoor(door_num));
 }

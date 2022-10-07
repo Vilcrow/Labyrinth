@@ -28,6 +28,14 @@ Room::Room(int num) : number(num)
     walls[Lbr::WallLeft] = new Wall();
     walls[Lbr::WallRight] = new Wall();
 }
+Room::~Room()
+{
+    delete walls[Lbr::WallTop];
+    delete walls[Lbr::WallDown];
+    delete walls[Lbr::WallLeft];
+    delete walls[Lbr::WallRight];
+}
+
 //add container object to corresponding wall
 bool Room::addContainer(Lbr::WallType wType, LbrContainer *container)
 {

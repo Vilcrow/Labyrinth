@@ -70,6 +70,6 @@ TEST(DoorGroup, AddObject)
 {
     Key key(4);
     CHECK_FALSE(door->addObject(&key));
-    CHECK_FALSE(door->removeObject(&key));
     CHECK_EQUAL(nullptr, door->findObject(Action(Lbr::ActNone, Lbr::ObjKey)));
+    CHECK_FALSE(door->removeObject(&key));
 }

@@ -24,18 +24,29 @@
 
 TEST_GROUP(WatchGroup)
 {
+    Watch *watch = nullptr;
+    const char *time = "11:53";
     void setup()
     {
+        watch = new Watch(time);
     }
     void teardown()
     {
+        delete watch;
     }
 };
 
 TEST(WatchGroup, GetTime)
 {
+    CHECK_EQUAL(time, watch->getTime());
 }
 
 TEST(WatchGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjWatch, watch->getName());
+}
+
+TEST(WatchGroup, GetNameString)
+{
+    CHECK_EQUAL("watch", watch->getNameString());
 }

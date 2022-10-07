@@ -20,39 +20,56 @@
 *******************************************************************************/
 
 #include "wall.h"
-#include "key.h"
+#include "door.h"
 #include "CppUTest/TestHarness.h"
 
 TEST_GROUP(WallGroup)
 {
+    Wall *wall = nullptr;
+    Door *door = nullptr;
+    int door_num = 6;
     void setup()
     {
+        wall = new Wall();
+        door = new Door(door_num);
     }
     void teardown()
     {
+        delete wall;
+        delete door;
     }
 };
 
-TEST(WallGroup, AddObject)
+TEST(WallGroup, AddOContainer)
 {
-}
-
-TEST(WallGroup, RemoveObject)
-{
+    CHECK(wall->addContainer(door));
+    CHECK_FALSE(wall->addContainer(door)); //re-adding
 }
 
 TEST(WallGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjWall, wall->getName());
 }
 
-TEST(WallGroup, FindObject)
+TEST(WallGroup, GetNameString)
 {
+    CHECK_EQUAL("wall", wall->getNameString());
+}
+
+TEST(WallGroup, FindContainer)
+{
+    CHECK(wall->addContainer(door));
+    CHECK_EQUAL(door, wall->findContainer(Action(Lbr::ActNone, Lbr::ObjDoor)));
 }
 
 TEST(WallGroup, GetWallType)
 {
+    CHECK_EQUAL(Lbr::WallNone, Wall::getWallType(Lbr::ObjDoor));
+    CHECK_EQUAL(Lbr::WallRight, Wall::getWallType(Lbr::ObjWallRight));
 }
 
-TEST(WallGroup, GetObjects)
+TEST(WallGroup, GetContainers)
 {
+    CHECK(wall->addContainer(door));
+    CHECK_EQUAL(door, wall->getContainers()[0]);
 }

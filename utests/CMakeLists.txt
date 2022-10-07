@@ -23,6 +23,7 @@ set(TEST_SOURCES
     labyrinth_test.cpp
     room_test.cpp
     sheet_test.cpp
+    shelf_test.cpp
     wall_test.cpp
     watch_test.cpp
 )

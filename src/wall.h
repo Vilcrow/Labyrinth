@@ -33,6 +33,7 @@ public:
     LbrContainer* findContainer(const Action act);
     const std::vector<LbrContainer*>& getContainers() const { return containers; }
     static Lbr::WallType getWallType(const Lbr::ObjName name);
+    Lbr::ObjName getName() const { return Lbr::ObjWall; }
     std::string getNameString() const { return "wall"; }
 private:
     enum { maxCapacity = 4 };

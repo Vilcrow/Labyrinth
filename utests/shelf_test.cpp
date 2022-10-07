@@ -19,27 +19,42 @@
 **
 *******************************************************************************/
 
-#ifndef ROOM_H_SENTRY
-#define ROOM_H_SENTRY
+#include "CppUTest/TestHarness.h"
+#include "shelf.h"
+#include "key.h"
 
-#include "labyrinth.h"
-#include "door.h"
-#include "wall.h"
-#include <map>
-
-class Room {
-public:
-    Room(int num);
-    virtual ~Room();
-    bool addContainer(Lbr::WallType wType, LbrContainer *container);
-    int getNumber() const { return number; }
-    Lbr::ObjName getName() { return Lbr::ObjRoom; }
-    std::string getNameString() const { return "room"; }
-    Door* findDoor(int num) const;
-    Wall* getWall(Lbr::WallType wType) { return walls[wType]; }
-private:
-    int number;
-    std::map<Lbr::WallType, Wall*> walls;
+TEST_GROUP(ShelfGroup)
+{
+    Shelf *shelf = nullptr;
+    Key *key = nullptr;
+    int key_num = 5;
+    void setup()
+    {
+        shelf = new Shelf();
+        key = new Key(key_num);
+    }
+    void teardown()
+    {
+        delete shelf;
+        delete key;
+    }
 };
 
-#endif
+TEST(ShelfGroup, AddRemoveFindObject)
+{
+    CHECK(shelf->addObject(key));
+    CHECK_FALSE(shelf->addObject(key));
+    CHECK_EQUAL(key, shelf->findObject(Action(Lbr::ActNone, Lbr::ObjKey)));
+    CHECK(shelf->removeObject(key));
+    CHECK_FALSE(shelf->removeObject(key));
+}
+
+TEST(ShelfGroup, GetName)
+{
+    CHECK_EQUAL(Lbr::ObjShelf, shelf->getName());
+}
+
+TEST(ShelfGroup, GetNameString)
+{
+    CHECK_EQUAL("shelf", shelf->getNameString());
+}

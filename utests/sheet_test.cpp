@@ -24,22 +24,37 @@
 
 TEST_GROUP(SheetGroup)
 {
+    Sheet *sheet = nullptr;
+    const char *record = "Sheet test.";
+    const char *new_record = "New record.";
     void setup()
     {
+        sheet = new Sheet(record);
     }
     void teardown()
     {
+        delete sheet;
     }
 };
 
 TEST(SheetGroup, GetRecord)
 {
+    CHECK_EQUAL(record, sheet->getRecord());
 }
 
 TEST(SheetGroup, SetRecord)
 {
+    CHECK_FALSE(new_record == sheet->getRecord());
+    sheet->setRecord(new_record);
+    CHECK_EQUAL(new_record, sheet->getRecord());
 }
 
 TEST(SheetGroup, GetName)
 {
+    CHECK_EQUAL(Lbr::ObjSheet, sheet->getName());
+}
+
+TEST(SheetGroup, GetNameString)
+{
+    CHECK_EQUAL("sheet", sheet->getNameString());
 }
