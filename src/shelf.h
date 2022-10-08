@@ -31,7 +31,6 @@ public:
     std::string getNameString() const override { return "shelf"; }
 private:
     enum { maxCapacity = 3 };
-    std::vector<LbrObject*> objects;
 };
 
 #endif

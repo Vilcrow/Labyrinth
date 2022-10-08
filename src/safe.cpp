@@ -19,16 +19,20 @@
 **
 *******************************************************************************/
 
-IMPORT_TEST_GROUP(BackpackGroup);
-IMPORT_TEST_GROUP(BatteryGroup);
-IMPORT_TEST_GROUP(CommandsGroup);
-IMPORT_TEST_GROUP(DoorGroup);
-IMPORT_TEST_GROUP(GameGroup);
-IMPORT_TEST_GROUP(InscriptionGroup);
-IMPORT_TEST_GROUP(KeyGroup);
-IMPORT_TEST_GROUP(RoomGroup);
-IMPORT_TEST_GROUP(SafeGroup);
-IMPORT_TEST_GROUP(SheetGroup);
-IMPORT_TEST_GROUP(ShelfGroup);
-IMPORT_TEST_GROUP(WallGroup);
-IMPORT_TEST_GROUP(WatchGroup);
+#include "safe.h"
+
+Safe::Safe(int c, bool lckd) : LbrContainer(Lbr::ObjSafe, maxCapacity)
+                             , code(c), locked(lckd)
+{
+
+}
+
+bool Safe::openSafe(int c)
+{
+    bool result = false;
+    if(c == code) {
+        locked = false;
+        result = true;
+    }
+    return result;
+}

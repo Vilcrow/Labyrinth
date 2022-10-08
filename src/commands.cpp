@@ -22,7 +22,7 @@
 #include "commands.h"
 #include <algorithm>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 
 Commands* Commands::uniqueInstance = nullptr;
 
@@ -51,6 +51,7 @@ Commands::Commands()
                      , { "left"        , Lbr::ObjWallLeft,    }
                      , { "right"       , Lbr::ObjWallRight,   }
                      , { "room"        , Lbr::ObjRoom,        }
+                     , { "safe"        , Lbr::ObjSafe,        }
                      , { "sheet"       , Lbr::ObjSheet,       }
                      , { "shelf"       , Lbr::ObjShelf,       }
                      , { "top"         , Lbr::ObjWallTop,     }
@@ -67,6 +68,7 @@ Commands::Commands()
                      , { Lbr::ObjWallLeft,    Lbr::None      }
                      , { Lbr::ObjWallRight,   Lbr::None      }
                      , { Lbr::ObjRoom,        Lbr::None      }
+                     , { Lbr::ObjSafe,        Lbr::Container }
                      , { Lbr::ObjSheet,       Lbr::Object    }
                      , { Lbr::ObjShelf,       Lbr::Container }
                      , { Lbr::ObjWallTop,     Lbr::None      }
@@ -91,7 +93,7 @@ Action Commands::cmdToAction(const std::string &cmd)
     for(auto& c : lowcmd) {
         c = std::tolower(c);
     }
-    std::set<std::string> words;
+    std::unordered_set<std::string> words;
     auto end = lowcmd.find_first_of(" \t");
     decltype(end) start = 0;
     while(end != std::string::npos) { //extract all unique words from input

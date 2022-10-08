@@ -28,6 +28,7 @@
 #include "door.h"
 #include "inscription.h"
 #include "room.h"
+#include "safe.h"
 #include "sheet.h"
 #include "shelf.h"
 #include "watch.h"
@@ -56,6 +57,7 @@ private:
     std::string ActionWithInscription(Lbr::ActType aType, Inscription *key);
     std::string ActionWithKey(Lbr::ActType aType, Key *key);
     std::string ActionWithRoom(Lbr::ActType aType, Room *room);
+    std::string ActionWithSafe(Lbr::ActType aType);
     std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);
     std::string ActionWithShelf(Lbr::ActType aType);
     std::string ActionWithWall(Lbr::ActType aType);

@@ -9,6 +9,7 @@ set(APP_LIB_SOURCE
     keylock.cpp
     labyrinth.cpp
     room.cpp
+    safe.cpp
     sheet.cpp
     shelf.cpp
     wall.cpp

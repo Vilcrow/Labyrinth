@@ -20,8 +20,8 @@ set(TEST_SOURCES
     inscription_test.cpp
     key_test.cpp
     keylock_test.cpp
-    labyrinth_test.cpp
     room_test.cpp
+    safe_test.cpp
     sheet_test.cpp
     shelf_test.cpp
     wall_test.cpp

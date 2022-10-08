@@ -89,7 +89,7 @@ void Game::run()
                 if(!object && action.aType == Lbr::ActThrow)
                     object = backpack->findObject(action);
                 if(!object)
-                    result = "No such item ";
+                    result = "No such item.";
                 else {
                     action.oName = object->getName();
                     result = handleActionWithObject(action, object);
@@ -121,6 +121,7 @@ void Game::generateMap()
     Door *door = nullptr;
     KeyLock *keylock = nullptr;
     Key *key = nullptr;
+    Safe *safe = nullptr;
     Shelf *shelf = nullptr;
     Sheet *sheet = nullptr;
     //ROOM 1
@@ -150,6 +151,14 @@ void Game::generateMap()
     keylock = new KeyLock(8);
     door->addLock(keylock);
     gameMap[1]->addContainer(Lbr::WallRight, door);
+    safe = new Safe(4231);
+    sheet = new Sheet("Sheet in the first safe.");
+    safe->addObject(sheet);
+    gameMap[1]->addContainer(Lbr::WallRight, safe);
+    safe = new Safe(5933); 
+    sheet = new Sheet("Sheet in the second safe.");
+    safe->addObject(sheet);
+    gameMap[1]->addContainer(Lbr::WallRight, safe);
     //ROOM 2
     //wall TOP
     //wall LEFT
@@ -222,6 +231,7 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjBackpack:
     case Lbr::ObjDoor:
     case Lbr::ObjFlashlight:
+    case Lbr::ObjSafe:
     case Lbr::ObjShelf:
     case Lbr::ObjWall:
     case Lbr::ObjWallDown:
@@ -240,11 +250,31 @@ std::string Game::handleActionWithContainer(Action act)
     case Lbr::ObjDoor:
         result = ActionWithDoor(act.aType);
         break;
+    case Lbr::ObjFlashlight:
+        break;
+    case Lbr::ObjSafe:
+        result = ActionWithSafe(act.aType);
+        break;
     case Lbr::ObjShelf:
         result = ActionWithShelf(act.aType);
         break;
-    default:
-        result = "Default result.";
+//no processing required
+    case Lbr::ObjNone:
+    case Lbr::ObjBackpack:
+    case Lbr::ObjBattery:
+    case Lbr::ObjDigitalLock:
+    case Lbr::ObjInscription:
+    case Lbr::ObjKey:
+    case Lbr::ObjKeyLock:
+    case Lbr::ObjRoom:
+    case Lbr::ObjSheet:
+    case Lbr::ObjWatch:
+    case Lbr::ObjWall:
+    case Lbr::ObjWallDown:
+    case Lbr::ObjWallLeft:
+    case Lbr::ObjWallRight:
+    case Lbr::ObjWallTop:
+        break;
     }
     return result;
 }
@@ -408,6 +438,39 @@ std::string Game::ActionWithRoom(Lbr::ActType aType, Room *room)
     default:
         result = "Impossible. You can just inspect the room.";
     }
+    return result;
+}
+
+std::string Game::ActionWithSafe(Lbr::ActType aType)
+{
+    std::string result;
+    Safe *safe = static_cast<Safe*>(curContainer);
+    if(safe->isLocked()) //restricting access to a safe if it locked
+        curContainer = nullptr;
+/*
+    switch(aType) {
+    case Lbr::ActInspect:
+        if(safe->isLocked())
+            result = "You see locked safe.";
+        else {
+            result = "In safe: ";
+            result += LbrObjectsList<LbrObject>(safe->getObjects());
+        }
+        break;
+    case Lbr::ActOpen:
+        if(!safe->isLocked())
+            result = "The safe already opened.";
+        else if(safe->openSafe(act.code))
+            result = "The safe unlocked.";
+        else if(act.code == -1)
+            result = "Usage: open safe <number> <code>.";
+        else
+            result = "Incorrect code.";
+        break;
+    default:
+        result = "Impossible action with the safe.";
+    }
+*/
     return result;
 }
 

@@ -56,6 +56,7 @@ public:
                      ObjKey,
                      ObjKeyLock,
                      ObjRoom,
+                     ObjSafe,
                      ObjSheet,
                      ObjShelf,
                      ObjWall,
@@ -128,7 +129,8 @@ private:
 struct Action {
     Action(Lbr::ActType act = Lbr::ActNone,
            Lbr::ObjName obj = Lbr::ObjNone,
-           Lbr::ObjType type = Lbr::None, int num = -1)
+           Lbr::ObjType type = Lbr::None,
+           int num = -1)
            : aType(act), oName(obj), oType(type), number(num) {}
     Lbr::ActType aType;
     Lbr::ObjName oName;
