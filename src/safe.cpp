@@ -20,6 +20,10 @@
 *******************************************************************************/
 
 #include "safe.h"
+#include "commands.h"
+#include <iostream>
+#include <algorithm>
+#include <climits>
 
 Safe::Safe(int c, bool lckd) : LbrContainer(Lbr::ObjSafe, maxCapacity)
                              , code(c), locked(lckd)
@@ -27,12 +31,21 @@ Safe::Safe(int c, bool lckd) : LbrContainer(Lbr::ObjSafe, maxCapacity)
 
 }
 
-bool Safe::openSafe(int c)
+bool Safe::openSafe()
 {
     bool result = false;
-    if(c == code) {
-        locked = false;
-        result = true;
+    std::string input;
+    int c;
+    std::cout << "Enter the digital code: ";
+    std::cin >> input;
+    if(std::all_of(input.begin(), input.end(), ::isdigit)) { //is the input a number?
+        COMMANDS->addCommand(input);
+        c = std::stoi(input);
+        if(c == code) {
+            locked = false;
+            result = true;
+        }
     }
+    std::cin.ignore(INT_MAX, '\n'); //ignore invalid input
     return result;
 }

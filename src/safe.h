@@ -29,7 +29,7 @@ public:
     Safe(int c, bool lckd = true);
     virtual ~Safe() = default;
     std::string getNameString() const override { return "safe"; }
-    bool openSafe(int c);
+    bool openSafe();
     bool isLocked() const { return locked; }
 private:
     enum { maxCapacity = 3 };

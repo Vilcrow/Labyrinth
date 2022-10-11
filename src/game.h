@@ -36,7 +36,7 @@
 class Game {
 public:
     Game();
-    ~Game() = delete;
+    ~Game() = default;
     void run();
     std::string save();
 private:
@@ -63,6 +63,8 @@ private:
     std::string ActionWithWall(Lbr::ActType aType);
     std::string ActionWithWatch(Lbr::ActType aType, Watch *watch);
     std::string OpenLock(LbrLock *lock);
+    std::string ActionTakeObject(LbrObject *obj);
+    std::string ActionThrowObject(LbrObject *obj);
 };
 
 #endif

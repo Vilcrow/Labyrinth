@@ -124,6 +124,7 @@ void Game::generateMap()
     Safe *safe = nullptr;
     Shelf *shelf = nullptr;
     Sheet *sheet = nullptr;
+    Watch *watch = nullptr;
     //ROOM 1
     //wall TOP
     door = new Door(2);
@@ -138,8 +139,8 @@ void Game::generateMap()
     shelf = new Shelf();
     key = new Key(2);
     shelf->addObject(key);
-    sheet = new Sheet("Qui quaerit, reperit.");
-    shelf->addObject(sheet);
+    watch = new Watch("11:53");
+    shelf->addObject(watch);
     gameMap[1]->addContainer(Lbr::WallLeft, shelf);
     //wall DOWN
     door = new Door(6);
@@ -151,12 +152,8 @@ void Game::generateMap()
     keylock = new KeyLock(8);
     door->addLock(keylock);
     gameMap[1]->addContainer(Lbr::WallRight, door);
-    safe = new Safe(4231);
-    sheet = new Sheet("Sheet in the first safe.");
-    safe->addObject(sheet);
-    gameMap[1]->addContainer(Lbr::WallRight, safe);
-    safe = new Safe(5933); 
-    sheet = new Sheet("Sheet in the second safe.");
+    safe = new Safe(1153);
+    sheet = new Sheet("Qui quaerit, reperit.");
     safe->addObject(sheet);
     gameMap[1]->addContainer(Lbr::WallRight, safe);
     //ROOM 2
@@ -300,8 +297,10 @@ std::string Game::ActionWithBattery(Lbr::ActType aType, Battery *battery)
     case Lbr::ActInspect:
         result = "Charge is " + battery->getCharge();
     case Lbr::ActTake:
+        result = ActionTakeObject(battery);
         break;
     case Lbr::ActThrow:
+        result = ActionThrowObject(battery);
         break;
     default:
         result = "Impossible action with the battery.";
@@ -319,7 +318,7 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
         break;
     case Lbr::ActEnter:
         if(door->isLocked()) {
-            result = "The door is locked. We need to open it.";
+            result = "The door is locked. You need to open it.";
         }
         else {
             int prev_room = roomNumber;
@@ -351,6 +350,7 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
     default:
         result = "Impossible action with the door.";
     }
+    curContainer = nullptr;
     return result;
 }
 
@@ -379,25 +379,10 @@ std::string Game::ActionWithKey(Lbr::ActType aType, Key *key)
         result += std::to_string(key->getNumber()) + ".";
         break;
     case Lbr::ActTake:
-        if(curContainer != backpack && backpack->addObject(key)) {
-            curContainer->removeObject(key);
-            result = "Done.";
-        }
-        else if(curContainer == backpack)
-            result = "Already in backpack.";
-        else
-            result = "Backpack is full.";
+        result = ActionTakeObject(key);
         break;
     case Lbr::ActThrow:
-        if(curContainer && curContainer != backpack
-                        && curContainer->addObject(key)) {
-            backpack->removeObject(key);
-            result = "Done.";
-        }
-        else if(!curContainer || curContainer == backpack)
-            result = "Find a place to throw it away.";
-        else
-            result = curContainer->getNameString() + " is full.";
+        result = ActionThrowObject(key);
         break;
     default:
         result = "Impossible action with the key.";
@@ -447,7 +432,6 @@ std::string Game::ActionWithSafe(Lbr::ActType aType)
     Safe *safe = static_cast<Safe*>(curContainer);
     if(safe->isLocked()) //restricting access to a safe if it locked
         curContainer = nullptr;
-/*
     switch(aType) {
     case Lbr::ActInspect:
         if(safe->isLocked())
@@ -460,17 +444,14 @@ std::string Game::ActionWithSafe(Lbr::ActType aType)
     case Lbr::ActOpen:
         if(!safe->isLocked())
             result = "The safe already opened.";
-        else if(safe->openSafe(act.code))
+        else if(safe->openSafe())
             result = "The safe unlocked.";
-        else if(act.code == -1)
-            result = "Usage: open safe <number> <code>.";
         else
             result = "Incorrect code.";
         break;
     default:
         result = "Impossible action with the safe.";
     }
-*/
     return result;
 }
 
@@ -483,8 +464,10 @@ std::string Game::ActionWithSheet(Lbr::ActType aType, Sheet *sheet)
         result += sheet->getRecord();
         break;
     case Lbr::ActTake:
+        result = ActionTakeObject(sheet);
         break;
     case Lbr::ActThrow:
+        result = ActionThrowObject(sheet);
         break;
     default:
         result = "Impossible action with the sheet.";
@@ -529,9 +512,12 @@ std::string Game::ActionWithWatch(Lbr::ActType aType, Watch *watch)
     switch(aType) {
     case Lbr::ActInspect:
         result = "Time is " + watch->getTime();
+        break;
     case Lbr::ActTake:
+        result = ActionTakeObject(watch);
         break;
     case Lbr::ActThrow:
+        result = ActionThrowObject(watch);
         break;
     default:
         result = "Impossible action with the watch.";
@@ -542,4 +528,33 @@ std::string Game::ActionWithWatch(Lbr::ActType aType, Watch *watch)
 std::string Game::save()
 {
     return "Saved.";
+}
+
+std::string Game::ActionTakeObject(LbrObject *obj)
+{
+    std::string result;
+    if(curContainer != backpack && backpack->addObject(obj)) {
+        curContainer->removeObject(obj);
+        result = "Done.";
+    }
+    else if(curContainer == backpack)
+        result = "Already in backpack.";
+    else
+        result = "Backpack is full.";
+    return result;
+}
+
+std::string Game::ActionThrowObject(LbrObject *obj)
+{
+    std::string result;
+    if(curContainer && curContainer != backpack
+                    && curContainer->addObject(obj)) {
+        backpack->removeObject(obj);
+        result = "Done.";
+    }
+    else if(!curContainer || curContainer == backpack)
+        result = "Find a place to throw it away.";
+    else
+        result = curContainer->getNameString() + " is full.";
+    return result;
 }

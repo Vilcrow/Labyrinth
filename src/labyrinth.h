@@ -86,7 +86,7 @@ public:
 class LbrObject {
 public:
     LbrObject(Lbr::ObjName n) : name(n) {}
-    virtual ~LbrObject() {}
+    virtual ~LbrObject() = default;
     Lbr::ObjName getName() const { return name; }
     virtual std::string getNameString() const = 0;
 private:
@@ -97,7 +97,7 @@ private:
 class LbrContainer {
 public:
     LbrContainer(Lbr::ObjName n, unsigned int c = 3) : name(n), maxCap(c) {}
-    virtual ~LbrContainer() {}
+    virtual ~LbrContainer() = default; 
     bool addObject(LbrObject *obj);
     bool removeObject(LbrObject *obj);
     LbrObject* findObject(const Action act);
@@ -116,7 +116,7 @@ private:
 class LbrLock {
 public:
     LbrLock(Lbr::ObjName n, bool lckd = true) : name(n), locked(lckd) {}
-    virtual ~LbrLock() {}
+    virtual ~LbrLock() = default;
     Lbr::ObjName getName() const { return name; }
     bool isLocked() { return locked; }
     void setLocked(bool lckd) { locked = lckd; }

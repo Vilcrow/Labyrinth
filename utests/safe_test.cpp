@@ -22,6 +22,8 @@
 #include "CppUTest/TestHarness.h"
 #include "safe.h"
 #include "sheet.h"
+#include <iostream>
+#include <string>
 
 TEST_GROUP(SafeGroup)
 {
@@ -62,15 +64,10 @@ TEST(SafeGroup, GetNameString)
 TEST(SafeGroup, IsLocked)
 {
     CHECK(safe->isLocked());
-    safe->openSafe(safe_code);
-    CHECK_FALSE(safe->isLocked());
+//TBD
 }
 
 TEST(SafeGroup, OpenSafe)
 {
-    CHECK(safe->isLocked());
-    safe->openSafe(safe_code+3);
-    CHECK(safe->isLocked());
-    safe->openSafe(safe_code);
-    CHECK_FALSE(safe->isLocked());
+//TBD
 }
