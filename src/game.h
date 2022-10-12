@@ -59,6 +59,7 @@ private:
     std::string ActionWithDoor(Lbr::ActType aType);
     std::string ActionWithInscription(Lbr::ActType aType, Inscription *key);
     std::string ActionWithKey(Lbr::ActType aType, Key *key);
+    std::string ActionWithLock(Lbr::ActType aType, LbrLock *lock);
     std::string ActionWithPlayer(Lbr::ActType aType);
     std::string ActionWithRoom(Lbr::ActType aType, Room *room);
     std::string ActionWithSafe(Lbr::ActType aType);

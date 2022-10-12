@@ -43,7 +43,7 @@ Commands::Commands()
                      , { "throw"   , Lbr::ActThrow   }
                      , { "use"     , Lbr::ActTake    }
                      };
-    objectCommands = { { "battery"     , Lbr::ObjBattery,     }
+    objectCommands = { { "battery"     , Lbr::ObjBattery     }
                      , { "backpack"    , Lbr::ObjBackpack,    }
                      , { "cassette"    , Lbr::ObjCassette,    }
                      , { "door"        , Lbr::ObjDoor,        }
@@ -52,6 +52,7 @@ Commands::Commands()
                      , { "flashlight"  , Lbr::ObjFlashlight,  }
                      , { "key"         , Lbr::ObjKey,         }
                      , { "left"        , Lbr::ObjWallLeft,    }
+                     , { "lock"        , Lbr::ObjLock,        }
                      , { "player"      , Lbr::ObjPlayer,      }
                      , { "right"       , Lbr::ObjWallRight,   }
                      , { "room"        , Lbr::ObjRoom,        }
@@ -62,23 +63,26 @@ Commands::Commands()
                      , { "wall"        , Lbr::ObjWall,        }
                      , { "watch"       , Lbr::ObjWatch,       }
                      };
-    objectType     = { { Lbr::ObjBattery,     Lbr::Object    }
-                     , { Lbr::ObjBackpack,    Lbr::Container }
+    objectType     = { { Lbr::ObjBackpack,    Lbr::Object    }
+                     , { Lbr::ObjBattery,     Lbr::Container }
                      , { Lbr::ObjCassette,    Lbr::Object    }
                      , { Lbr::ObjDoor,        Lbr::Container }
-                     , { Lbr::ObjWallDown,    Lbr::None      }
-                     , { Lbr::ObjInscription, Lbr::Object    }
                      , { Lbr::ObjFlashlight,  Lbr::Container }
+                     , { Lbr::ObjInscription, Lbr::Object    }
                      , { Lbr::ObjKey,         Lbr::Object    }
-                     , { Lbr::ObjWallLeft,    Lbr::None      }
-                     , { Lbr::ObjWallRight,   Lbr::None      }
                      , { Lbr::ObjPlayer,      Lbr::Container }
+                     , { Lbr::ObjLock,        Lbr::Object    }
+                     , { Lbr::ObjLockDigital, Lbr::Object    }
+                     , { Lbr::ObjLockKey,     Lbr::Object    }
                      , { Lbr::ObjRoom,        Lbr::None      }
                      , { Lbr::ObjSafe,        Lbr::Container }
                      , { Lbr::ObjSheet,       Lbr::Object    }
                      , { Lbr::ObjShelf,       Lbr::Container }
-                     , { Lbr::ObjWallTop,     Lbr::None      }
                      , { Lbr::ObjWall,        Lbr::None      }
+                     , { Lbr::ObjWallDown,    Lbr::None      }
+                     , { Lbr::ObjWallLeft,    Lbr::None      }
+                     , { Lbr::ObjWallRight,   Lbr::None      }
+                     , { Lbr::ObjWallTop,     Lbr::None      }
                      , { Lbr::ObjWatch,       Lbr::Object    }
                      };
 }

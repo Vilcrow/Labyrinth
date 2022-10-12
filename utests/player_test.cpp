@@ -46,7 +46,10 @@ TEST(PlayerGroup, AddRemoveGetCassette)
 {
     //empty player
     CHECK_EQUAL(nullptr, player->getCassette());
+    //add cassette
     CHECK(player->addObject(cassette));
+    //re-adding
+    CHECK_FALSE(player->addObject(cassette));
     CHECK_EQUAL(cassette, player->getCassette());
     CHECK(player->removeObject(cassette));
     CHECK_EQUAL(nullptr, player->getCassette());

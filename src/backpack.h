@@ -32,7 +32,6 @@ public:
     virtual ~Backpack() = default;
     std::string getNameString() const override { return "backpack"; };
     Key* findKey(int num);
-    int getCapacity() const { return maxCapacity - getObjects().size(); }
 private:
     enum { maxCapacity = 6 };
 

@@ -52,12 +52,13 @@ public:
                      ObjBackpack,
                      ObjBattery,
                      ObjCassette,
-                     ObjDigitalLock,
                      ObjDoor,
                      ObjFlashlight,
                      ObjInscription,
                      ObjKey,
-                     ObjKeyLock,
+                     ObjLock,
+                     ObjLockDigital,
+                     ObjLockKey,
                      ObjPlayer,
                      ObjRoom,
                      ObjSafe,
@@ -81,6 +82,11 @@ public:
                      WallLeft,
                      WallRight,
                      WallTop
+    };
+    enum LockType {
+                    LockNone,
+                    LockDigital,
+                    LockKey
     };
     Lbr() = delete;
     ~Lbr() = delete;
@@ -108,7 +114,7 @@ public:
     virtual std::string getNameString() const = 0; 
     Lbr::ObjName getName() const { return name; }
     const std::vector<LbrObject*>& getObjects() const { return objects; }
-    const unsigned int getCapacity() const { return maxCap; }
+    int getCapacity() const { return maxCap - objects.size(); }
 private:
     Lbr::ObjName name;
     std::vector<LbrObject*> objects;
@@ -116,16 +122,17 @@ private:
 };
 
 //parent abstract class for lock objects
-class LbrLock {
+class LbrLock : public LbrObject {
 public:
-    LbrLock(Lbr::ObjName n, bool lckd = true) : name(n), locked(lckd) {}
+    LbrLock(Lbr::LockType t, bool lckd = true) : LbrObject(Lbr::ObjLock)
+                                               , type(t), locked(lckd) {}
     virtual ~LbrLock() = default;
-    Lbr::ObjName getName() const { return name; }
+    Lbr::LockType getType() const { return type; }
     bool isLocked() { return locked; }
     void setLocked(bool lckd) { locked = lckd; }
     virtual std::string getNameString() const = 0;
 private:
-    Lbr::ObjName name;
+    Lbr::LockType type;
     bool locked;
 };
 

@@ -31,12 +31,11 @@ public:
     int getNumber() const { return number; }
     bool isLocked() const;
     std::string getNameString() const override { return "door"; }
-    bool addLock(LbrLock *lck);
-    LbrLock* getLock() const { return lock; }
-    void unblock();
+    bool addObject(LbrObject *obj) override;
+    LbrLock* getLock() const;
+    bool setLocked(bool lckd);
 private:
     int number;
-    LbrLock *lock;
 };
 
 #endif

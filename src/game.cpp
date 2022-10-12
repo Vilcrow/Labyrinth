@@ -131,14 +131,14 @@ void Game::generateMap()
     //wall TOP
     door = new Door(2);
     keylock = new KeyLock(2);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallTop, door);
     player = new Player();
     gameMap[1]->addContainer(Lbr::WallTop, player);
     //wall LEFT
     door = new Door(4);
     keylock = new KeyLock(4);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallLeft, door);
     shelf = new Shelf();
     key = new Key(2);
@@ -151,12 +151,12 @@ void Game::generateMap()
     //wall DOWN
     door = new Door(6);
     keylock = new KeyLock(6);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallDown, door);
     //wall RIGHT
     door = new Door(8);
     keylock = new KeyLock(8);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallRight, door);
     safe = new Safe(1153);
     sheet = new Sheet("Qui quaerit, reperit.");
@@ -168,7 +168,7 @@ void Game::generateMap()
     //wall DOWN
     door = new Door(1);
     keylock = new KeyLock(1);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[2]->addContainer(Lbr::WallDown, door);
     //wall RIGHT
     //ROOM 4
@@ -178,13 +178,13 @@ void Game::generateMap()
     //wall RIGHT
     door = new Door(1);
     keylock = new KeyLock(1);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[4]->addContainer(Lbr::WallRight, door);
     //ROOM 6
     //wall TOP
     door = new Door(1);
     keylock = new KeyLock(1);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[6]->addContainer(Lbr::WallTop, door);
     //wall LEFT
     //wall DOWN
@@ -194,7 +194,7 @@ void Game::generateMap()
     //wall LEFT
     door = new Door(1);
     keylock = new KeyLock(1);
-    door->addLock(keylock);
+    door->addObject(keylock);
     gameMap[8]->addContainer(Lbr::WallLeft, door);
     //wall DOWN
     //wall RIGHT
@@ -212,7 +212,8 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjCassette:
         result = ActionWithCassette(act.aType, static_cast<Cassette*>(obj));
         break;
-    case Lbr::ObjDigitalLock: //?????????????????
+    case Lbr::ObjLock:
+        result = ActionWithLock(act.aType, static_cast<LbrLock*>(obj));
         break;
     case Lbr::ObjInscription:
         result = ActionWithInscription(act.aType,
@@ -220,8 +221,6 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
         break;
     case Lbr::ObjKey:
         result = ActionWithKey(act.aType, static_cast<Key*>(obj));
-        break;
-    case Lbr::ObjKeyLock: //?????????????????
         break;
     case Lbr::ObjRoom:
         result = ActionWithRoom(act.aType, gameMap[roomNumber]);
@@ -237,6 +236,8 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjBackpack:
     case Lbr::ObjDoor:
     case Lbr::ObjFlashlight:
+    case Lbr::ObjLockDigital:
+    case Lbr::ObjLockKey:
     case Lbr::ObjPlayer:
     case Lbr::ObjSafe:
     case Lbr::ObjShelf:
@@ -273,10 +274,11 @@ std::string Game::handleActionWithContainer(Action act)
     case Lbr::ObjBackpack:
     case Lbr::ObjBattery:
     case Lbr::ObjCassette:
-    case Lbr::ObjDigitalLock:
+    case Lbr::ObjLockDigital:
     case Lbr::ObjInscription:
     case Lbr::ObjKey:
-    case Lbr::ObjKeyLock:
+    case Lbr::ObjLock:
+    case Lbr::ObjLockKey:
     case Lbr::ObjRoom:
     case Lbr::ObjSheet:
     case Lbr::ObjWatch:
@@ -361,7 +363,7 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
             //open the return door in current room
             back_door = gameMap[roomNumber]->findDoor(prev_room);
             if(back_door)
-                back_door->unblock();
+                back_door->setLocked(false);
             curContainer = nullptr;
             result = "You entered room ";
             result += std::to_string(roomNumber);
@@ -378,13 +380,13 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
         result = "You see door with number ";
         result += std::to_string(door->getNumber());
         if(door->getLock())
-            result += " and " + door->getLock()->getNameString();
+            result += " and " + door->getLock()->getNameString() + "(0)";
         result += ".";
         break;
     default:
         result = "Impossible action with the door.";
     }
-    curContainer = nullptr;
+    //curContainer = nullptr;
     return result;
 }
 
@@ -424,6 +426,20 @@ std::string Game::ActionWithKey(Lbr::ActType aType, Key *key)
     return result;
 }
 
+std::string Game::ActionWithLock(Lbr::ActType aType, LbrLock *lock)
+{
+    std::string result;
+    switch(aType) {
+    case Lbr::ActInspect:
+        result = "You see ";
+        result += lock->getNameString() + ".";
+        break;
+    default:
+        result = "Impossible action with the lock.";
+    }
+    return result;
+}
+
 std::string Game::ActionWithPlayer(Lbr::ActType aType)
 {
     Player *player = static_cast<Player*>(curContainer);
@@ -447,7 +463,13 @@ std::string Game::OpenLock(LbrLock *lock)
 {
     std::string result;
     Action act;
-    if(lock->getName() == Lbr::ObjKeyLock) {
+    switch(lock->getType()) {
+    case Lbr::LockNone:
+        break;
+    case Lbr::LockDigital:
+        break;
+    case Lbr::LockKey:
+    {
         act.oName = Lbr::ObjKey;
         Key *key = backpack->findKey(static_cast<Door*>(curContainer)->getNumber());
         if(!key)
@@ -459,7 +481,7 @@ std::string Game::OpenLock(LbrLock *lock)
                 result = "The key does't fit.";
         }
     }
-    else if(lock->getName() == Lbr::ObjKeyLock) {
+        break;
     }
     return result;
 }
@@ -585,29 +607,32 @@ std::string Game::save()
 
 std::string Game::ActionTakeObject(LbrObject *obj)
 {
-    std::string result;
-    if(curContainer != backpack && backpack->addObject(obj)) {
-        curContainer->removeObject(obj);
-        result = "Done.";
+    std::string result = "Impossible.";
+    if(curContainer != backpack) {
+        if(backpack->addObject(obj)) {
+            curContainer->removeObject(obj);
+            result = "Done.";
+        }
     }
     else if(curContainer == backpack)
         result = "Already in backpack.";
-    else
-        result = "Backpack is full.";
+    else if(backpack->getCapacity() == 0)
+        result = "The backpack is full.";
     return result;
 }
 
 std::string Game::ActionThrowObject(LbrObject *obj)
 {
-    std::string result;
-    if(curContainer && curContainer != backpack
-                    && curContainer->addObject(obj)) {
-        backpack->removeObject(obj);
-        result = "Done.";
+    std::string result = "Impossible.";
+    if(curContainer && curContainer != backpack) {
+        if(curContainer->addObject(obj)) {
+            backpack->removeObject(obj);
+            result = "Done.";
+        }
     }
     else if(!curContainer || curContainer == backpack)
         result = "Find a place to throw it away.";
-    else
-        result = curContainer->getNameString() + " is full.";
+    else if(curContainer && curContainer->getCapacity() == 0)
+        result = "The " + curContainer->getNameString() + " is full.";
     return result;
 }

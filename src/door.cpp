@@ -21,33 +21,51 @@
 
 #include "door.h"
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0)
-                    , number(num), lock(nullptr)
+Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 1)
+                    , number(num)
 {
 
 }
 
-bool Door::addLock(LbrLock *lck)
+bool Door::addObject(LbrObject *obj)
 {
     bool result = false;
-    if(!lock) {
-        lock = lck;
-        result = true;
-    }
+    if(obj->getName() == Lbr::ObjLock)
+        result = LbrContainer::addObject(obj);
     return result;
 }
 
 bool Door::isLocked() const
 {
     bool result = false;
+    LbrLock *lock = nullptr;
+    LbrObject *obj = findObject(Action(Lbr::ActNone, Lbr::ObjLock));
+    if(obj && obj->getName() == Lbr::ObjLock)
+        lock = static_cast<LbrLock*>(obj);
     if(lock && lock->isLocked())
         result = true;
     return result;
 }
 
-void Door::unblock()
+LbrLock* Door::getLock() const
 {
-    if(!lock)
-        return;
-    lock->setLocked(false); 
+    LbrLock *lock = nullptr;
+    LbrObject *obj = findObject(Action(Lbr::ActNone, Lbr::ObjLock));
+    if(obj && obj->getName() == Lbr::ObjLock)
+        lock = static_cast<LbrLock*>(obj);
+    return lock;
+}
+
+bool Door::setLocked(bool lckd)
+{
+    bool result = false;  //return false if lock don't exists
+    LbrLock *lock = nullptr;
+    LbrObject *obj = findObject(Action(Lbr::ActNone, Lbr::ObjLock));
+    if(obj && obj->getName() == Lbr::ObjLock)
+        lock = static_cast<LbrLock*>(obj);
+    if(lock) {
+        lock->setLocked(lckd); 
+        result = true;
+    }
+    return result;
 }

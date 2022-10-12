@@ -41,7 +41,7 @@ TEST_GROUP(KeyLockGroup)
 
 TEST(KeyLockGroup, GetName)
 {
-    CHECK_EQUAL(Lbr::ObjKeyLock, keylock->getName());
+    CHECK_EQUAL(Lbr::ObjLock, keylock->getName());
 }
 
 TEST(KeyLockGroup, GetNameString)

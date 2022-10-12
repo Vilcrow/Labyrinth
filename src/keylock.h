@@ -27,7 +27,7 @@
 
 class KeyLock : public LbrLock {
 public:
-    KeyLock(int num) : LbrLock(Lbr::ObjKeyLock), number(num) {}
+    KeyLock(int num) : LbrLock(Lbr::LockKey), number(num) {}
     ~KeyLock() = default;
     int getNumber() const { return number; }
     std::string getNameString() const override { return "key lock"; }
