@@ -1,6 +1,7 @@
 set(APP_LIB_SOURCE
     backpack.cpp
     battery.cpp
+    cassette.cpp
     commands.cpp
     game.cpp
     door.cpp
@@ -8,6 +9,7 @@ set(APP_LIB_SOURCE
     key.cpp
     keylock.cpp
     labyrinth.cpp
+    player.cpp
     room.cpp
     safe.cpp
     sheet.cpp

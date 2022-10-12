@@ -118,9 +118,11 @@ void Game::generateMap()
     for(int i = 1; i <= roomsCount; i++) {
         gameMap[i] = new Room(i);
     }
+    Cassette *cassette = nullptr;
     Door *door = nullptr;
     KeyLock *keylock = nullptr;
     Key *key = nullptr;
+    Player *player = nullptr;
     Safe *safe = nullptr;
     Shelf *shelf = nullptr;
     Sheet *sheet = nullptr;
@@ -131,6 +133,8 @@ void Game::generateMap()
     keylock = new KeyLock(2);
     door->addLock(keylock);
     gameMap[1]->addContainer(Lbr::WallTop, door);
+    player = new Player();
+    gameMap[1]->addContainer(Lbr::WallTop, player);
     //wall LEFT
     door = new Door(4);
     keylock = new KeyLock(4);
@@ -141,6 +145,8 @@ void Game::generateMap()
     shelf->addObject(key);
     watch = new Watch("11:53");
     shelf->addObject(watch);
+    cassette = new Cassette("Cassette test.");
+    shelf->addObject(cassette);
     gameMap[1]->addContainer(Lbr::WallLeft, shelf);
     //wall DOWN
     door = new Door(6);
@@ -203,6 +209,9 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjBattery:
         result = ActionWithBattery(act.aType, static_cast<Battery*>(obj));
         break;
+    case Lbr::ObjCassette:
+        result = ActionWithCassette(act.aType, static_cast<Cassette*>(obj));
+        break;
     case Lbr::ObjDigitalLock: //?????????????????
         break;
     case Lbr::ObjInscription:
@@ -228,6 +237,7 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjBackpack:
     case Lbr::ObjDoor:
     case Lbr::ObjFlashlight:
+    case Lbr::ObjPlayer:
     case Lbr::ObjSafe:
     case Lbr::ObjShelf:
     case Lbr::ObjWall:
@@ -249,6 +259,9 @@ std::string Game::handleActionWithContainer(Action act)
         break;
     case Lbr::ObjFlashlight:
         break;
+    case Lbr::ObjPlayer:
+        result = ActionWithPlayer(act.aType);
+        break;
     case Lbr::ObjSafe:
         result = ActionWithSafe(act.aType);
         break;
@@ -259,6 +272,7 @@ std::string Game::handleActionWithContainer(Action act)
     case Lbr::ObjNone:
     case Lbr::ObjBackpack:
     case Lbr::ObjBattery:
+    case Lbr::ObjCassette:
     case Lbr::ObjDigitalLock:
     case Lbr::ObjInscription:
     case Lbr::ObjKey:
@@ -306,6 +320,26 @@ std::string Game::ActionWithBattery(Lbr::ActType aType, Battery *battery)
         result = "Impossible action with the battery.";
     }
     return result;
+}
+
+std::string Game::ActionWithCassette(Lbr::ActType aType, Cassette *cassette)
+{
+    std::string result;
+    switch(aType) {
+    case Lbr::ActInspect:
+        result = "Audio cassette.";
+        break;
+    case Lbr::ActTake:
+        result = ActionTakeObject(cassette);
+        break;
+    case Lbr::ActThrow:
+        result = ActionThrowObject(cassette);
+        break;
+    default:
+        result = "Impossible action with the cassette.";
+    }
+    return result;
+
 }
 
 std::string Game::ActionWithDoor(Lbr::ActType aType)
@@ -388,6 +422,25 @@ std::string Game::ActionWithKey(Lbr::ActType aType, Key *key)
         result = "Impossible action with the key.";
     }
     return result;
+}
+
+std::string Game::ActionWithPlayer(Lbr::ActType aType)
+{
+    Player *player = static_cast<Player*>(curContainer);
+    std::string result;
+    switch(aType) {
+    case Lbr::ActInspect:
+        result = "In player: ";
+        result += LbrObjectsList<LbrObject>(player->getObjects());
+        break;
+    case Lbr::ActPlay:
+        result = player->getRecord();
+        break;
+    default:
+        result = "Impossible action with the player.";
+    }
+    return result;
+
 }
 
 std::string Game::OpenLock(LbrLock *lock)

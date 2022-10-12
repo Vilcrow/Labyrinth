@@ -24,9 +24,11 @@
 
 #include "backpack.h"
 #include "battery.h"
+#include "cassette.h"
 #include "commands.h"
 #include "door.h"
 #include "inscription.h"
+#include "player.h"
 #include "room.h"
 #include "safe.h"
 #include "sheet.h"
@@ -53,9 +55,11 @@ private:
     std::string handleActionWithContainer(Action act);
     std::string ActionWithBackpack(Lbr::ActType aType);
     std::string ActionWithBattery(Lbr::ActType aType, Battery *battery);
+    std::string ActionWithCassette(Lbr::ActType aType, Cassette *cassette);
     std::string ActionWithDoor(Lbr::ActType aType);
     std::string ActionWithInscription(Lbr::ActType aType, Inscription *key);
     std::string ActionWithKey(Lbr::ActType aType, Key *key);
+    std::string ActionWithPlayer(Lbr::ActType aType);
     std::string ActionWithRoom(Lbr::ActType aType, Room *room);
     std::string ActionWithSafe(Lbr::ActType aType);
     std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);

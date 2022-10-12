@@ -19,35 +19,21 @@
 **
 *******************************************************************************/
 
-#include "door.h"
+#ifndef PLAYER_H_SENTRY
+#define PLAYER_H_SENTRY
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0)
-                    , number(num), lock(nullptr)
-{
+#include "labyrinth.h"
+#include "cassette.h"
 
-}
+//cassette player class
+class Player : public LbrContainer {
+public:
+    Player();
+    virtual ~Player() = default;
+    bool addObject(LbrObject *obj) override;
+    std::string getNameString() const override { return "player"; }
+    Cassette* getCassette() const;
+    std::string getRecord() const;
+};
 
-bool Door::addLock(LbrLock *lck)
-{
-    bool result = false;
-    if(!lock) {
-        lock = lck;
-        result = true;
-    }
-    return result;
-}
-
-bool Door::isLocked() const
-{
-    bool result = false;
-    if(lock && lock->isLocked())
-        result = true;
-    return result;
-}
-
-void Door::unblock()
-{
-    if(!lock)
-        return;
-    lock->setLocked(false); 
-}
+#endif

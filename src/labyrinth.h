@@ -38,23 +38,27 @@ public:
                      ActOpen,
                      ActPush,
                      ActPull,
+                     ActPut,
                      ActQuit,
+                     ActPlay,
                      ActRead,
                      ActSave,
                      ActTake,
-                     ActThrow,
+                     ActThrow = ActPut,
                      ActUse
     };
     enum ObjName {
                      ObjNone,
                      ObjBackpack,
                      ObjBattery,
+                     ObjCassette,
                      ObjDigitalLock,
                      ObjDoor,
                      ObjFlashlight,
                      ObjInscription,
                      ObjKey,
                      ObjKeyLock,
+                     ObjPlayer,
                      ObjRoom,
                      ObjSafe,
                      ObjSheet,
@@ -98,14 +102,13 @@ class LbrContainer {
 public:
     LbrContainer(Lbr::ObjName n, unsigned int c = 3) : name(n), maxCap(c) {}
     virtual ~LbrContainer() = default; 
-    bool addObject(LbrObject *obj);
-    bool removeObject(LbrObject *obj);
-    LbrObject* findObject(const Action act);
+    virtual bool addObject(LbrObject *obj);
+    virtual bool removeObject(LbrObject *obj);
+    virtual LbrObject* findObject(const Action act) const;
     virtual std::string getNameString() const = 0; 
     Lbr::ObjName getName() const { return name; }
     const std::vector<LbrObject*>& getObjects() const { return objects; }
     const unsigned int getCapacity() const { return maxCap; }
-    //void setCapacity(unsigned int c) { maxCap = c; }
 private:
     Lbr::ObjName name;
     std::vector<LbrObject*> objects;
@@ -145,7 +148,7 @@ std::string LbrObjectsList(const std::vector<T*>& vec)
 {
     std::string result;
     if(vec.empty())
-        result = "nothing.";
+        result = "...";
     else {
         int number = 0;
         for(auto o : vec) {

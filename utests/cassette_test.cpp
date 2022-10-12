@@ -19,35 +19,42 @@
 **
 *******************************************************************************/
 
-#include "door.h"
+#include "CppUTest/TestHarness.h"
+#include "cassette.h"
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0)
-                    , number(num), lock(nullptr)
+TEST_GROUP(CassetteGroup)
 {
-
-}
-
-bool Door::addLock(LbrLock *lck)
-{
-    bool result = false;
-    if(!lock) {
-        lock = lck;
-        result = true;
+    Cassette *cassette = nullptr;
+    const char *record = "Cassette test.";
+    const char *new_record = "New record.";
+    void setup()
+    {
+        cassette = new Cassette(record);
     }
-    return result;
+    void teardown()
+    {
+        delete cassette;
+    }
+};
+
+TEST(CassetteGroup, GetRecord)
+{
+    CHECK_EQUAL(record, cassette->getRecord());
 }
 
-bool Door::isLocked() const
+TEST(CassetteGroup, SetRecord)
 {
-    bool result = false;
-    if(lock && lock->isLocked())
-        result = true;
-    return result;
+    CHECK_FALSE(new_record == cassette->getRecord());
+    cassette->setRecord(new_record);
+    CHECK_EQUAL(new_record, cassette->getRecord());
 }
 
-void Door::unblock()
+TEST(CassetteGroup, GetName)
 {
-    if(!lock)
-        return;
-    lock->setLocked(false); 
+    CHECK_EQUAL(Lbr::ObjCassette, cassette->getName());
+}
+
+TEST(CassetteGroup, GetNameString)
+{
+    CHECK_EQUAL("cassette", cassette->getNameString());
 }

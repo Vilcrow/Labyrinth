@@ -34,7 +34,9 @@ Commands::Commands()
                      , { "open"    , Lbr::ActOpen    }
                      , { "pull"    , Lbr::ActPull    }
                      , { "push"    , Lbr::ActPush    }
+                     , { "put"     , Lbr::ActPut     }
                      , { "quit"    , Lbr::ActQuit    }
+                     , { "play"    , Lbr::ActPlay    }
                      , { "read"    , Lbr::ActRead    }
                      , { "save"    , Lbr::ActSave    }
                      , { "take"    , Lbr::ActTake    }
@@ -43,12 +45,14 @@ Commands::Commands()
                      };
     objectCommands = { { "battery"     , Lbr::ObjBattery,     }
                      , { "backpack"    , Lbr::ObjBackpack,    }
+                     , { "cassette"    , Lbr::ObjCassette,    }
                      , { "door"        , Lbr::ObjDoor,        }
                      , { "down"        , Lbr::ObjWallDown,    }
                      , { "inscription" , Lbr::ObjInscription, }
                      , { "flashlight"  , Lbr::ObjFlashlight,  }
                      , { "key"         , Lbr::ObjKey,         }
                      , { "left"        , Lbr::ObjWallLeft,    }
+                     , { "player"      , Lbr::ObjPlayer,      }
                      , { "right"       , Lbr::ObjWallRight,   }
                      , { "room"        , Lbr::ObjRoom,        }
                      , { "safe"        , Lbr::ObjSafe,        }
@@ -60,6 +64,7 @@ Commands::Commands()
                      };
     objectType     = { { Lbr::ObjBattery,     Lbr::Object    }
                      , { Lbr::ObjBackpack,    Lbr::Container }
+                     , { Lbr::ObjCassette,    Lbr::Object    }
                      , { Lbr::ObjDoor,        Lbr::Container }
                      , { Lbr::ObjWallDown,    Lbr::None      }
                      , { Lbr::ObjInscription, Lbr::Object    }
@@ -67,6 +72,7 @@ Commands::Commands()
                      , { Lbr::ObjKey,         Lbr::Object    }
                      , { Lbr::ObjWallLeft,    Lbr::None      }
                      , { Lbr::ObjWallRight,   Lbr::None      }
+                     , { Lbr::ObjPlayer,      Lbr::Container }
                      , { Lbr::ObjRoom,        Lbr::None      }
                      , { Lbr::ObjSafe,        Lbr::Container }
                      , { Lbr::ObjSheet,       Lbr::Object    }

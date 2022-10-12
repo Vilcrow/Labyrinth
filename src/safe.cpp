@@ -23,7 +23,7 @@
 #include "commands.h"
 #include <iostream>
 #include <algorithm>
-#include <climits>
+#include <climits>  //for INT_MAX
 
 Safe::Safe(int c, bool lckd) : LbrContainer(Lbr::ObjSafe, maxCapacity)
                              , code(c), locked(lckd)

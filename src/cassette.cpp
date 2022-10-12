@@ -19,35 +19,9 @@
 **
 *******************************************************************************/
 
-#include "door.h"
+#include "cassette.h"
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0)
-                    , number(num), lock(nullptr)
+Cassette::Cassette(const std::string& rec) : LbrObject(Lbr::ObjCassette), record(rec)
 {
 
-}
-
-bool Door::addLock(LbrLock *lck)
-{
-    bool result = false;
-    if(!lock) {
-        lock = lck;
-        result = true;
-    }
-    return result;
-}
-
-bool Door::isLocked() const
-{
-    bool result = false;
-    if(lock && lock->isLocked())
-        result = true;
-    return result;
-}
-
-void Door::unblock()
-{
-    if(!lock)
-        return;
-    lock->setLocked(false); 
 }

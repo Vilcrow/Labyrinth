@@ -14,12 +14,14 @@ set(TEST_SOURCES
     utests.cpp
     backpack_test.cpp
     battery_test.cpp
+    cassette_test.cpp
     commands_test.cpp
     door_test.cpp
     game_test.cpp
     inscription_test.cpp
     key_test.cpp
     keylock_test.cpp
+    player_test.cpp
     room_test.cpp
     safe_test.cpp
     sheet_test.cpp

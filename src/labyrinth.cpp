@@ -22,7 +22,7 @@
 #include "labyrinth.h"
 #include <algorithm>
 
-bool LbrContainer::addObject(LbrObject *obj)  //need make const?
+bool LbrContainer::addObject(LbrObject *obj)
 {
     bool result = false;
     if(obj && objects.size() < maxCap) {
@@ -35,7 +35,7 @@ bool LbrContainer::addObject(LbrObject *obj)  //need make const?
     return result;
 }
 
-bool LbrContainer::removeObject(LbrObject *obj)  //need make const?
+bool LbrContainer::removeObject(LbrObject *obj)
 {
     bool result = false;
     auto it = find(objects.begin(), objects.end(), obj);
@@ -46,7 +46,7 @@ bool LbrContainer::removeObject(LbrObject *obj)  //need make const?
     return result;
 }
 
-LbrObject* LbrContainer::findObject(const Action act)
+LbrObject* LbrContainer::findObject(const Action act) const
 {
     if(objects.empty())
         return nullptr;

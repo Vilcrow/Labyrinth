@@ -19,35 +19,35 @@
 **
 *******************************************************************************/
 
-#include "door.h"
+#include "player.h"
 
-Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 0)
-                    , number(num), lock(nullptr)
+Player::Player() : LbrContainer(Lbr::ObjPlayer, 1)
 {
 
 }
 
-bool Door::addLock(LbrLock *lck)
+bool Player::addObject(LbrObject *obj)
 {
     bool result = false;
-    if(!lock) {
-        lock = lck;
-        result = true;
+    if(obj->getName() == Lbr::ObjCassette)
+        result = LbrContainer::addObject(obj);
+    return result;
+}
+
+std::string Player::getRecord() const
+{
+    std::string result = "Put the cassette.";
+    LbrObject *obj = findObject(Action(Lbr::ActNone, Lbr::ObjCassette));
+    if(obj) {
+        Cassette *cassette = static_cast<Cassette*>(obj);
+        result = cassette->getRecord();
     }
     return result;
 }
 
-bool Door::isLocked() const
+Cassette* Player::getCassette() const
 {
-    bool result = false;
-    if(lock && lock->isLocked())
-        result = true;
+    LbrObject *obj = findObject(Action(Lbr::ActNone, Lbr::ObjCassette));
+    Cassette *result = static_cast<Cassette*>(obj);
     return result;
-}
-
-void Door::unblock()
-{
-    if(!lock)
-        return;
-    lock->setLocked(false); 
 }
