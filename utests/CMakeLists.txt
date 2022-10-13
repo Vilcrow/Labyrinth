@@ -16,6 +16,7 @@ set(TEST_SOURCES
     battery_test.cpp
     cassette_test.cpp
     commands_test.cpp
+    digitallock_test.cpp
     door_test.cpp
     game_test.cpp
     inscription_test.cpp

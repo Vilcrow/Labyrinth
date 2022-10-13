@@ -22,6 +22,7 @@
 #include "labyrinth.h"
 #include "game.h"
 #include "keylock.h"
+#include "digitallock.h"
 #include <iostream>
 
 Game::Game()
@@ -119,6 +120,7 @@ void Game::generateMap()
         gameMap[i] = new Room(i);
     }
     Cassette *cassette = nullptr;
+    DigitalLock *digitallock = nullptr;
     Door *door = nullptr;
     KeyLock *keylock = nullptr;
     Key *key = nullptr;
@@ -150,8 +152,8 @@ void Game::generateMap()
     gameMap[1]->addContainer(Lbr::WallLeft, shelf);
     //wall DOWN
     door = new Door(6);
-    keylock = new KeyLock(6);
-    door->addObject(keylock);
+    digitallock = new DigitalLock(1111);
+    door->addObject(digitallock);
     gameMap[1]->addContainer(Lbr::WallDown, door);
     //wall RIGHT
     door = new Door(8);
@@ -183,8 +185,8 @@ void Game::generateMap()
     //ROOM 6
     //wall TOP
     door = new Door(1);
-    keylock = new KeyLock(1);
-    door->addObject(keylock);
+    digitallock = new DigitalLock(1111);
+    door->addObject(digitallock);
     gameMap[6]->addContainer(Lbr::WallTop, door);
     //wall LEFT
     //wall DOWN
@@ -341,7 +343,6 @@ std::string Game::ActionWithCassette(Lbr::ActType aType, Cassette *cassette)
         result = "Impossible action with the cassette.";
     }
     return result;
-
 }
 
 std::string Game::ActionWithDoor(Lbr::ActType aType)
@@ -431,7 +432,7 @@ std::string Game::ActionWithLock(Lbr::ActType aType, LbrLock *lock)
     std::string result;
     switch(aType) {
     case Lbr::ActInspect:
-        result = "You see ";
+        result = "You see a ";
         result += lock->getNameString() + ".";
         break;
     default:
@@ -467,6 +468,10 @@ std::string Game::OpenLock(LbrLock *lock)
     case Lbr::LockNone:
         break;
     case Lbr::LockDigital:
+        if(static_cast<DigitalLock*>(lock)->openLock())
+            result = "Opened.";
+        else
+            result = "Incorrect code.";
         break;
     case Lbr::LockKey:
     {

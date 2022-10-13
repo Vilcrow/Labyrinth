@@ -20,46 +20,43 @@
 *******************************************************************************/
 
 #include "CppUTest/TestHarness.h"
-#include "keylock.h"
+#include "digitallock.h"
 
-TEST_GROUP(KeyLockGroup)
+TEST_GROUP(DigitalLockGroup)
 {
-    KeyLock *keylock = nullptr;
-    Key *key = nullptr;
-    int key_num;
+    DigitalLock *digitallock = nullptr;
+    int code;
     void setup()
     {
-        keylock = new KeyLock(key_num);
-        key = new Key(key_num);
+        digitallock = new DigitalLock(code);
     }
     void teardown()
     {
-        delete keylock;
-        delete key;
+        delete digitallock;
     }
 };
 
-TEST(KeyLockGroup, GetName)
+TEST(DigitalLockGroup, GetName)
 {
-    CHECK_EQUAL(Lbr::ObjLock, keylock->getName());
+    CHECK_EQUAL(Lbr::ObjLock, digitallock->getName());
 }
 
-TEST(KeyLockGroup, GetType)
+TEST(DigitalLockGroup, GetType)
 {
-    CHECK_EQUAL(Lbr::LockKey, keylock->getType());
+    CHECK_EQUAL(Lbr::LockDigital, digitallock->getType());
 }
 
-TEST(KeyLockGroup, GetNameString)
+TEST(DigitalLockGroup, GetNameString)
 {
-    CHECK_EQUAL("key lock", keylock->getNameString());
+    CHECK_EQUAL("digital lock", digitallock->getNameString());
 }
 
-TEST(KeyLockGroup, GetNumber)
+TEST(DigitalLockGroup, GetCode)
 {
-    CHECK_EQUAL(key_num, keylock->getNumber());
+    CHECK_EQUAL(code, digitallock->getCode());
 }
 
-TEST(KeyLockGroup, OpenLock)
+TEST(DigitalLockGroup, OpenLock)
 {
-    CHECK(keylock->openLock(*key));
+//TBD
 }

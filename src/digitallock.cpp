@@ -19,47 +19,27 @@
 **
 *******************************************************************************/
 
-#include "CppUTest/TestHarness.h"
-#include "keylock.h"
+#include "digitallock.h"
+#include "commands.h"
+#include <iostream>
+#include <algorithm>
+#include <climits>  //for INT_MAX
 
-TEST_GROUP(KeyLockGroup)
+bool DigitalLock::openLock()
 {
-    KeyLock *keylock = nullptr;
-    Key *key = nullptr;
-    int key_num;
-    void setup()
-    {
-        keylock = new KeyLock(key_num);
-        key = new Key(key_num);
+    bool result = false;
+    std::string input;
+    int c;
+    std::cout << "Enter the digital code: ";
+    std::cin >> input;
+    if(std::all_of(input.begin(), input.end(), ::isdigit)) { //is the input a number?
+        COMMANDS->addCommand(input);
+        c = std::stoi(input);
+        if(c == code) {
+            setLocked(false);
+            result = true;
+        }
     }
-    void teardown()
-    {
-        delete keylock;
-        delete key;
-    }
-};
-
-TEST(KeyLockGroup, GetName)
-{
-    CHECK_EQUAL(Lbr::ObjLock, keylock->getName());
-}
-
-TEST(KeyLockGroup, GetType)
-{
-    CHECK_EQUAL(Lbr::LockKey, keylock->getType());
-}
-
-TEST(KeyLockGroup, GetNameString)
-{
-    CHECK_EQUAL("key lock", keylock->getNameString());
-}
-
-TEST(KeyLockGroup, GetNumber)
-{
-    CHECK_EQUAL(key_num, keylock->getNumber());
-}
-
-TEST(KeyLockGroup, OpenLock)
-{
-    CHECK(keylock->openLock(*key));
+    std::cin.ignore(INT_MAX, '\n'); //ignore invalid input
+    return result;
 }

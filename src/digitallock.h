@@ -19,47 +19,20 @@
 **
 *******************************************************************************/
 
-#include "CppUTest/TestHarness.h"
-#include "keylock.h"
+#ifndef DIGITALLOCK_H_SENTRY
+#define DIGITALLOCK_H_SENTRY
 
-TEST_GROUP(KeyLockGroup)
-{
-    KeyLock *keylock = nullptr;
-    Key *key = nullptr;
-    int key_num;
-    void setup()
-    {
-        keylock = new KeyLock(key_num);
-        key = new Key(key_num);
-    }
-    void teardown()
-    {
-        delete keylock;
-        delete key;
-    }
+#include "labyrinth.h"
+
+class DigitalLock : public LbrLock {
+public:
+    DigitalLock(int c) : LbrLock(Lbr::LockDigital), code(c) {}
+    ~DigitalLock() = default;
+    int getCode() const { return code; }
+    std::string getNameString() const override { return "digital lock"; }
+    bool openLock();
+private:
+    int code;
 };
 
-TEST(KeyLockGroup, GetName)
-{
-    CHECK_EQUAL(Lbr::ObjLock, keylock->getName());
-}
-
-TEST(KeyLockGroup, GetType)
-{
-    CHECK_EQUAL(Lbr::LockKey, keylock->getType());
-}
-
-TEST(KeyLockGroup, GetNameString)
-{
-    CHECK_EQUAL("key lock", keylock->getNameString());
-}
-
-TEST(KeyLockGroup, GetNumber)
-{
-    CHECK_EQUAL(key_num, keylock->getNumber());
-}
-
-TEST(KeyLockGroup, OpenLock)
-{
-    CHECK(keylock->openLock(*key));
-}
+#endif

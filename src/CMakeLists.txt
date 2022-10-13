@@ -3,6 +3,7 @@ set(APP_LIB_SOURCE
     battery.cpp
     cassette.cpp
     commands.cpp
+    digitallock.cpp
     game.cpp
     door.cpp
     inscription.cpp
