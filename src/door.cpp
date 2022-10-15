@@ -30,7 +30,7 @@ Door::Door(int num) : LbrContainer(Lbr::ObjDoor, 1)
 bool Door::addObject(LbrObject *obj)
 {
     bool result = false;
-    if(obj->getName() == Lbr::ObjLock)
+    if(obj && obj->getName() == Lbr::ObjLock)
         result = LbrContainer::addObject(obj);
     return result;
 }

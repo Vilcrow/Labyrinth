@@ -28,7 +28,7 @@
 class Wall {
 public:
     Wall() = default;
-    virtual ~Wall() = default;
+    virtual ~Wall();
     bool addContainer(LbrContainer *container);
     LbrContainer* findContainer(const Action act);
     const std::vector<LbrContainer*>& getContainers() const { return containers; }

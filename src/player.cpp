@@ -29,7 +29,7 @@ Player::Player() : LbrContainer(Lbr::ObjPlayer, 1)
 bool Player::addObject(LbrObject *obj)
 {
     bool result = false;
-    if(obj->getName() == Lbr::ObjCassette)
+    if(obj && obj->getName() == Lbr::ObjCassette)
         result = LbrContainer::addObject(obj);
     return result;
 }

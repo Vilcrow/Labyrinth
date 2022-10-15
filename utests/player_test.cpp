@@ -28,8 +28,34 @@ TEST_GROUP(PlayerGroup)
 {
     Player *player = nullptr;
     const char *record = "Cassette test.";
+    //Cassette *cassette = nullptr;
+    void setup()
+    {
+        player = new Player();
+        //cassette = new Cassette(record);
+    }
+    void teardown()
+    {
+        delete player;
+        //delete cassette;
+    }
+};
+
+TEST(PlayerGroup, GetName)
+{
+    CHECK_EQUAL(Lbr::ObjPlayer, player->getName());
+}
+
+TEST(PlayerGroup, GetNameString)
+{
+    CHECK_EQUAL("player", player->getNameString());
+}
+
+TEST_GROUP(PlayerWithCassetteGroup)
+{
+    Player *player = nullptr;
+    const char *record = "Cassette test.";
     Cassette *cassette = nullptr;
-    int player_num = 5;
     void setup()
     {
         player = new Player();
@@ -42,7 +68,7 @@ TEST_GROUP(PlayerGroup)
     }
 };
 
-TEST(PlayerGroup, AddRemoveGetCassette)
+TEST(PlayerWithCassetteGroup, AddRemoveGetCassette)
 {
     //empty player
     CHECK_EQUAL(nullptr, player->getCassette());
@@ -59,18 +85,9 @@ TEST(PlayerGroup, AddRemoveGetCassette)
     CHECK_EQUAL(nullptr, player->getCassette());
 }
 
-TEST(PlayerGroup, GetRecord)
+TEST(PlayerWithCassetteGroup, GetRecord)
 {
     CHECK(player->addObject(cassette));
     CHECK_EQUAL(record, player->getRecord());
-}
-
-TEST(PlayerGroup, GetName)
-{
-    CHECK_EQUAL(Lbr::ObjPlayer, player->getName());
-}
-
-TEST(PlayerGroup, GetNameString)
-{
-    CHECK_EQUAL("player", player->getNameString());
+    CHECK(player->removeObject(cassette));   //need to delete
 }

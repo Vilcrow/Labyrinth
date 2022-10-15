@@ -23,6 +23,15 @@
 #include "wall.h"
 #include <algorithm>
 
+Wall::~Wall()
+{
+    if(containers.size())
+        for(auto c : containers) {
+            delete c;
+            c = nullptr;
+        }
+}
+
 bool Wall::addContainer(LbrContainer *container)
 {
     bool result = false;

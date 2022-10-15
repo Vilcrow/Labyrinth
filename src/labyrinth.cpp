@@ -22,6 +22,16 @@
 #include "labyrinth.h"
 #include <algorithm>
 
+LbrContainer::~LbrContainer()
+{
+    if(objects.size() != 0) {
+        for(auto o : objects) {
+            delete o;
+            o = nullptr;
+        }
+    }
+}
+
 bool LbrContainer::addObject(LbrObject *obj)
 {
     bool result = false;

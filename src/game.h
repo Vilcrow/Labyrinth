@@ -38,10 +38,11 @@
 class Game {
 public:
     Game();
-    ~Game() = default;
+    ~Game();
     void run();
     std::string save();
 private:
+    enum { roomCount = 81 };
     int roomNumber;
     Lbr::WallType curWallType;
     LbrContainer *curContainer;
@@ -53,6 +54,7 @@ private:
     void generateMap();
     std::string handleActionWithObject(Action act, LbrObject *obj);
     std::string handleActionWithContainer(Action act);
+    std::string getContext() const;
     std::string ActionWithBackpack(Lbr::ActType aType);
     std::string ActionWithBattery(Lbr::ActType aType, Battery *battery);
     std::string ActionWithCassette(Lbr::ActType aType, Cassette *cassette);

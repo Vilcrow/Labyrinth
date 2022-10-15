@@ -107,7 +107,7 @@ private:
 class LbrContainer {
 public:
     LbrContainer(Lbr::ObjName n, unsigned int c = 3) : name(n), maxCap(c) {}
-    virtual ~LbrContainer() = default; 
+    virtual ~LbrContainer(); 
     virtual bool addObject(LbrObject *obj);
     virtual bool removeObject(LbrObject *obj);
     virtual LbrObject* findObject(const Action act) const;

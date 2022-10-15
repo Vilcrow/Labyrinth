@@ -34,13 +34,23 @@ Game::Game()
     curContainer = nullptr;
 }
 
+Game::~Game()
+{
+    delete backpack;
+    backpack = nullptr;
+    for(int i = 1; i <= roomCount; i++) {
+        delete gameMap[i];
+        gameMap[i] = nullptr;
+    }
+}
+
 void Game::run()
 {
     std::string input, result;
-    std::cout << "> ";
+    std::cout << getContext() + "> ";
     while(std::getline(std::cin, input)) {
         if(input.empty()) {
-            std::cout << "> ";
+            std::cout << getContext() + "> ";
             continue;
         }
         Action action = COMMANDS->cmdToAction(input);
@@ -109,14 +119,13 @@ void Game::run()
         }
         COMMANDS->addCommand(input);
         std::cout << result << std::endl;
-        std::cout << "> ";
+        std::cout << getContext() + "> ";
     }
 }
 
 void Game::generateMap()
 {
-    int roomsCount = 81;
-    for(int i = 1; i <= roomsCount; i++) {
+    for(int i = 1; i <= roomCount; i++) {
         gameMap[i] = new Room(i);
     }
     Cassette *cassette = nullptr;
@@ -639,5 +648,36 @@ std::string Game::ActionThrowObject(LbrObject *obj)
         result = "Find a place to throw it away.";
     else if(curContainer && curContainer->getCapacity() == 0)
         result = "The " + curContainer->getNameString() + " is full.";
+    return result;
+}
+
+std::string Game::getContext() const
+{
+    std::string result;
+    std::string wall;
+    switch(curWallType) {
+    case Lbr::WallNone:
+        break;
+    case Lbr::WallDown:
+        wall = "down";
+        break;
+    case Lbr::WallLeft:
+        wall = "left";
+        break;
+    case Lbr::WallRight:
+        wall = "right";
+        break;
+    case Lbr::WallTop:
+        wall = "top";
+        break;
+    }
+    std::string focus;
+    if(curContainer)
+        focus = curContainer->getNameString();
+    else
+        focus = "wall";
+    result = "[R: " + std::to_string(roomNumber) + ", W: "  + wall
+             + ", F: " + focus
+             + "] ";
     return result;
 }

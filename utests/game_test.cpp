@@ -25,10 +25,18 @@
 //TBD
 TEST_GROUP(GameGroup)
 {
+    Game *game = nullptr;
     void setup()
     {
+       game = new Game(); 
     }
     void teardown()
     {
+        delete game;
     }
+};
+
+TEST(GameGroup, Test)
+{
+
 };
