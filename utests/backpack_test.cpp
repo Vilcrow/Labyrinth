@@ -57,12 +57,17 @@ TEST(BackpackGroup, AddAndRemoveObject)
     CHECK_EQUAL(5, backpack->getCapacity());
     CHECK(backpack->addObject(sheet));
     CHECK_EQUAL(4, backpack->getCapacity());
+    CHECK(backpack->removeObject(key));
+    CHECK_EQUAL(5, backpack->getCapacity());
+    CHECK(backpack->removeObject(sheet));
+    CHECK_EQUAL(6, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, CannotAddObjectTwice)
 {
     CHECK(backpack->addObject(key));
     CHECK_FALSE(backpack->addObject(key));
+    CHECK(backpack->removeObject(key));
 }
 
 TEST(BackpackGroup, GetCapacity)
@@ -70,6 +75,8 @@ TEST(BackpackGroup, GetCapacity)
     CHECK_EQUAL(6, backpack->getCapacity());
     CHECK(backpack->addObject(key));
     CHECK_EQUAL(5, backpack->getCapacity());
+    CHECK(backpack->removeObject(key));
+    CHECK_EQUAL(6, backpack->getCapacity());
 }
 
 TEST(BackpackGroup, FindObject)
@@ -91,6 +98,9 @@ TEST(BackpackGroup, FindObject)
     CHECK_EQUAL(sheet, backpack->findObject(act));
     act.number = 4;
     CHECK_EQUAL(nullptr, backpack->findObject(act));
+    //for the correct operation of the cassette destructor
+    CHECK(backpack->removeObject(key));
+    CHECK(backpack->removeObject(sheet));
 }
 
 TEST(BackpackGroup, FindKey)
@@ -98,6 +108,8 @@ TEST(BackpackGroup, FindKey)
     CHECK(backpack->addObject(key));
     CHECK_EQUAL(key, backpack->findKey(key_num));
     CHECK_EQUAL(nullptr, backpack->findKey(key_num+5));
+    //for the correct operation of the cassette destructor
+    CHECK(backpack->removeObject(key));
 }
 
 TEST(BackpackGroup, GetName)
@@ -114,4 +126,5 @@ TEST(BackpackGroup, GetObjects)
 {
     CHECK(backpack->addObject(key));
     CHECK_EQUAL(key, backpack->getObjects()[0]);
+    CHECK(backpack->removeObject(key));
 }

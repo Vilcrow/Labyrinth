@@ -45,6 +45,17 @@ bool Wall::addContainer(LbrContainer *container)
     return result;
 }
 
+bool Wall::removeContainer(LbrContainer *container)
+{
+    bool result = false;
+    auto it = find(containers.begin(), containers.end(), container);
+    if(container && it != containers.end()) {
+        containers.erase(it);
+        result = true;
+    }
+    return result;
+}
+
 LbrContainer* Wall::findContainer(const Action act)
 {
     if(containers.empty())

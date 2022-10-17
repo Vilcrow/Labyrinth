@@ -40,10 +40,11 @@ TEST_GROUP(WallGroup)
     }
 };
 
-TEST(WallGroup, AddOContainer)
+TEST(WallGroup, AddRemoveContainer)
 {
     CHECK(wall->addContainer(door));
     CHECK_FALSE(wall->addContainer(door)); //re-adding
+    CHECK(wall->removeContainer(door));
 }
 
 TEST(WallGroup, GetName)
@@ -60,6 +61,8 @@ TEST(WallGroup, FindContainer)
 {
     CHECK(wall->addContainer(door));
     CHECK_EQUAL(door, wall->findContainer(Action(Lbr::ActNone, Lbr::ObjDoor)));
+    //for the correct operation of the cassette destructor
+    CHECK(wall->removeContainer(door));
 }
 
 TEST(WallGroup, GetWallType)
@@ -72,4 +75,6 @@ TEST(WallGroup, GetContainers)
 {
     CHECK(wall->addContainer(door));
     CHECK_EQUAL(door, wall->getContainers()[0]);
+    //for the correct operation of the cassette destructor
+    CHECK(wall->removeContainer(door));
 }

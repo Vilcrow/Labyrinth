@@ -28,16 +28,20 @@ TEST_GROUP(PlayerGroup)
 {
     Player *player = nullptr;
     const char *record = "Cassette test.";
-    //Cassette *cassette = nullptr;
+    Cassette *cassette = nullptr;
+    Key *key = nullptr;
+    int key_num = 5;
     void setup()
     {
         player = new Player();
-        //cassette = new Cassette(record);
+        cassette = new Cassette(record);
+        key = new Key(key_num);
     }
     void teardown()
     {
         delete player;
-        //delete cassette;
+        delete cassette;
+        delete key;
     }
 };
 
@@ -51,24 +55,7 @@ TEST(PlayerGroup, GetNameString)
     CHECK_EQUAL("player", player->getNameString());
 }
 
-TEST_GROUP(PlayerWithCassetteGroup)
-{
-    Player *player = nullptr;
-    const char *record = "Cassette test.";
-    Cassette *cassette = nullptr;
-    void setup()
-    {
-        player = new Player();
-        cassette = new Cassette(record);
-    }
-    void teardown()
-    {
-        delete player;
-        delete cassette;
-    }
-};
-
-TEST(PlayerWithCassetteGroup, AddRemoveGetCassette)
+TEST(PlayerGroup, AddRemoveGetCassette)
 {
     //empty player
     CHECK_EQUAL(nullptr, player->getCassette());
@@ -80,14 +67,14 @@ TEST(PlayerWithCassetteGroup, AddRemoveGetCassette)
     CHECK(player->removeObject(cassette));
     CHECK_EQUAL(nullptr, player->getCassette());
     //add not cassette
-    Key key(2); 
-    CHECK_FALSE(player->addObject(&key));
+    CHECK_FALSE(player->addObject(key));
     CHECK_EQUAL(nullptr, player->getCassette());
 }
 
-TEST(PlayerWithCassetteGroup, GetRecord)
+TEST(PlayerGroup, GetRecord)
 {
     CHECK(player->addObject(cassette));
     CHECK_EQUAL(record, player->getRecord());
-    CHECK(player->removeObject(cassette));   //need to delete
+    //for the correct operation of the cassette destructor
+    CHECK(player->removeObject(cassette));
 }

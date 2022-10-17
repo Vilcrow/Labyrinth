@@ -30,6 +30,7 @@ public:
     Wall() = default;
     virtual ~Wall();
     bool addContainer(LbrContainer *container);
+    bool removeContainer(LbrContainer *container);
     LbrContainer* findContainer(const Action act);
     const std::vector<LbrContainer*>& getContainers() const { return containers; }
     static Lbr::WallType getWallType(const Lbr::ObjName name);

@@ -26,18 +26,22 @@
 
 TEST_GROUP(DoorGroup)
 {
+    int door_num = 5;
     Door *door = nullptr;
     KeyLock *keylock = nullptr;
-    int door_num = 5;
+    int key_num = 4;
+    Key *key = nullptr; 
     void setup()
     {
         door = new Door(door_num);
         keylock = new KeyLock(door_num);
+        key = new Key(key_num);
     }
     void teardown()
     {
         delete door;
         delete keylock;
+        delete key;
     }
 };
 
@@ -59,17 +63,12 @@ TEST(DoorGroup, AddRemoveGetLock)
     CHECK(door->setLocked(true));
     CHECK(door->isLocked());
     CHECK_EQUAL(keylock, door->getLock());
+    //re-adding
+    CHECK_FALSE(door->addObject(keylock));
     //remove the lock
     CHECK(door->removeObject(keylock));
     CHECK_EQUAL(nullptr, door->getLock());
     CHECK_FALSE(door->setLocked(true));
-    //return back
-    CHECK(door->addObject(keylock));
-    //re-adding
-    CHECK_FALSE(door->addObject(keylock));
-    //add not lock
-    Key key(5);
-    CHECK_FALSE(door->addObject(&key));
 }
 
 TEST(DoorGroup, GetName)
@@ -82,10 +81,9 @@ TEST(DoorGroup, GetNameString)
     CHECK_EQUAL("door", door->getNameString());
 }
 
-TEST(DoorGroup, AddObject)
+TEST(DoorGroup, AddNotLock)
 {
-    Key key(4);
-    CHECK_FALSE(door->addObject(&key));
+    CHECK_FALSE(door->addObject(key));
     CHECK_EQUAL(nullptr, door->findObject(Action(Lbr::ActNone, Lbr::ObjKey)));
-    CHECK_FALSE(door->removeObject(&key));
+    CHECK_FALSE(door->removeObject(key));
 }

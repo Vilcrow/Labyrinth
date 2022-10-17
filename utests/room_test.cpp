@@ -41,14 +41,21 @@ TEST_GROUP(RoomGroup)
     }
 };
 
-TEST(RoomGroup, AddContainer)
+TEST(RoomGroup, AddFindRemoveContainer)
 {
     CHECK(room->addContainer(Lbr::WallLeft, door));
+    Action act(Lbr::ActNone, Lbr::ObjDoor);
+    CHECK_EQUAL(door,
+                room->getWall(Lbr::WallLeft)->findContainer(act));
+    CHECK(room->removeContainer(Lbr::WallLeft, door));
 }
 
 TEST(RoomGroup, GetWall)
 {
     CHECK_FALSE(nullptr == room->getWall(Lbr::WallTop));
+    CHECK_FALSE(nullptr == room->getWall(Lbr::WallDown));
+    CHECK_FALSE(nullptr == room->getWall(Lbr::WallLeft));
+    CHECK_FALSE(nullptr == room->getWall(Lbr::WallRight));
 }
 
 TEST(RoomGroup, GetNumber)
@@ -70,4 +77,6 @@ TEST(RoomGroup, FindDoor)
 {
     CHECK(room->addContainer(Lbr::WallLeft, door));
     CHECK_EQUAL(door, room->findDoor(door_num));
+    //for the correct operation of the cassette destructor
+    CHECK(room->removeContainer(Lbr::WallLeft, door));
 }

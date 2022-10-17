@@ -32,6 +32,7 @@ public:
     Room(int num);
     virtual ~Room();
     bool addContainer(Lbr::WallType wType, LbrContainer *container);
+    bool removeContainer(Lbr::WallType wType, LbrContainer *container);
     int getNumber() const { return number; }
     Lbr::ObjName getName() { return Lbr::ObjRoom; }
     std::string getNameString() const { return "room"; }

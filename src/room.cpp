@@ -43,7 +43,18 @@ Room::~Room()
 //add container object to corresponding wall
 bool Room::addContainer(Lbr::WallType wType, LbrContainer *container)
 {
-    bool result = walls[wType]->addContainer(container);
+    bool result = false;
+    if(wType != Lbr::WallNone)
+        result = walls[wType]->addContainer(container);
+    return result;
+}
+
+//remove container object from corresponding wall
+bool Room::removeContainer(Lbr::WallType wType, LbrContainer *container)
+{
+    bool result = false;
+    if(wType != Lbr::WallNone)
+        result = walls[wType]->removeContainer(container);
     return result;
 }
 
