@@ -35,6 +35,7 @@ public:
                      ActClose,
                      ActEnter,
                      ActInspect,
+                     ActLoad,
                      ActOpen,
                      ActPush,
                      ActPull,
@@ -140,14 +141,18 @@ struct Action {
     Action(Lbr::ActType act = Lbr::ActNone,
            Lbr::ObjName obj = Lbr::ObjNone,
            Lbr::ObjType type = Lbr::None,
-           int num = -1)
-           : aType(act), oName(obj), oType(type), number(num) {}
+           int num = -1, int c = -1)
+           : aType(act), oName(obj), oType(type), number(num), code(c) {}
+    Action(const Action& other);
+    const Action& operator=(const Action& other);
+
     Lbr::ActType aType;
     Lbr::ObjName oName;
     Lbr::ObjType oType;
     //number of object in container if we have more one
     //number == -1 - no specified
     int number;
+    int code;
 };
 
 template<class T>

@@ -36,6 +36,8 @@ public:
     static Commands* instance();
     Action cmdToAction(const std::string &cmd);
     void addCommand(const std::string& cmd);
+    const std::vector<std::string>& getHistory() const { return history; }
+    void clearHistory() { history.clear(); }
 private:
     std::map<std::string, Lbr::ActType> actionCommands;
     std::map<std::string, Lbr::ObjName> objectCommands;

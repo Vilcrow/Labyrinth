@@ -25,7 +25,7 @@
 TEST_GROUP(DigitalLockGroup)
 {
     DigitalLock *digitallock = nullptr;
-    int code;
+    int code = 1242;
     void setup()
     {
         digitallock = new DigitalLock(code);
@@ -58,5 +58,6 @@ TEST(DigitalLockGroup, GetCode)
 
 TEST(DigitalLockGroup, OpenLock)
 {
-//TBD
+    CHECK(digitallock->openLock(code));
+    CHECK_FALSE(digitallock->openLock(code+1));
 }

@@ -40,7 +40,8 @@ public:
     Game();
     ~Game();
     void run();
-    std::string save();
+    std::string save() const;
+    std::string load();
 private:
     enum { roomCount = 81 };
     int roomNumber;
@@ -52,24 +53,25 @@ private:
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
     void generateMap();
+    std::string ActionInGame(Action action);
     std::string handleActionWithObject(Action act, LbrObject *obj);
     std::string handleActionWithContainer(Action act);
     std::string getContext() const;
     std::string ActionWithBackpack(Lbr::ActType aType);
     std::string ActionWithBattery(Lbr::ActType aType, Battery *battery);
     std::string ActionWithCassette(Lbr::ActType aType, Cassette *cassette);
-    std::string ActionWithDoor(Lbr::ActType aType);
+    std::string ActionWithDoor(const Action act);
     std::string ActionWithInscription(Lbr::ActType aType, Inscription *key);
     std::string ActionWithKey(Lbr::ActType aType, Key *key);
     std::string ActionWithLock(Lbr::ActType aType, LbrLock *lock);
     std::string ActionWithPlayer(Lbr::ActType aType);
     std::string ActionWithRoom(Lbr::ActType aType, Room *room);
-    std::string ActionWithSafe(Lbr::ActType aType);
+    std::string ActionWithSafe(const Action act);
     std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);
     std::string ActionWithShelf(Lbr::ActType aType);
     std::string ActionWithWall(Lbr::ActType aType);
     std::string ActionWithWatch(Lbr::ActType aType, Watch *watch);
-    std::string OpenLock(LbrLock *lock);
+    std::string OpenLock(const Action act, LbrLock *lock);
     std::string ActionTakeObject(LbrObject *obj);
     std::string ActionThrowObject(LbrObject *obj);
 };

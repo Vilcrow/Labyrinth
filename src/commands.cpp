@@ -31,6 +31,7 @@ Commands::Commands()
     actionCommands = { { "close"   , Lbr::ActClose   }
                      , { "enter"   , Lbr::ActEnter   }
                      , { "inspect" , Lbr::ActInspect }
+                     , { "load"    , Lbr::ActLoad    }
                      , { "open"    , Lbr::ActOpen    }
                      , { "pull"    , Lbr::ActPull    }
                      , { "push"    , Lbr::ActPush    }
@@ -103,20 +104,20 @@ Action Commands::cmdToAction(const std::string &cmd)
     for(auto& c : lowcmd) {
         c = std::tolower(c);
     }
-    std::unordered_set<std::string> words;
+    std::vector<std::string> words;
     auto end = lowcmd.find_first_of(" \t");
     decltype(end) start = 0;
-    while(end != std::string::npos) { //extract all unique words from input
+    while(end != std::string::npos) { //extract all words from input
         if(end > start) {
             std::string token = lowcmd.substr(start, end - start);
-            words.insert(token);
+            words.push_back(token);
         }
         start = end + 1;
         end = lowcmd.find_first_of(" \t", start);
     }
     if(start != lowcmd.size()) {  //extract last word
         std::string token = lowcmd.substr(start);
-        words.insert(token);
+        words.push_back(token);
     }
     for(auto a : words) {
         if(actionCommands.count(a)) {
@@ -134,8 +135,12 @@ Action Commands::cmdToAction(const std::string &cmd)
     for(auto o : words) {
         if(std::all_of(o.begin(), o.end(), ::isdigit))
         {
-            action.number = std::stoi(o);
-            break;
+            if(action.number == -1)
+                action.number = std::stoi(o);
+            else {
+                action.code = std::stoi(o);
+                break;
+            }
         }
     }
     return action;

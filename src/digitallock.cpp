@@ -20,26 +20,13 @@
 *******************************************************************************/
 
 #include "digitallock.h"
-#include "commands.h"
-#include <iostream>
-#include <algorithm>
-#include <climits>  //for INT_MAX
 
-bool DigitalLock::openLock()
+bool DigitalLock::openLock(int c)
 {
     bool result = false;
-    std::string input;
-    int c;
-    std::cout << "Enter the digital code: ";
-    std::cin >> input;
-    if(std::all_of(input.begin(), input.end(), ::isdigit)) { //is the input a number?
-        COMMANDS->addCommand(input);
-        c = std::stoi(input);
-        if(c == code) {
-            setLocked(false);
-            result = true;
-        }
+    if(c == code) {
+        setLocked(false);
+        result = true;
     }
-    std::cin.ignore(INT_MAX, '\n'); //ignore invalid input
     return result;
 }

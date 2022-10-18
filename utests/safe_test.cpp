@@ -64,10 +64,12 @@ TEST(SafeGroup, GetNameString)
 TEST(SafeGroup, IsLocked)
 {
     CHECK(safe->isLocked());
-//TBD
+    CHECK(safe->openSafe(safe_code));
+    CHECK_FALSE(safe->isLocked());
 }
 
 TEST(SafeGroup, OpenSafe)
 {
-//TBD
+    CHECK_FALSE(safe->openSafe(safe_code+1));
+    CHECK(safe->openSafe(safe_code));
 }

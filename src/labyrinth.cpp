@@ -81,3 +81,21 @@ LbrObject* LbrContainer::findObject(const Action act) const
         return by_number;
     return by_word;
 }
+
+Action::Action(const Action& other)
+{
+    aType = other.aType;
+    oName = other.oName;
+    oType = other.oType;
+    number = other.number;
+    code = other.code;
+}
+
+const Action& Action::operator=(const Action& other) {
+    aType = other.aType;
+    oName = other.oName;
+    oType = other.oType;
+    number = other.number;
+    code = other.code;
+    return *this;
+}

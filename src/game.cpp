@@ -24,6 +24,7 @@
 #include "keylock.h"
 #include "digitallock.h"
 #include <iostream>
+#include <fstream>
 
 Game::Game()
 {
@@ -59,6 +60,15 @@ void Game::run()
         else if(action.oName == Lbr::ObjNone && action.number == -1) {
             if(action.aType == Lbr::ActSave) {
                 result = save();
+                std::cout << result << std::endl;
+                std::cout << getContext() + "> ";
+                continue;
+            }
+            else if(action.aType == Lbr::ActLoad) {
+                result = load();
+                std::cout << result << std::endl;
+                std::cout << getContext() + "> ";
+                continue;
             }
             else if(action.aType == Lbr::ActQuit)  //quit the game
 //TBD
@@ -66,61 +76,75 @@ void Game::run()
             else
                 result = "Specify the object.";
         }
-        else if(action.oName == Lbr::ObjBackpack) {
-            curContainer = backpack;
-            result = ActionWithBackpack(action.aType);
-        }
-        else if(action.oName == Lbr::ObjRoom) {
-            curContainer = nullptr;
-            result = ActionWithRoom(action.aType, gameMap[roomNumber]);
-        }
-        else if(action.oName == Lbr::ObjWall) {
-            curContainer = nullptr;
-            result = ActionWithWall(action.aType);
-        }
-        else if(action.oName == Lbr::ObjWallTop   ||
-                action.oName == Lbr::ObjWallDown  ||
-                action.oName == Lbr::ObjWallLeft  ||
-                action.oName == Lbr::ObjWallRight) {
-            curContainer = nullptr;
-            curWallType = Wall::getWallType(action.oName);
-            result = ActionWithWall(action.aType);
-        }
-        else {
-            if(action.oName == Lbr::ObjNone && action.number != -1) {
-                if(!curContainer) {
-                    action.oType = Lbr::Container;
-                }
-                else {
-                    action.oType = Lbr::Object;
-                }
-            }
-            if(action.oType == Lbr::Object) {
-                LbrObject *object = curContainer->findObject(action);
-                if(!object && action.aType == Lbr::ActThrow)
-                    object = backpack->findObject(action);
-                if(!object)
-                    result = "No such item.";
-                else {
-                    action.oName = object->getName();
-                    result = handleActionWithObject(action, object);
-                }
-            }
-            else if(action.oType == Lbr::Container) {
-                Wall *curWall = gameMap[roomNumber]->getWall(curWallType);
-                curContainer = curWall->findContainer(action);
-                if(!curContainer)
-                    result = "No such item ";
-                else {
-                    action.oName = curContainer->getName();
-                    result = handleActionWithContainer(action);
-                }
-            }
-        }
+        else
+            result = ActionInGame(action);
         COMMANDS->addCommand(input);
         std::cout << result << std::endl;
         std::cout << getContext() + "> ";
     }
+}
+
+std::string Game::ActionInGame(Action action)
+{
+    std::string result;
+/*
+    if(action.aType == Lbr::ActSave || action.aType == Lbr::ActLoad
+                                    || action.aType == Lbr::ActQuit)
+*/
+    if(action.oName == Lbr::ObjNone && action.number == -1)
+        result = "Invalid input.";
+    else if(action.oName == Lbr::ObjBackpack) {
+        curContainer = backpack;
+        result = ActionWithBackpack(action.aType);
+    }
+    else if(action.oName == Lbr::ObjRoom) {
+        curContainer = nullptr;
+        result = ActionWithRoom(action.aType, gameMap[roomNumber]);
+    }
+    else if(action.oName == Lbr::ObjWall) {
+        curContainer = nullptr;
+        result = ActionWithWall(action.aType);
+    }
+    else if(action.oName == Lbr::ObjWallTop   ||
+            action.oName == Lbr::ObjWallDown  ||
+            action.oName == Lbr::ObjWallLeft  ||
+            action.oName == Lbr::ObjWallRight) {
+        curContainer = nullptr;
+        curWallType = Wall::getWallType(action.oName);
+        result = ActionWithWall(action.aType);
+    }
+    else {
+        if(action.oName == Lbr::ObjNone && action.number != -1) {
+            if(!curContainer) {
+                action.oType = Lbr::Container;
+            }
+            else {
+                action.oType = Lbr::Object;
+            }
+        }
+        if(action.oType == Lbr::Object) {
+            LbrObject *object = curContainer->findObject(action);
+            if(!object && action.aType == Lbr::ActThrow)
+                object = backpack->findObject(action);
+            if(!object)
+                result = "No such item.";
+            else {
+                action.oName = object->getName();
+                result = handleActionWithObject(action, object);
+            }
+        }
+        else if(action.oType == Lbr::Container) {
+            Wall *curWall = gameMap[roomNumber]->getWall(curWallType);
+            curContainer = curWall->findContainer(action);
+            if(!curContainer)
+                result = "No such item ";
+            else {
+                action.oName = curContainer->getName();
+                result = handleActionWithContainer(action);
+            }
+        }
+    }
+    return result;
 }
 
 void Game::generateMap()
@@ -267,7 +291,7 @@ std::string Game::handleActionWithContainer(Action act)
     std::string result;
     switch(act.oName) {
     case Lbr::ObjDoor:
-        result = ActionWithDoor(act.aType);
+        result = ActionWithDoor(act);
         break;
     case Lbr::ObjFlashlight:
         break;
@@ -275,7 +299,7 @@ std::string Game::handleActionWithContainer(Action act)
         result = ActionWithPlayer(act.aType);
         break;
     case Lbr::ObjSafe:
-        result = ActionWithSafe(act.aType);
+        result = ActionWithSafe(act);
         break;
     case Lbr::ObjShelf:
         result = ActionWithShelf(act.aType);
@@ -354,11 +378,11 @@ std::string Game::ActionWithCassette(Lbr::ActType aType, Cassette *cassette)
     return result;
 }
 
-std::string Game::ActionWithDoor(Lbr::ActType aType)
+std::string Game::ActionWithDoor(const Action act)
 {
     Door *door = static_cast<Door*>(curContainer);
     std::string result;
-    switch(aType) {
+    switch(act.aType) {
     case Lbr::ActClose:
         result = "There's no need.";
         break;
@@ -384,7 +408,7 @@ std::string Game::ActionWithDoor(Lbr::ActType aType)
         if(!door->isLocked())
             result = "Door already opened.";
         else
-            result = OpenLock(door->getLock());
+            result = OpenLock(act, door->getLock());
         break;
     case Lbr::ActInspect:
         result = "You see door with number ";
@@ -469,22 +493,22 @@ std::string Game::ActionWithPlayer(Lbr::ActType aType)
 
 }
 
-std::string Game::OpenLock(LbrLock *lock)
+std::string Game::OpenLock(const Action act, LbrLock *lock)
 {
     std::string result;
-    Action act;
     switch(lock->getType()) {
     case Lbr::LockNone:
         break;
     case Lbr::LockDigital:
-        if(static_cast<DigitalLock*>(lock)->openLock())
+        if(act.code == -1)
+            result = "Usage: <action> <object> <number> <code>.";
+        else if(static_cast<DigitalLock*>(lock)->openLock(act.code))
             result = "Opened.";
         else
             result = "Incorrect code.";
         break;
     case Lbr::LockKey:
     {
-        act.oName = Lbr::ObjKey;
         Key *key = backpack->findKey(static_cast<Door*>(curContainer)->getNumber());
         if(!key)
             result = "Need a key.";
@@ -515,13 +539,13 @@ std::string Game::ActionWithRoom(Lbr::ActType aType, Room *room)
     return result;
 }
 
-std::string Game::ActionWithSafe(Lbr::ActType aType)
+std::string Game::ActionWithSafe(const Action act)
 {
     std::string result;
     Safe *safe = static_cast<Safe*>(curContainer);
     if(safe->isLocked()) //restricting access to a safe if it locked
         curContainer = nullptr;
-    switch(aType) {
+    switch(act.aType) {
     case Lbr::ActInspect:
         if(safe->isLocked())
             result = "You see locked safe.";
@@ -533,7 +557,9 @@ std::string Game::ActionWithSafe(Lbr::ActType aType)
     case Lbr::ActOpen:
         if(!safe->isLocked())
             result = "The safe already opened.";
-        else if(safe->openSafe())
+        else if(act.code == -1)
+            result = "Usage: <acton> <object> <number> <code>.";
+        else if(safe->openSafe(act.code))
             result = "The safe unlocked.";
         else
             result = "Incorrect code.";
@@ -614,9 +640,49 @@ std::string Game::ActionWithWatch(Lbr::ActType aType, Watch *watch)
     return result;
 }
 
-std::string Game::save()
+std::string Game::save() const
 {
-    return "Saved.";
+    std::string result;
+    if(COMMANDS->getHistory().empty())
+        result = "No data to save.";
+    else {
+        std::ofstream file;
+        std::string name;
+        std::cout << "File name to write: ";
+        std::cin >> name;
+        file.open(name);
+        if(file.is_open()) {
+            for(auto c : COMMANDS->getHistory())
+                file << c << std::endl;
+            result = "Saved.";
+        }
+        else
+            result = "Couldn't open the file.";
+    }
+    return result;
+}
+
+std::string Game::load()  //fix me
+{
+    std::string result;
+    std::string command;
+    std::ifstream file;
+    std::string name;
+    std::cout << "File name to load: ";
+    std::cin >> name;
+    file.open(name);
+    if(file.is_open()) {
+        COMMANDS->clearHistory();
+        while(std::getline(file, command)) {
+            Action act = COMMANDS->cmdToAction(command);
+            ActionInGame(act);
+            COMMANDS->addCommand(command);
+        }
+        result = "Loaded.";
+    }
+    else
+        result = "Couldn't open the file.";
+    return result;
 }
 
 std::string Game::ActionTakeObject(LbrObject *obj)

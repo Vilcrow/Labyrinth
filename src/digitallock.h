@@ -30,7 +30,7 @@ public:
     ~DigitalLock() = default;
     int getCode() const { return code; }
     std::string getNameString() const override { return "digital lock"; }
-    bool openLock();
+    bool openLock(int c);
 private:
     int code;
 };
