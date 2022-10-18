@@ -43,6 +43,7 @@ void Game::setStartOptions()
     backpack = new Backpack();
     generateMap();
     curContainer = nullptr;
+    saved = true;
 }
 
 void Game::clearGameOptions()
@@ -58,8 +59,9 @@ void Game::clearGameOptions()
 void Game::run()
 {
     std::string input, result;
+    bool quit_game = false;
     std::cout << getContext() + "> ";
-    while(std::getline(std::cin, input)) {
+    while(!quit_game && std::getline(std::cin, input)) {
         if(input.empty()) {
             std::cout << getContext() + "> ";
             continue;
@@ -80,14 +82,19 @@ void Game::run()
                 std::cout << getContext() + "> ";
                 continue;
             }
-            else if(action.aType == Lbr::ActQuit)  //quit the game
-//TBD
-                break;
+            else if(action.aType == Lbr::ActQuit) {
+                result = quit(quit_game);
+                std::cout << result << std::endl;
+                if(!quit_game)
+                    std::cout << getContext() + "> ";
+                continue;
+            }
             else
                 result = "Specify the object.";
         }
         else
             result = ActionInGame(action);
+        saved = false;
         COMMANDS->addCommand(input);
         std::cout << result << std::endl;
         std::cout << getContext() + "> ";
@@ -650,7 +657,7 @@ std::string Game::ActionWithWatch(Lbr::ActType aType, Watch *watch)
     return result;
 }
 
-std::string Game::save() const
+std::string Game::save()
 {
     std::string result;
     if(COMMANDS->getHistory().empty())
@@ -665,6 +672,7 @@ std::string Game::save() const
             for(auto c : COMMANDS->getHistory())
                 file << c << std::endl;
             file.close();
+            saved = true;
             result = "Saved.";
         }
         else
@@ -680,7 +688,7 @@ std::string Game::load()
     bool discard = true;
     if(!COMMANDS->getHistory().empty()) {
         std::cout << "The progress of the current game will be lost. "
-                     "Continue[y/n]: ";
+                     "Continue?[y/n]: ";
         std::cin >> input;
         for(auto& c : input)
             c = std::tolower(c);
@@ -706,6 +714,7 @@ std::string Game::load()
                 COMMANDS->addCommand(command);
             }
             file.close();
+            saved = true;
             result = "Loaded.";
         }
         else
@@ -776,5 +785,40 @@ std::string Game::getContext() const
     result = "[R: " + std::to_string(roomNumber) + ", W: "  + wall
              + ", F: " + focus
              + "] ";
+    return result;
+}
+
+std::string Game::quit(bool& q)
+{
+    std::string result;
+    std::string input;
+    if(!saved) {
+        if(!COMMANDS->getHistory().empty()) {
+            std::cout << "The progress of the current game will be lost. "
+                         "Save?[y/n/c]: ";
+            std::cin >> input;
+            for(auto& c : input)
+                c = std::tolower(c);
+            if(input.find('y') != std::string::npos) {
+                result = save();
+                if(saved) {
+                    q = true;
+                    result += " Bye.";
+                }
+            }
+            else if(input.find('c') != std::string::npos) {
+                result = "Canceled.";
+                q = false;
+            }
+            else {
+                result = "Bye.";
+                q = true;
+            }
+        }
+    }
+    else {
+        result = "Bye.";
+        q = true;
+    }
     return result;
 }

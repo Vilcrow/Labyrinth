@@ -47,6 +47,7 @@ private:
     LbrContainer *curContainer;
     Backpack *backpack;
     std::map<int, Room*> gameMap; //all rooms
+    bool saved;
 
     Game(Game&) = delete;
     Game& operator=(Game&) = delete;
@@ -72,8 +73,9 @@ private:
     std::string OpenLock(const Action act, LbrLock *lock);
     std::string ActionTakeObject(LbrObject *obj);
     std::string ActionThrowObject(LbrObject *obj);
-    std::string save() const;
+    std::string save();
     std::string load();
+    std::string quit(bool& q);
     void setStartOptions();
     void clearGameOptions();
 };
