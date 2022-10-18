@@ -40,8 +40,6 @@ public:
     Game();
     ~Game();
     void run();
-    std::string save() const;
-    std::string load();
 private:
     enum { roomCount = 81 };
     int roomNumber;
@@ -74,6 +72,10 @@ private:
     std::string OpenLock(const Action act, LbrLock *lock);
     std::string ActionTakeObject(LbrObject *obj);
     std::string ActionThrowObject(LbrObject *obj);
+    std::string save() const;
+    std::string load();
+    void setStartOptions();
+    void clearGameOptions();
 };
 
 #endif

@@ -25,11 +25,11 @@
 
 Wall::~Wall()
 {
-    if(containers.size())
-        for(auto c : containers) {
+    if(containers.size() != 0) {
+        for(auto c : containers)
             delete c;
-            c = nullptr;
-        }
+        containers.clear();
+    }
 }
 
 bool Wall::addContainer(LbrContainer *container)

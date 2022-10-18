@@ -22,7 +22,6 @@
 #include "commands.h"
 #include <algorithm>
 #include <iostream>
-#include <unordered_set>
 
 Commands* Commands::uniqueInstance = nullptr;
 

@@ -28,6 +28,16 @@
 
 Game::Game()
 {
+    setStartOptions();
+}
+
+Game::~Game()
+{
+    clearGameOptions();
+}
+
+void Game::setStartOptions()
+{
     roomNumber = 1;
     curWallType = Lbr::WallTop;
     backpack = new Backpack();
@@ -35,14 +45,14 @@ Game::Game()
     curContainer = nullptr;
 }
 
-Game::~Game()
+void Game::clearGameOptions()
 {
     delete backpack;
     backpack = nullptr;
     for(int i = 1; i <= roomCount; i++) {
         delete gameMap[i];
-        gameMap[i] = nullptr;
     }
+    gameMap.clear();
 }
 
 void Game::run()
@@ -654,6 +664,7 @@ std::string Game::save() const
         if(file.is_open()) {
             for(auto c : COMMANDS->getHistory())
                 file << c << std::endl;
+            file.close();
             result = "Saved.";
         }
         else
@@ -662,26 +673,46 @@ std::string Game::save() const
     return result;
 }
 
-std::string Game::load()  //fix me
+std::string Game::load()
 {
     std::string result;
-    std::string command;
-    std::ifstream file;
-    std::string name;
-    std::cout << "File name to load: ";
-    std::cin >> name;
-    file.open(name);
-    if(file.is_open()) {
-        COMMANDS->clearHistory();
-        while(std::getline(file, command)) {
-            Action act = COMMANDS->cmdToAction(command);
-            ActionInGame(act);
-            COMMANDS->addCommand(command);
+    std::string input;
+    bool discard = true;
+    if(!COMMANDS->getHistory().empty()) {
+        std::cout << "The progress of the current game will be lost. "
+                     "Continue[y/n]: ";
+        std::cin >> input;
+        for(auto& c : input)
+            c = std::tolower(c);
+        if(input.find('y') != std::string::npos)
+            discard = true;
+        else
+            discard = false;
+    }
+    if(discard) {
+        std::cout << "File name to load: ";
+        std::string name;
+        std::cin >> name;
+        std::ifstream file;
+        file.open(name);
+        if(file.is_open()) {
+            COMMANDS->clearHistory();
+            clearGameOptions();
+            setStartOptions();
+            std::string command;
+            while(std::getline(file, command)) {
+                Action act = COMMANDS->cmdToAction(command);
+                ActionInGame(act);
+                COMMANDS->addCommand(command);
+            }
+            file.close();
+            result = "Loaded.";
         }
-        result = "Loaded.";
+        else
+            result = "Couldn't open the file.";
     }
     else
-        result = "Couldn't open the file.";
+        result = "Cancelled.";
     return result;
 }
 

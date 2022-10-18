@@ -25,10 +25,9 @@
 LbrContainer::~LbrContainer()
 {
     if(objects.size() != 0) {
-        for(auto o : objects) {
+        for(auto o : objects)
             delete o;
-            o = nullptr;
-        }
+        objects.clear();
     }
 }
 

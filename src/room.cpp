@@ -31,13 +31,10 @@ Room::Room(int num) : number(num)
 Room::~Room()
 {
     delete walls[Lbr::WallTop];
-    walls[Lbr::WallTop] = nullptr;
     delete walls[Lbr::WallDown];
-    walls[Lbr::WallDown] = nullptr;
     delete walls[Lbr::WallLeft];
-    walls[Lbr::WallLeft] = nullptr;
     delete walls[Lbr::WallRight];
-    walls[Lbr::WallRight] = nullptr;
+    walls.clear();
 }
 
 //add container object to corresponding wall
