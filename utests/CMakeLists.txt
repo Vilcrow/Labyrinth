@@ -27,6 +27,7 @@ set(TEST_SOURCES
     safe_test.cpp
     sheet_test.cpp
     shelf_test.cpp
+    table_test.cpp
     wall_test.cpp
     watch_test.cpp
 )

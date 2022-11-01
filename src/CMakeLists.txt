@@ -15,6 +15,7 @@ set(APP_LIB_SOURCE
     safe.cpp
     sheet.cpp
     shelf.cpp
+    table.cpp
     wall.cpp
     watch.cpp
 )

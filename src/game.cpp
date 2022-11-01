@@ -178,42 +178,52 @@ void Game::generateMap()
     Safe *safe = nullptr;
     Shelf *shelf = nullptr;
     Sheet *sheet = nullptr;
+    Table *table = nullptr;
     Watch *watch = nullptr;
+
     //ROOM 1
+
     //wall TOP
     door = new Door(2);
     keylock = new KeyLock(2);
     door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallTop, door);
-    player = new Player();
-    gameMap[1]->addContainer(Lbr::WallTop, player);
+
+    shelf = new Shelf();
+    key = new Key(4);
+    shelf->addObject(key);
+    sheet = new Sheet("8 - 1833");
+    shelf->addObject(sheet);
+    gameMap[1]->addContainer(Lbr::WallTop, shelf);
+
     //wall LEFT
     door = new Door(4);
     keylock = new KeyLock(4);
     door->addObject(keylock);
     gameMap[1]->addContainer(Lbr::WallLeft, door);
-    shelf = new Shelf();
-    key = new Key(2);
-    shelf->addObject(key);
-    watch = new Watch("11:53");
-    shelf->addObject(watch);
-    cassette = new Cassette("Cassette test.");
-    shelf->addObject(cassette);
-    gameMap[1]->addContainer(Lbr::WallLeft, shelf);
+
+    safe = new Safe(735216);
+    watch = new Watch("12:45");
+    safe->addObject(watch);
+    gameMap[1]->addContainer(Lbr::WallLeft, safe);
+
     //wall DOWN
     door = new Door(6);
-    digitallock = new DigitalLock(1111);
+    digitallock = new DigitalLock(1245);
     door->addObject(digitallock);
     gameMap[1]->addContainer(Lbr::WallDown, door);
+
+    shelf = new Shelf();
+    sheet = new Sheet("Qui quaerit, reperit.");
+    shelf->addObject(sheet);
+    gameMap[1]->addContainer(Lbr::WallDown, shelf);
+    
     //wall RIGHT
     door = new Door(8);
-    keylock = new KeyLock(8);
-    door->addObject(keylock);
+    digitallock = new DigitalLock(1833);
+    door->addObject(digitallock);
     gameMap[1]->addContainer(Lbr::WallRight, door);
-    safe = new Safe(1153);
-    sheet = new Sheet("Qui quaerit, reperit.");
-    safe->addObject(sheet);
-    gameMap[1]->addContainer(Lbr::WallRight, safe);
+
     //ROOM 2
     //wall TOP
     //wall LEFT
@@ -222,6 +232,7 @@ void Game::generateMap()
     keylock = new KeyLock(1);
     door->addObject(keylock);
     gameMap[2]->addContainer(Lbr::WallDown, door);
+
     //wall RIGHT
     //ROOM 4
     //wall TOP
@@ -232,24 +243,66 @@ void Game::generateMap()
     keylock = new KeyLock(1);
     door->addObject(keylock);
     gameMap[4]->addContainer(Lbr::WallRight, door);
+
     //ROOM 6
     //wall TOP
     door = new Door(1);
-    digitallock = new DigitalLock(1111);
+    digitallock = new DigitalLock(1245);
     door->addObject(digitallock);
     gameMap[6]->addContainer(Lbr::WallTop, door);
+
     //wall LEFT
     //wall DOWN
     //wall RIGHT
-    //ROOM 8
+
+    //ROOM 7
     //wall TOP
+    door = new Door(8); //always closed door
+    keylock = new KeyLock(8);
+    door->addObject(keylock);
+    gameMap[7]->addContainer(Lbr::WallTop, door);
+
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 8
+
+    //wall TOP
+    door = new Door(9); //always closed door
+    keylock = new KeyLock(9);
+    door->addObject(keylock);
+    gameMap[8]->addContainer(Lbr::WallTop, door);
+    
+    table = new Table();
+    gameMap[8]->addContainer(Lbr::WallTop, table);
+    
     //wall LEFT
     door = new Door(1);
-    keylock = new KeyLock(1);
-    door->addObject(keylock);
+    digitallock = new DigitalLock(1833);
+    door->addObject(digitallock);
     gameMap[8]->addContainer(Lbr::WallLeft, door);
+
+
     //wall DOWN
+    door = new Door(7); //always closed door
+    keylock = new KeyLock(7);
+    door->addObject(keylock);
+    gameMap[8]->addContainer(Lbr::WallDown, door);
+    
     //wall RIGHT
+
+    //ROOM 9
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    door = new Door(8); //always closed door
+    keylock = new KeyLock(8);
+    door->addObject(keylock);
+    gameMap[9]->addContainer(Lbr::WallDown, door);
+
+    //wall RIGHT
+
 }
 
 std::string Game::handleActionWithObject(Action act, LbrObject *obj)
@@ -293,6 +346,7 @@ std::string Game::handleActionWithObject(Action act, LbrObject *obj)
     case Lbr::ObjPlayer:
     case Lbr::ObjSafe:
     case Lbr::ObjShelf:
+    case Lbr::ObjTable:
     case Lbr::ObjWall:
     case Lbr::ObjWallDown:
     case Lbr::ObjWallLeft:
@@ -320,6 +374,9 @@ std::string Game::handleActionWithContainer(Action act)
         break;
     case Lbr::ObjShelf:
         result = ActionWithShelf(act.aType);
+        break;
+    case Lbr::ObjTable:
+        result = ActionWithTable(act.aType);
         break;
 //no processing required
     case Lbr::ObjNone:
@@ -618,6 +675,21 @@ std::string Game::ActionWithShelf(Lbr::ActType aType)
         break;
     default:
         result = "Impossible action with the shelf.";
+    }
+    return result;
+}
+
+std::string Game::ActionWithTable(Lbr::ActType aType)
+{
+    std::string result;
+    Table *table = static_cast<Table*>(curContainer);
+    switch(aType) {
+    case Lbr::ActInspect:
+        result = "On table: ";
+        result += LbrObjectsList<LbrObject>(table->getObjects());
+        break;
+    default:
+        result = "Impossible action with the table.";
     }
     return result;
 }

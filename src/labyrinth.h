@@ -65,6 +65,7 @@ public:
                      ObjSafe,
                      ObjSheet,
                      ObjShelf,
+                     ObjTable,
                      ObjWall,
                      ObjWallTop,
                      ObjWallDown,

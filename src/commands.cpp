@@ -59,6 +59,7 @@ Commands::Commands()
                      , { "safe"        , Lbr::ObjSafe,        }
                      , { "sheet"       , Lbr::ObjSheet,       }
                      , { "shelf"       , Lbr::ObjShelf,       }
+                     , { "table"       , Lbr::ObjTable,       }
                      , { "top"         , Lbr::ObjWallTop,     }
                      , { "wall"        , Lbr::ObjWall,        }
                      , { "watch"       , Lbr::ObjWatch,       }
@@ -78,6 +79,7 @@ Commands::Commands()
                      , { Lbr::ObjSafe,        Lbr::Container }
                      , { Lbr::ObjSheet,       Lbr::Object    }
                      , { Lbr::ObjShelf,       Lbr::Container }
+                     , { Lbr::ObjTable,       Lbr::Container }
                      , { Lbr::ObjWall,        Lbr::None      }
                      , { Lbr::ObjWallDown,    Lbr::None      }
                      , { Lbr::ObjWallLeft,    Lbr::None      }

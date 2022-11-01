@@ -33,6 +33,7 @@
 #include "safe.h"
 #include "sheet.h"
 #include "shelf.h"
+#include "table.h"
 #include "watch.h"
 
 class Game {
@@ -68,6 +69,7 @@ private:
     std::string ActionWithSafe(const Action act);
     std::string ActionWithSheet(Lbr::ActType aType, Sheet *sheet);
     std::string ActionWithShelf(Lbr::ActType aType);
+    std::string ActionWithTable(Lbr::ActType aType);
     std::string ActionWithWall(Lbr::ActType aType);
     std::string ActionWithWatch(Lbr::ActType aType, Watch *watch);
     std::string OpenLock(const Action act, LbrLock *lock);
