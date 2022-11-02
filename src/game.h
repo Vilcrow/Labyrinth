@@ -43,6 +43,7 @@ public:
     void run();
 private:
     enum { roomCount = 81 };
+    enum { finishRoom = 82 };
     int roomNumber;
     Lbr::WallType curWallType;
     LbrContainer *curContainer;
@@ -80,6 +81,7 @@ private:
     std::string quit(bool& q);
     void setStartOptions();
     void clearGameOptions();
+    std::string checkDoors() const;
 };
 
 #endif

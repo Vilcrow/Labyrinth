@@ -169,10 +169,8 @@ void Game::generateMap()
     for(int i = 1; i <= roomCount; i++) {
         gameMap[i] = new Room(i);
     }
+    //pointers
     Cassette *cassette = nullptr;
-    DigitalLock *digitallock = nullptr;
-    Door *door = nullptr;
-    KeyLock *keylock = nullptr;
     Key *key = nullptr;
     Player *player = nullptr;
     Safe *safe = nullptr;
@@ -182,127 +180,306 @@ void Game::generateMap()
     Watch *watch = nullptr;
 
     //ROOM 1
-
     //wall TOP
-    door = new Door(2);
-    keylock = new KeyLock(2);
-    door->addObject(keylock);
-    gameMap[1]->addContainer(Lbr::WallTop, door);
-
+    gameMap[1]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 2);
     shelf = new Shelf();
     key = new Key(4);
     shelf->addObject(key);
-    sheet = new Sheet("8 - 1833");
+    sheet = new Sheet("d8 - 1833");
     shelf->addObject(sheet);
     gameMap[1]->addContainer(Lbr::WallTop, shelf);
-
     //wall LEFT
-    door = new Door(4);
-    keylock = new KeyLock(4);
-    door->addObject(keylock);
-    gameMap[1]->addContainer(Lbr::WallLeft, door);
-
+    gameMap[1]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 4);
     safe = new Safe(735216);
     watch = new Watch("12:45");
     safe->addObject(watch);
     gameMap[1]->addContainer(Lbr::WallLeft, safe);
-
     //wall DOWN
-    door = new Door(6);
-    digitallock = new DigitalLock(1245);
-    door->addObject(digitallock);
-    gameMap[1]->addContainer(Lbr::WallDown, door);
-
+    gameMap[1]->addDoorWithLock(Lbr::WallDown, Lbr::LockDigital, 6, 1245);
     shelf = new Shelf();
     sheet = new Sheet("Qui quaerit, reperit.");
     shelf->addObject(sheet);
     gameMap[1]->addContainer(Lbr::WallDown, shelf);
-    
     //wall RIGHT
-    door = new Door(8);
-    digitallock = new DigitalLock(1833);
-    door->addObject(digitallock);
-    gameMap[1]->addContainer(Lbr::WallRight, door);
+    gameMap[1]->addDoorWithLock(Lbr::WallRight, Lbr::LockDigital, 6, 1833);
 
     //ROOM 2
     //wall TOP
+    //always closed door
+    gameMap[2]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 11);
+    //wall LEFT
+    //always closed door
+    gameMap[2]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 3);
+    //wall DOWN
+    gameMap[2]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 1);
+    //wall RIGHT
+
+    //ROOM 3
+    //wall TOP
     //wall LEFT
     //wall DOWN
-    door = new Door(1);
-    keylock = new KeyLock(1);
-    door->addObject(keylock);
-    gameMap[2]->addContainer(Lbr::WallDown, door);
-
     //wall RIGHT
+    //always closed door
+    gameMap[3]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 2);
+
     //ROOM 4
     //wall TOP
     //wall LEFT
     //wall DOWN
+    //always closed door
+    gameMap[4]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 5);
     //wall RIGHT
-    door = new Door(1);
-    keylock = new KeyLock(1);
-    door->addObject(keylock);
-    gameMap[4]->addContainer(Lbr::WallRight, door);
+    gameMap[4]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 1);
+
+    //ROOM 5
+    //wall TOP
+    //always closed door
+    gameMap[5]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 4);
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
 
     //ROOM 6
     //wall TOP
-    door = new Door(1);
-    digitallock = new DigitalLock(1245);
-    door->addObject(digitallock);
-    gameMap[6]->addContainer(Lbr::WallTop, door);
-
+    gameMap[6]->addDoorWithLock(Lbr::WallTop, Lbr::LockDigital, 1, 1245);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
 
     //ROOM 7
     //wall TOP
-    door = new Door(8); //always closed door
-    keylock = new KeyLock(8);
-    door->addObject(keylock);
-    gameMap[7]->addContainer(Lbr::WallTop, door);
-
+    //always closed door
+    gameMap[7]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 8);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
 
     //ROOM 8
-
     //wall TOP
-    door = new Door(9); //always closed door
-    keylock = new KeyLock(9);
-    door->addObject(keylock);
-    gameMap[8]->addContainer(Lbr::WallTop, door);
-    
+    //always closed door
+    gameMap[8]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 9);
     table = new Table();
+    key = new Key(2);
+    table->addObject(key);
     gameMap[8]->addContainer(Lbr::WallTop, table);
-    
     //wall LEFT
-    door = new Door(1);
-    digitallock = new DigitalLock(1833);
-    door->addObject(digitallock);
-    gameMap[8]->addContainer(Lbr::WallLeft, door);
-
-
+    gameMap[8]->addDoorWithLock(Lbr::WallLeft, Lbr::LockDigital, 1, 1833);
     //wall DOWN
-    door = new Door(7); //always closed door
-    keylock = new KeyLock(7);
-    door->addObject(keylock);
-    gameMap[8]->addContainer(Lbr::WallDown, door);
-    
+    //always closed door
+    gameMap[8]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 7);
     //wall RIGHT
+    gameMap[8]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 23);
 
     //ROOM 9
     //wall TOP
     //wall LEFT
     //wall DOWN
-    door = new Door(8); //always closed door
-    keylock = new KeyLock(8);
-    door->addObject(keylock);
-    gameMap[9]->addContainer(Lbr::WallDown, door);
-
+    //always closed door
+    gameMap[9]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 8);
     //wall RIGHT
 
+    //ROOM 11
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //always closed door
+    gameMap[11]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 2);
+    //wall RIGHT
+
+    //ROOM 22
+    //wall TOP
+    //always closed door
+    gameMap[22]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 22);
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 23
+    //wall TOP
+    //wall LEFT
+    gameMap[23]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 8);
+    //wall DOWN
+    //always closed door
+    gameMap[23]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 22);
+    //wall RIGHT
+
+    //ROOM 49
+    //wall TOP
+    //always closed door
+    gameMap[49]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 50);
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 50
+    //wall LEFT
+    //always closed door
+    gameMap[50]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 51);
+    safe = new Safe(8934234);
+    key = new Key(66);
+    safe->addObject(key);
+    //wall DOWN
+    //always closed door
+    gameMap[50]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 49);
+    //wall RIGHT
+
+    //ROOM 51
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+    //always closed door
+    gameMap[51]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 51);
+
+    //ROOM 52
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 53
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 54
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 55
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 56
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 57
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 58
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 59
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 60
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 61
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 62
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 63
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 64
+    //wall TOP
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 65
+    //wall TOP
+    //wall RIGHT
+
+    //ROOM 66
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    gameMap[66] = addDoorWithLock(Lbr::WallDown, Lbr::LockKey, finishRoom);
+    //wall RIGHT
+
+    //ROOM 67
+    //wall TOP
+    //wall LEFT
+    //wall RIGHT
+
+    //ROOM 68
+    //wall TOP
+    //wall LEFT
+    //wall RIGHT
+
+    //ROOM 69
+    //wall TOP
+    //wall LEFT
+    //wall RIGHT
+
+    //ROOM 70
+    //wall TOP
+    //wall LEFT
+    //wall RIGHT
+
+    //ROOM 71
+    //wall TOP
+    //wall LEFT
+    //wall RIGHT
+
+    //ROOM 72
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //wall RIGHT
+
+    //ROOM 73
+    //wall TOP
+    //wall LEFT
+
+    //ROOM 74
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 75
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 76
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 77
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 78
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 79
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 80
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+
+    //ROOM 81
+    //wall LEFT
+    gameMap[81]->addDoorWithLock(Lbr::WallLeft, Lbr::LockDigital, 50, 8923);
+    //wall DOWN
+    gameMap[81]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 80);
 }
 
 std::string Game::handleActionWithObject(Action act, LbrObject *obj)
@@ -892,5 +1069,11 @@ std::string Game::quit(bool& q)
         result = "Bye.";
         q = true;
     }
+    return result;
+}
+//TBD
+std::string Game::checkDoors() const
+{
+    std::string result = "OK";
     return result;
 }

@@ -37,7 +37,10 @@ public:
     Lbr::ObjName getName() { return Lbr::ObjRoom; }
     std::string getNameString() const { return "room"; }
     Door* findDoor(int num) const;
+    Door* findDoor(Lbr::WallType wType, const Door *door = nullptr);
     Wall* getWall(Lbr::WallType wType) { return walls[wType]; }
+    bool addDoorWithLock(Lbr::WallType wType, Lbr::LockType lockType
+                                            , int number, int code = -1);
 private:
     int number;
     std::map<Lbr::WallType, Wall*> walls;

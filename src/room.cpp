@@ -20,6 +20,8 @@
 *******************************************************************************/
 
 #include "room.h"
+#include "keylock.h"
+#include "digitallock.h"
 
 Room::Room(int num) : number(num)
 {
@@ -63,6 +65,51 @@ Door* Room::findDoor(int num) const
         result = static_cast<Door*>(w.second->findContainer(act));
         if(result && result->getNumber() == num)
             return result;
+    }
+    return result;
+}
+//find door in corresponding wall
+//second argument is the last found door
+Door* Room::findDoor(Lbr::WallType wType, const Door *door) //maybe need fix
+{
+    Door *result = nullptr;
+    Action act;
+    int c_size = walls[wType]->getContainers().size();
+    for(int i = 0; i < c_size; i++) {
+        act.number = i;
+        LbrContainer *container = walls[wType]->findContainer(act);
+        if(container->getName() == Lbr::ObjDoor &&
+           static_cast<Door*>(container) != door) {
+            result = static_cast<Door*>(container);
+            break;
+        }
+    }
+    return result;
+}
+
+bool Room::addDoorWithLock(Lbr::WallType wType, Lbr::LockType lockType
+                                              , int number, int code)
+{
+    bool result = true;
+    Door *door = new Door(number);
+    LbrLock *lock = nullptr;
+    switch(lockType) {
+    case Lbr::LockNone:
+        result = false;
+        break;
+    case Lbr::LockDigital:
+        if(code == -1)
+            result = false;
+        lock = static_cast<LbrLock*>(new DigitalLock(code));
+        break;
+    case Lbr::LockKey:
+        lock = static_cast<LbrLock*>(new KeyLock(number));
+        break;
+    }
+    if(result) {
+        result = door->addObject(lock);
+        if(result)
+            result = addContainer(wType, door);
     }
     return result;
 }
