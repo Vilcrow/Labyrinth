@@ -164,34 +164,20 @@ std::string Game::ActionInGame(Action action)
     return result;
 }
 
-void Game::generateMap()
+void Game::room_1()
 {
-    for(int i = 1; i <= roomCount; i++) {
-        gameMap[i] = new Room(i);
-    }
-    //pointers
-    Cassette *cassette = nullptr;
-    Key *key = nullptr;
-    Player *player = nullptr;
-    Safe *safe = nullptr;
-    Shelf *shelf = nullptr;
-    Sheet *sheet = nullptr;
-    Table *table = nullptr;
-    Watch *watch = nullptr;
-
-    //ROOM 1
     //wall TOP
     gameMap[1]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 2);
-    shelf = new Shelf();
-    key = new Key(4);
+    Shelf *shelf = new Shelf();
+    Key *key = new Key(4);
     shelf->addObject(key);
-    sheet = new Sheet("d8 - 1833");
+    Sheet *sheet = new Sheet("d8 - 1833");
     shelf->addObject(sheet);
     gameMap[1]->addContainer(Lbr::WallTop, shelf);
     //wall LEFT
     gameMap[1]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 4);
-    safe = new Safe(735216);
-    watch = new Watch("12:45");
+    Safe *safe = new Safe(735216);
+    Watch *watch = new Watch("12:45");
     safe->addObject(watch);
     gameMap[1]->addContainer(Lbr::WallLeft, safe);
     //wall DOWN
@@ -202,8 +188,10 @@ void Game::generateMap()
     gameMap[1]->addContainer(Lbr::WallDown, shelf);
     //wall RIGHT
     gameMap[1]->addDoorWithLock(Lbr::WallRight, Lbr::LockDigital, 6, 1833);
+}
 
-    //ROOM 2
+void Game::room_2()
+{
     //wall TOP
     //always closed door
     gameMap[2]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 11);
@@ -213,16 +201,24 @@ void Game::generateMap()
     //wall DOWN
     gameMap[2]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 1);
     //wall RIGHT
+}
 
-    //ROOM 3
+void Game::room_3()
+{
     //wall TOP
+    //always closed door
+    gameMap[3]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 12);
     //wall LEFT
+    //always closed door
+    gameMap[3]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 14);
     //wall DOWN
     //wall RIGHT
     //always closed door
     gameMap[3]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 2);
+}
 
-    //ROOM 4
+void Game::room_4()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
@@ -230,36 +226,44 @@ void Game::generateMap()
     gameMap[4]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 5);
     //wall RIGHT
     gameMap[4]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 1);
+}
 
-    //ROOM 5
+void Game::room_5()
+{
     //wall TOP
     //always closed door
     gameMap[5]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 4);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 6
+void Game::room_6()
+{
     //wall TOP
     gameMap[6]->addDoorWithLock(Lbr::WallTop, Lbr::LockDigital, 1, 1245);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 7
+void Game::room_7()
+{
     //wall TOP
     //always closed door
     gameMap[7]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 8);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 8
+void Game::room_8()
+{
     //wall TOP
     //always closed door
     gameMap[8]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 9);
-    table = new Table();
-    key = new Key(2);
+    Table *table = new Table();
+    Key *key = new Key(2);
     table->addObject(key);
     gameMap[8]->addContainer(Lbr::WallTop, table);
     //wall LEFT
@@ -269,32 +273,115 @@ void Game::generateMap()
     gameMap[8]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 7);
     //wall RIGHT
     gameMap[8]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 23);
+}
 
-    //ROOM 9
+void Game::room_9()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
     //always closed door
     gameMap[9]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 8);
     //wall RIGHT
+}
 
-    //ROOM 11
+void Game::room_10()
+{
+
+}
+
+void Game::room_11()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
     //always closed door
     gameMap[11]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 2);
     //wall RIGHT
+}
 
-    //ROOM 22
+void Game::room_12()
+{
+    //wall TOP
+    //wall LEFT
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 8");
+    shelf->addObject(sheet);
+    gameMap[12]->addContainer(Lbr::WallLeft, shelf);
+    //wall DOWN
+    //always closed door
+    gameMap[12]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 3);
+    //wall RIGHT
+}
+
+void Game::room_13()
+{
+    //empty room
+}
+
+void Game::room_14()
+{
+    //wall TOP
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 9");
+    shelf->addObject(sheet);
+    gameMap[14]->addContainer(Lbr::WallTop, shelf);
+    //wall LEFT
+    //always closed door
+    gameMap[14]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 33);
+    //wall DOWN
+    //wall RIGHT
+    //always closed door
+    gameMap[14]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 3);
+}
+
+void Game::room_15()
+{
+
+}
+
+void Game::room_16()
+{
+
+}
+
+void Game::room_17()
+{
+
+}
+
+void Game::room_18()
+{
+
+}
+
+void Game::room_19()
+{
+
+}
+
+void Game::room_20()
+{
+
+}
+
+void Game::room_21()
+{
+
+}
+
+void Game::room_22()
+{
     //wall TOP
     //always closed door
     gameMap[22]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 22);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 23
+void Game::room_23()
+{
     //wall TOP
     //wall LEFT
     gameMap[23]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 8);
@@ -302,184 +389,528 @@ void Game::generateMap()
     //always closed door
     gameMap[23]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 22);
     //wall RIGHT
+}
 
-    //ROOM 49
+void Game::room_24()
+{
+
+}
+
+void Game::room_25()
+{
+
+}
+
+void Game::room_26()
+{
+
+}
+
+void Game::room_27()
+{
+
+}
+
+void Game::room_28()
+{
+
+}
+
+void Game::room_29()
+{
+
+}
+
+void Game::room_30()
+{
+    //wall TOP
+    //wall LEFT
+    //always closed door
+    gameMap[30]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 31);
+    //wall DOWN
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 3");
+    shelf->addObject(sheet);
+    gameMap[30]->addContainer(Lbr::WallDown, shelf);
+    //wall RIGHT
+    //always closed door
+    gameMap[30]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 29);
+}
+
+void Game::room_31()
+{
+    //wall TOP
+    //wall LEFT
+    //wall DOWN
+    //always closed door
+    gameMap[31]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 32);
+    //wall RIGHT
+    //always closed door
+    gameMap[31]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 30);
+}
+
+void Game::room_32()
+{
+    //wall TOP
+    //always closed door
+    gameMap[32]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 31);
+    //wall LEFT
+    //wall DOWN
+    //always closed door
+    gameMap[32]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 33);
+    //wall RIGHT
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 9");
+    shelf->addObject(sheet);
+    gameMap[32]->addContainer(Lbr::WallRight, shelf);
+}
+
+void Game::room_33()
+{
+    //wall TOP
+    //always closed door
+    gameMap[33]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 32);
+    //wall LEFT
+    //always closed door
+    gameMap[33]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 60);
+    //wall DOWN
+    //wall RIGHT
+    //always closed door
+    gameMap[33]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 14);
+}
+
+void Game::room_34()
+{
+
+}
+
+void Game::room_35()
+{
+
+}
+
+void Game::room_36()
+{
+
+}
+
+void Game::room_37()
+{
+
+}
+
+void Game::room_38()
+{
+
+}
+
+void Game::room_39()
+{
+
+}
+
+void Game::room_40()
+{
+
+}
+
+void Game::room_41()
+{
+
+}
+
+void Game::room_42()
+{
+    //wall DOWN
+    //always closed door
+    gameMap[42]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 71);
+}
+
+void Game::room_43()
+{
+    //wall DOWN
+    //always closed door
+    gameMap[43]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 72);
+}
+
+void Game::room_44()
+{
+
+}
+
+void Game::room_45()
+{
+
+}
+
+void Game::room_46()
+{
+
+}
+
+void Game::room_47()
+{
+
+}
+
+void Game::room_48()
+{
+
+}
+
+void Game::room_49()
+{
     //wall TOP
     //always closed door
     gameMap[49]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 50);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 50
+void Game::room_50()
+{
     //wall LEFT
     //always closed door
     gameMap[50]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 51);
-    safe = new Safe(8934234);
-    key = new Key(66);
+    Safe *safe = new Safe(8934234);
+    Key *key = new Key(66);
     safe->addObject(key);
+    gameMap[50]->addContainer(Lbr::WallLeft, safe);
     //wall DOWN
     //always closed door
     gameMap[50]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 49);
     //wall RIGHT
+}
 
-    //ROOM 51
+void Game::room_51()
+{
     //wall LEFT
     //wall DOWN
     //wall RIGHT
     //always closed door
     gameMap[51]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 51);
+}
 
-    //ROOM 52
+void Game::room_52()
+{
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 53
+void Game::room_53()
+{
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 54
+void Game::room_54()
+{
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 55
+void Game::room_55()
+{
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 56
+void Game::room_56()
+{
+    //wall TOP
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 23");
+    shelf->addObject(sheet);
+    gameMap[56]->addContainer(shelf);
     //wall LEFT
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 57
+void Game::room_57()
+{
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 58
+void Game::room_58()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 59
+void Game::room_59()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 60
+void Game::room_60()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+    //always closed door
+    gameMap[60]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 33);
+}
 
-    //ROOM 61
+void Game::room_61()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 62
+void Game::room_62()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 63
+void Game::room_63()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 64
+void Game::room_64()
+{
     //wall TOP
     //wall DOWN
     //wall RIGHT
+}
 
-    //ROOM 65
+void Game::room_65()
+{
     //wall TOP
     //wall RIGHT
+}
 
-    //ROOM 66
+void Game::room_66()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
-    gameMap[66] = addDoorWithLock(Lbr::WallDown, Lbr::LockKey, finishRoom);
+    gameMap[66]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, finishRoom);
     //wall RIGHT
+}
 
-    //ROOM 67
-    //wall TOP
-    //wall LEFT
-    //wall RIGHT
-
-    //ROOM 68
+void Game::room_67()
+{
     //wall TOP
     //wall LEFT
     //wall RIGHT
+}
 
-    //ROOM 69
+void Game::room_68()
+{
     //wall TOP
     //wall LEFT
     //wall RIGHT
+}
 
-    //ROOM 70
+void Game::room_69()
+{
     //wall TOP
     //wall LEFT
     //wall RIGHT
+}
 
-    //ROOM 71
+void Game::room_70()
+{
     //wall TOP
     //wall LEFT
     //wall RIGHT
+}
 
-    //ROOM 72
+void Game::room_71()
+{
     //wall TOP
+    //always closed door
+    gameMap[71]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 42);
     //wall LEFT
-    //wall DOWN
     //wall RIGHT
+    //always closed door
+    gameMap[71]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 72);
+}
 
-    //ROOM 73
+void Game::room_72()
+{
     //wall TOP
+    //always closed door
+    gameMap[72]->addDoorWithLock(Lbr::WallTop, Lbr::LockKey, 43);
     //wall LEFT
+    //always closed door
+    gameMap[72]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 71);
+    //wall DOWN
+    Shelf *shelf = new Shelf();
+    Sheet *sheet = new Sheet("50 - 4");
+    shelf->addObject(sheet);
+    gameMap[72]->addContainer(Lbr::WallDown, shelf);
+    //wall RIGHT
+    gameMap[72]->addDoorWithLock(Lbr::WallRight, Lbr::LockKey, 73);
+}
 
-    //ROOM 74
+void Game::room_73()
+{
+    //wall TOP
+    gameMap[72]->addDoorWithLock(Lbr::WallTop, Lbr::LockDigital, 74, 4289);
+    //wall LEFT
+    gameMap[72]->addDoorWithLock(Lbr::WallLeft, Lbr::LockKey, 72);
+}
+
+void Game::room_74()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 75
+void Game::room_75()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 76
+void Game::room_76()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 77
+void Game::room_77()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 78
+void Game::room_78()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 79
+void Game::room_79()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 80
+void Game::room_80()
+{
     //wall TOP
     //wall LEFT
     //wall DOWN
+}
 
-    //ROOM 81
+void Game::room_81()
+{
     //wall LEFT
     gameMap[81]->addDoorWithLock(Lbr::WallLeft, Lbr::LockDigital, 50, 8923);
     //wall DOWN
     gameMap[81]->addDoorWithLock(Lbr::WallDown, Lbr::LockKey, 80);
+}
+
+void Game::generateMap()
+{
+    for(int i = 1; i <= roomCount; i++) {
+        gameMap[i] = new Room(i);
+    }
+    room_1();
+    room_2();
+    room_3();
+    room_4();
+    room_5();
+    room_6();
+    room_7();
+    room_8();
+    room_9();
+    room_10();
+    room_11();
+    room_12();
+    room_13();
+    room_14();
+    room_15();
+    room_16();
+    room_17();
+    room_18();
+    room_19();
+    room_20();
+    room_21();
+    room_22();
+    room_23();
+    room_24();
+    room_25();
+    room_26();
+    room_27();
+    room_28();
+    room_29();
+    room_30();
+    room_31();
+    room_32();
+    room_33();
+    room_34();
+    room_35();
+    room_36();
+    room_37();
+    room_38();
+    room_39();
+    room_40();
+    room_41();
+    room_42();
+    room_43();
+    room_44();
+    room_45();
+    room_46();
+    room_47();
+    room_48();
+    room_49();
+    room_50();
+    room_51();
+    room_52();
+    room_53();
+    room_54();
+    room_55();
+    room_56();
+    room_57();
+    room_58();
+    room_59();
+    room_60();
+    room_61();
+    room_62();
+    room_63();
+    room_64();
+    room_65();
+    room_66();
+    room_67();
+    room_68();
+    room_69();
+    room_70();
+    room_71();
+    room_72();
+    room_73();
+    room_74();
+    room_75();
+    room_76();
+    room_77();
+    room_78();
+    room_79();
+    room_80();
+    room_81();
 }
 
 std::string Game::handleActionWithObject(Action act, LbrObject *obj)
